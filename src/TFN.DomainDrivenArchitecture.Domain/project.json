@@ -1,0 +1,13 @@
+﻿{
+  "description": "TFN.DomainDrivenArchitecture Class Library",
+  "authors": [ "Lutando Ngqakaza" ],
+  "version": "1.0.0-*",
+
+  "dependencies": {
+  },
+
+  "frameworks": {
+    "net461": { }
+  }
+
+}
