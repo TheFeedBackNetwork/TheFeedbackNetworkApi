@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D9CC8BE6-7F0E-4AED-8E93-749B898481AE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FA12DE14-F299-49C3-AEE2-6759DB50EAC0}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TheFeedBackNetworkApi", "src\TheFeedBackNetworkApi\TheFeedBackNetworkApi.xproj", "{F5A9120B-39AD-488D-A50A-F5D1206C5908}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{79E11449-059B-4E41-ADCC-A5E42251E7E3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{EB6EFA07-FEEE-48B0-9388-138BF2A53D6A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{ED2EF932-E69D-44F8-8477-B4A348A60A7E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F5A9120B-39AD-488D-A50A-F5D1206C5908}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5A9120B-39AD-488D-A50A-F5D1206C5908}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5A9120B-39AD-488D-A50A-F5D1206C5908}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5A9120B-39AD-488D-A50A-F5D1206C5908}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F5A9120B-39AD-488D-A50A-F5D1206C5908} = {79E11449-059B-4E41-ADCC-A5E42251E7E3}
+		{79E11449-059B-4E41-ADCC-A5E42251E7E3} = {D9CC8BE6-7F0E-4AED-8E93-749B898481AE}
+		{EB6EFA07-FEEE-48B0-9388-138BF2A53D6A} = {D9CC8BE6-7F0E-4AED-8E93-749B898481AE}
+		{ED2EF932-E69D-44F8-8477-B4A348A60A7E} = {D9CC8BE6-7F0E-4AED-8E93-749B898481AE}
+	EndGlobalSection
+EndGlobal
