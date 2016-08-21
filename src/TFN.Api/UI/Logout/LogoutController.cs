@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Host.UI.Logout
+namespace TFN.UI.Logout
 {
     public class LogoutController : Controller
     {

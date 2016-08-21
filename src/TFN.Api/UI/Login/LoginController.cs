@@ -9,7 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Host.UI.Login
+namespace TFN.UI.Login
 {
     public class LoginController : Controller
     {

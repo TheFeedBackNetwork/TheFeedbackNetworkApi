@@ -1,4 +1,4 @@
-﻿namespace Host.UI.Login
+﻿namespace TFN.UI.Login
 {
     public class LoginViewModel : LoginInputModel
     {

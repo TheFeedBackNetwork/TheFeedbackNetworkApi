@@ -6,7 +6,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using IdentityModel;
 
-namespace Host.UI.Login
+namespace TFN.UI.Login
 {
     public class LoginService
     {

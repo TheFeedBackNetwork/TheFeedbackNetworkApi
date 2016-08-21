@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Host.UI.Logout
+namespace TFN.UI.Logout
 {
     public class LoggedOutViewModel
     {

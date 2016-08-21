@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4.Models;
 
-namespace Host.UI.Consent
+namespace TFN.UI.Consent
 {
     public class ConsentController : Controller
     {
