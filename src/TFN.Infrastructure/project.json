@@ -1,0 +1,17 @@
+﻿{
+  "description": "TFN.Infrastructure Class Library",
+  "authors": [ "Lutando Ngqakaza" ],
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "TFN.Domain.Interfaces": "1.0.0-*",
+    "TFN.Domain.Models": "1.0.0-*",
+    "TFN.Domain.Services": "1.0.0-*",
+    "IdentityServer4": "1.0.0-beta5",
+  },
+
+  "frameworks": {
+    "net461": { }
+  }
+
+}

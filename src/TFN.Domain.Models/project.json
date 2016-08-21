@@ -1,0 +1,14 @@
+﻿{
+  "description": "TFN.Domain.Models Class Library",
+  "authors": [ "Lutando Ngqakaza" ],
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "IdentityServer4": "1.0.0-beta5"
+  },
+
+  "frameworks": {
+    "net461": { }
+  }
+
+}

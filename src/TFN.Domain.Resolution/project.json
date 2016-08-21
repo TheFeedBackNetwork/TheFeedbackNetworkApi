@@ -1,0 +1,16 @@
+﻿{
+  "description": "TFN.Resolution Class Library",
+  "authors": [ "Lutando Ngqakaza" ],
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "TFN.Domain.Interfaces": "1.0.0-*",
+    "TFN.Infrastructure": "1.0.0-*",
+    "IdentityServer4": "1.0.0-beta5",
+  },
+
+  "frameworks": {
+    "net461": { }
+  }
+
+}
