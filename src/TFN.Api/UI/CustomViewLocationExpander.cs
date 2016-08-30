@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.Razor;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc.Razor;
 
-namespace TFN.UI
+namespace TheFeedBackNetworkApi.UI
 {
     public class CustomViewLocationExpander : IViewLocationExpander
     {

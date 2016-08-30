@@ -1,12 +1,11 @@
-﻿using IdentityServer4;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Linq;
-using System.Threading.Tasks;
-using IdentityServer4.Models;
 
-namespace TFN.UI.Consent
+namespace TheFeedBackNetworkApi.UI.Consent
 {
     public class ConsentController : Controller
     {

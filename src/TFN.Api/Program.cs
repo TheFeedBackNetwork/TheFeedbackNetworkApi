@@ -1,8 +1,7 @@
 ﻿using System.IO;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Builder;
 
-namespace TFN.Api
+namespace TheFeedBackNetworkApi
 {
     public class Program
     {

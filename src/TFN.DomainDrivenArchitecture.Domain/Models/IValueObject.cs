@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Wimt.DomainDrivenArchitecture.Domain.Models
+namespace TFN.DomainDrivenArchitecture.Domain.Models
 {
     public interface IValueObject<T> : IEquatable<T>
     { }

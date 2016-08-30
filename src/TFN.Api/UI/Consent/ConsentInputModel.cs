@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TFN.UI.Consent
+namespace TheFeedBackNetworkApi.UI.Consent
 {
     public class ConsentInputModel
     {

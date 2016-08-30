@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace TFN.UI.Home
+namespace TheFeedBackNetworkApi.UI.Home
 {
     public class HomeController : Controller
     {

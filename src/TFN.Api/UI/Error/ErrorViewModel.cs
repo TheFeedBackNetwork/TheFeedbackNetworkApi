@@ -1,6 +1,6 @@
 ﻿using IdentityServer4.Models;
 
-namespace TFN.UI.Error
+namespace TheFeedBackNetworkApi.UI.Error
 {
     public class ErrorViewModel
     {

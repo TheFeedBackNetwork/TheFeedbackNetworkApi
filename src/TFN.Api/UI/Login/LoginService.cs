@@ -1,12 +1,12 @@
-﻿using IdentityServer4.Services.InMemory;
-using System.Linq;
+﻿using System;
 using System.Collections.Generic;
-using System;
-using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
 using IdentityModel;
+using IdentityServer4.Services.InMemory;
 
-namespace TFN.UI.Login
+namespace TheFeedBackNetworkApi.UI.Login
 {
     public class LoginService
     {

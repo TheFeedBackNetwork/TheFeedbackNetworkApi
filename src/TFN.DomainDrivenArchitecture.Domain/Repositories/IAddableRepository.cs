@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Wimt.DomainDrivenArchitecture.Domain.Models;
+using TFN.DomainDrivenArchitecture.Domain.Models;
 
-namespace Wimt.DomainDrivenArchitecture.Domain.Repositories
+namespace TFN.DomainDrivenArchitecture.Domain.Repositories
 {
     public interface IAddableRepository<TDomainEntity, TKey> : IRepository<TDomainEntity, TKey>
        where TDomainEntity : DomainEntity<TKey>, IAggregateRoot

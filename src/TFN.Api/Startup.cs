@@ -5,10 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using TFN.UI;
-using TFN.UI.Login;
+using TheFeedBackNetworkApi.UI;
+using TheFeedBackNetworkApi.UI.Login;
 
-namespace TFN.Api
+namespace TheFeedBackNetworkApi
 {
     public class Startup
     {

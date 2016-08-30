@@ -1,15 +1,15 @@
-﻿using IdentityModel;
+﻿using System;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Services;
 using IdentityServer4.Services.InMemory;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
-namespace TFN.UI.Login
+namespace TheFeedBackNetworkApi.UI.Login
 {
     public class LoginController : Controller
     {

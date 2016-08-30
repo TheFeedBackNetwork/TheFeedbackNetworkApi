@@ -1,10 +1,10 @@
-﻿using IdentityServer4;
+﻿using System.Security.Claims;
+using System.Threading.Tasks;
+using IdentityServer4;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
-namespace TFN.UI.Logout
+namespace TheFeedBackNetworkApi.UI.Logout
 {
     public class LogoutController : Controller
     {

@@ -1,9 +1,8 @@
-﻿using IdentityServer4;
+﻿using System.Threading.Tasks;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
-namespace TFN.UI.Error
+namespace TheFeedBackNetworkApi.UI.Error
 {
     public class ErrorController : Controller
     {

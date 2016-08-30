@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TFN.UI.Login
+namespace TheFeedBackNetworkApi.UI.Login
 {
     public class LoginInputModel
     {
