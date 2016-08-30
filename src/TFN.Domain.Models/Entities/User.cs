@@ -9,7 +9,6 @@ namespace TFN.Domain.Models.Entities
 {
     public class User : DomainEntity<Guid>
     {
-        public Guid Id { get; private set; }
         public string Username { get; set; }
         public IReadOnlyCollection<Claim> Claims { get; set; }
         public User(Guid id)
