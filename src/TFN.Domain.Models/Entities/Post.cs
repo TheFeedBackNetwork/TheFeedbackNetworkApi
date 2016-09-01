@@ -20,7 +20,7 @@ namespace TFN.Domain.Models.Entities
             {
                 throw new ArgumentException($"The amount of likes [{nameof(likes)}] can not be a negative value.");
             }
-            if(!trackurl.IsTrackUrl())
+            if(!trackurl.IsUrl())
             {
                 throw new ArgumentException($"The url given [{nameof(trackurl)}] is not a valid track Url.");
             }

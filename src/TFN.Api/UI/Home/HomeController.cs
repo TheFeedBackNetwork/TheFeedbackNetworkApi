@@ -6,7 +6,7 @@ namespace TheFeedBackNetworkApi.UI.Home
     public class HomeController : Controller
     {
         [Route("/")]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             return View();
         }

@@ -8,19 +8,19 @@ namespace TFN.Domain.Models.Extensions
 {
     internal static class StringExtensions
     {
-        public static bool IsTrackUrl(this string url)
+        public static bool IsUrl(this string url, string origin)
         {
-            if(!url.IsUrl())
+            if (!url.IsUrl())
             {
                 return false;
             }
-            if(!url.ToLower().Contains("soundcloud"))
+            if (!url.ToLower().Contains(origin))
             {
                 return false;
             }
-            
 
-            return true;
+
+            return true; 
         }
 
         public static bool IsUrl(this string url)

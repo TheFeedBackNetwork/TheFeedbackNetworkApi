@@ -15,5 +15,10 @@ namespace TFN.Domain.Models.ValueObjects
             SoundCloudUrl = soundCloudUrl;
             WebsiteUrl = websiteUrl;
         }
+
+        public static Biography From(string text, string instagramUrl, string soundCloudUrl, string websiteUrl)
+        {
+            return new Biography(text, instagramUrl, soundCloudUrl, websiteUrl);
+        }
     }
 }
