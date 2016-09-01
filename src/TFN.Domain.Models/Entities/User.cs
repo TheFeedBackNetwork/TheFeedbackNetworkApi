@@ -2,10 +2,11 @@
 using NodaTime;
 using TFN.Domain.Models.ValueObjects;
 using TFN.DomainDrivenArchitecture.Domain.Models;
+using TFN.Domain.Models.Extensions;
 
 namespace TFN.Domain.Models.Entities
 {
-    public class User : DomainEntity<Guid>
+    public class User : DomainEntity<Guid> , IAggregateRoot
     {
         public string Username { get; private set; }
         public string ProfilePictureUrl { get; private set; } 
@@ -15,15 +16,30 @@ namespace TFN.Domain.Models.Entities
         public Biography Biography { get; private set; }
         public Instant Created { get; private set; }
 
-        public User(string username,string profilePictureUrl, string email, string givenName, string familyName, Biography biography, Instant created)
-            : this(Guid.NewGuid(), username,profilePictureUrl, email, givenName, familyName, biography,created)
+        public User(string username,string profilePictureUrl, string email, string givenName, string familyName, Biography biography)
+            : this(Guid.NewGuid(), username,profilePictureUrl, email, givenName, familyName, biography,SystemClock.Instance.Now)
         {
-            
+
         }
         private User(Guid id, string username, string profilePictureUrl, string email, string givenName, string familyName, Biography biography, Instant created)
             : base(id)
         {
-            //TODO Domain Validation
+            if(string.IsNullOrEmpty(username) || string.IsNullOrWhiteSpace(username))
+            {
+                throw new ArgumentNullException($"The username [{nameof(username)}] is either null or empty.");
+            }
+            if(username.Length < 3)
+            {
+                throw new ArgumentException($"The username [{nameof(username)}] is too short.");
+            }
+            if(!email.IsEmail())
+            {
+                throw new ArgumentException($"The email [{nameof(email)}] is not a valid email.");
+            }
+            if(profilePictureUrl.IsUrl())
+            {
+                throw new ArgumentException($"The profile picture url [{nameof(profilePictureUrl)}] is not a valid profile picture Url.");
+            }
 
             Username = username;
             Email = email;

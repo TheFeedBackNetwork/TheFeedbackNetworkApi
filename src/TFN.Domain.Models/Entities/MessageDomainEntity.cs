@@ -14,8 +14,14 @@ namespace TFN.Domain.Models.Entities
         protected MessageDomainEntity(Guid id, Guid userId, string text, Instant created, Instant modified)
             : base(id)
         {
-            //TODO Domain Validation
-
+            if(created < modified)
+            {
+                throw new ArgumentException($"Message created date [{nameof(created)}] cannot exceed the modified date [{nameof(modified)}].");
+            }
+            if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
+            {
+                throw new ArgumentNullException($"The username [{nameof(text)}] is either null or empty.");
+            }
             Text = text;
             UserId = userId;
             Created = created;
