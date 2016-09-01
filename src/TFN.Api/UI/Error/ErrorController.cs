@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
+using TFN.Mvc.Constants;
 
 namespace TheFeedBackNetworkApi.UI.Error
 {
@@ -13,7 +14,7 @@ namespace TheFeedBackNetworkApi.UI.Error
             _interaction = interaction;
         }
 
-        [Route("ui/error", Name ="Error")]
+        [Route(RoutePaths.ErrorUrl, Name ="Error")]
         public async Task<IActionResult> Index(string errorId)
         {
             var vm = new ErrorViewModel();

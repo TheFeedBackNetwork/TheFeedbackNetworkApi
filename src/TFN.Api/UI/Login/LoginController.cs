@@ -8,6 +8,7 @@ using IdentityServer4.Services;
 using IdentityServer4.Services.InMemory;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using TFN.Mvc.Constants;
 
 namespace TheFeedBackNetworkApi.UI.Login
 {
@@ -24,7 +25,7 @@ namespace TheFeedBackNetworkApi.UI.Login
             _interaction = interaction;
         }
 
-        [HttpGet("ui/login", Name = "Login")]
+        [HttpGet(RoutePaths.LoginUrl, Name = "Login")]
         public async Task<IActionResult> Index(string returnUrl)
         {
             var vm = new LoginViewModel();
@@ -42,7 +43,7 @@ namespace TheFeedBackNetworkApi.UI.Login
             return View(vm);
         }
 
-        [HttpPost("ui/login")]
+        [HttpPost(RoutePaths.LoginUrl)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(LoginInputModel model)
         {

@@ -4,6 +4,7 @@ using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using TFN.Mvc.Constants;
 
 namespace TheFeedBackNetworkApi.UI.Consent
 {
@@ -29,7 +30,7 @@ namespace TheFeedBackNetworkApi.UI.Consent
             _localization = localization;
         }
 
-        [HttpGet("ui/consent", Name = "Consent")]
+        [HttpGet(RoutePaths.ConsentUrl, Name = "Consent")]
         public async Task<IActionResult> Index(string returnUrl)
         {
             var vm = await BuildViewModelAsync(returnUrl);
@@ -41,7 +42,7 @@ namespace TheFeedBackNetworkApi.UI.Consent
             return View("Error");
         }
 
-        [HttpPost("ui/consent")]
+        [HttpPost(RoutePaths.ConsentUrl)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(string button, ConsentInputModel model)
         {

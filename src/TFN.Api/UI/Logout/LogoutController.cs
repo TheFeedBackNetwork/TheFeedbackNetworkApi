@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using IdentityServer4;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
+using TFN.Mvc.Constants;
 
 namespace TheFeedBackNetworkApi.UI.Logout
 {
@@ -15,14 +16,14 @@ namespace TheFeedBackNetworkApi.UI.Logout
             _interaction = interaction;
         }
 
-        [HttpGet("ui/logout", Name = "Logout")]
+        [HttpGet(RoutePaths.LogoutUrl, Name = "Logout")]
         public IActionResult Index(string logoutId)
         {
             ViewData["logoutId"] = logoutId;
             return View();
         }
 
-        [HttpPost("ui/logout")]
+        [HttpPost(RoutePaths.LogoutUrl)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Submit(string logoutId)
         {
