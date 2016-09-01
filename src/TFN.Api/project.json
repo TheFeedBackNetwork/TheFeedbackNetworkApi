@@ -33,7 +33,7 @@
   "publishOptions": {
     "include": [
       "wwwroot",
-      "Views",
+      "UI",
       "appsettings.json",
       "web.config"
     ]
