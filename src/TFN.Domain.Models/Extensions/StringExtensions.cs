@@ -3,7 +3,7 @@ using System.Net.Mail;
 
 namespace TFN.Domain.Models.Extensions
 {
-    internal static class StringExtensions
+    public static class StringExtensions
     {
         public static bool IsUrl(this string url)
         {
@@ -12,7 +12,19 @@ namespace TFN.Domain.Models.Extensions
                 return false;
             }
             Uri uriResult;
-            var isValidUrl = Uri.TryCreate(url, UriKind.Absolute, out uriResult) && uriResult.Scheme == Uri.UriSchemeHttp;
+            bool isValidUrl;
+
+            try
+            {
+                isValidUrl = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out uriResult) &&
+                             (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+                
 
             if (!isValidUrl)
             {
