@@ -8,7 +8,7 @@ namespace TFN.UnitTest.Aggregates
 {
     public class UserTests
     {
-        private static Guid UserIdDefault { get { return Guid.Parse("0d7e16cb-372e-4819-add2-79b3095625dc"); } }
+        private static Guid UserIdDefault { get { return new Guid("0d7e16cb-372e-4819-add2-79b3095625dc"); } }
         private static string UsernameDefault { get { return "foomusic"; } }
         private static string ProfilePictureUrlDefault { get { return "tfn.foo.bar/picture/foo.png"; } }
         private static string EmailDefault { get { return "foo@bar.com"; } }
@@ -46,6 +46,8 @@ namespace TFN.UnitTest.Aggregates
         {
             return make_User(UserIdDefault, UsernameDefault, ProfilePictureUrlDefault, EmailDefault, GivenNameDefault, familyName, BiographyDefault, CreatedDefault);
         }
+
+
 
     }
 }

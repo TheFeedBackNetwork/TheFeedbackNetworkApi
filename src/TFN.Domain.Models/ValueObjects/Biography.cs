@@ -10,6 +10,7 @@ namespace TFN.Domain.Models.ValueObjects
 
         private Biography(string text, string instagramUrl, string soundCloudUrl, string websiteUrl)
         {
+            //Domain allows for null & empties here
             Text = text;
             InstagramUrl = instagramUrl;
             SoundCloudUrl = soundCloudUrl;
