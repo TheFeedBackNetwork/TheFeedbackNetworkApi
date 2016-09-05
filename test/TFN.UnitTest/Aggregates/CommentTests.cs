@@ -14,27 +14,28 @@ namespace TFN.UnitTest.Aggregates
         private static IReadOnlyList<Score> ScoresDefault { get { return new List<Score> { Score.From(new Guid("0d7e16cb-372e-4819-add2-79b3095625dc"), SystemClock.Instance.Now) , Score.From(new Guid("e614380f-547c-4422-acb7-5a8020a16553"), SystemClock.Instance.Now) }; } }
         private static Guid UserIdDefault { get { return new Guid("3d17d22b-9b76-4b2a-aecd-5937f018cda6"); } }
         private static string TextDefault { get { return "This foo is my bar"; } }
+        private static bool IsActiveDefault { get { return true; } }
         private static Instant CreatedDefault { get { return SystemClock.Instance.Now; } }
         private static Instant ModifiedDefault { get { return SystemClock.Instance.Now; } }
 
-        public Comment make_Comment(Guid id, Guid userId, Guid postId, string text, IReadOnlyList<Score> scores, Instant created, Instant modified)
+        public Comment make_Comment(Guid id, Guid userId, Guid postId, string text, IReadOnlyList<Score> scores,bool isActive, Instant created, Instant modified)
         {
-            return Comment.Hydrate(id, userId, postId, text, scores, created, modified);
+            return Comment.Hydrate(id, userId, postId, text, scores,isActive, created, modified);
         }
 
         public Comment make_Comment(string text)
         {
-            return make_Comment(CommentIdDefaault, UserIdDefault, PostIdDefault, text, ScoresDefault, CreatedDefault, ModifiedDefault);
+            return make_Comment(CommentIdDefaault, UserIdDefault, PostIdDefault, text, ScoresDefault,IsActiveDefault, CreatedDefault, ModifiedDefault);
         }
 
         public Comment make_Comment(IReadOnlyList<Score> scores)
         {
-            return make_Comment(CommentIdDefaault, UserIdDefault, PostIdDefault, TextDefault, scores, CreatedDefault, ModifiedDefault);
+            return make_Comment(CommentIdDefaault, UserIdDefault, PostIdDefault, TextDefault, scores, IsActiveDefault, CreatedDefault, ModifiedDefault);
         }
 
         public Comment make_Comment(Instant created)
         {
-            return make_Comment(CommentIdDefaault, UserIdDefault, PostIdDefault, TextDefault, ScoresDefault, created, ModifiedDefault);
+            return make_Comment(CommentIdDefaault, UserIdDefault, PostIdDefault, TextDefault, ScoresDefault, IsActiveDefault, created, ModifiedDefault);
         }
         //test push
     }

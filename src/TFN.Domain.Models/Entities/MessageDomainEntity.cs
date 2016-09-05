@@ -7,11 +7,12 @@ namespace TFN.Domain.Models.Entities
     public abstract class MessageDomainEntity : DomainEntity<Guid>
     {
         public Guid UserId { get; private set; }
-        public string Text { get; private set; }      
+        public string Text { get; private set; }
+        public bool IsActive { get; private set; }
         public Instant Created { get; private set; }
         public Instant Modified { get; private set; }
 
-        protected MessageDomainEntity(Guid id, Guid userId, string text, Instant created, Instant modified)
+        protected MessageDomainEntity(Guid id, Guid userId, string text,bool isActive, Instant created, Instant modified)
             : base(id)
         {
             if(created < modified)
@@ -24,6 +25,7 @@ namespace TFN.Domain.Models.Entities
             }
             Text = text;
             UserId = userId;
+            IsActive = isActive;
             Created = created;
             Modified = modified;
         }
