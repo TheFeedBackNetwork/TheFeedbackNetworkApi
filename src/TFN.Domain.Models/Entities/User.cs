@@ -32,7 +32,11 @@ namespace TFN.Domain.Models.Entities
             {
                 throw new ArgumentException($"The username [{nameof(username)}] is too short.");
             }
-            if(!email.IsEmail())
+            if (username.Length > 16)
+            {
+                throw new ArgumentException($"The username [{nameof(username)}] is too long.");
+            }
+            if (!email.IsEmail())
             {
                 throw new ArgumentException($"The email [{nameof(email)}] is not a valid email.");
             }

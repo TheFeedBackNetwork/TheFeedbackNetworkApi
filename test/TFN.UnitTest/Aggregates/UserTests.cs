@@ -3,6 +3,7 @@ using System;
 using TFN.Domain.Models.Entities;
 using TFN.Domain.Models.ValueObjects;
 using Xunit;
+using FluentAssertions;
 
 namespace TFN.UnitTest.Aggregates
 {
@@ -47,7 +48,45 @@ namespace TFN.UnitTest.Aggregates
             return make_User(UserIdDefault, UsernameDefault, ProfilePictureUrlDefault, EmailDefault, GivenNameDefault, familyName, BiographyDefault, CreatedDefault);
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("    ")]
+        public void Constructor_InvalidUserName_ArgumentNullExceptionThrown(string username)
+        {
 
+            this.Invoking(x => x.make_UserByUsername(username))
+                .ShouldThrow<ArgumentNullException>();
+        }
+
+        [Theory]
+        [InlineData("foobarfoobarfoobar")]
+        [InlineData("fo")]
+        public void Constructor_InvalidUserName_ArgumentExceptionThrown(string username)
+        {
+            this.Invoking(x => x.make_UserByUsername(username))
+                .ShouldThrow<ArgumentException>();
+        }
+
+        [Theory]
+        [InlineData("@foo")]
+        [InlineData("bar@")]
+        [InlineData("@bar.com")]
+        [InlineData(" @ ")]
+        public void Constructor_InvalidEmail_ArgumentExceptionThrown(string email)
+        {
+            this.Invoking(x => x.make_UserByEmail(email))
+                .ShouldThrow<ArgumentException>();
+        }
+
+        [Theory]
+        [InlineData("https://bar.com/foo.png")]
+        [InlineData("http://foo.bar.com/foobar.png")]
+        public void Constructor_InvalidProfilePictureUrl_ArgumentExceptionThrown(string profilePictureUrl)
+        {
+            this.Invoking(x => x.make_UserByProfilePictureUrl(profilePictureUrl))
+                .ShouldThrow<ArgumentException>();
+        }
 
     }
 }

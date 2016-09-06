@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentAssertions;
+﻿using FluentAssertions;
 using TFN.Domain.Models.Extensions;
 using Xunit;
 
@@ -26,7 +22,7 @@ namespace TFN.UnitTest.Extensions
         [InlineData("http://www.foo.com")]
         [InlineData("http://foo.ac.za")]
         [InlineData("https://foo.ac.za")]
-        public void Url_CheckInvalidUrl_ReturnsTrue(string testValue)
+        public void Url_CheckValidUrl_ReturnsTrue(string testValue)
         {
             testValue.IsUrl().Should().Be(true);
         }
