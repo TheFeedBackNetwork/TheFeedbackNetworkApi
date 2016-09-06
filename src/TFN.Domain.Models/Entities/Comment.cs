@@ -17,7 +17,7 @@ namespace TFN.Domain.Models.Entities
             Scores = scores;
         }
 
-        public Comment(Guid userId,Guid postId, string text, IReadOnlyList<Score> scores, Instant created, Instant modified)
+        public Comment(Guid userId,Guid postId, string text, IReadOnlyList<Score> scores)
             :this(Guid.NewGuid(), userId,postId, text,scores,true, SystemClock.Instance.Now, SystemClock.Instance.Now)
         {
             

@@ -15,7 +15,7 @@ namespace TFN.Domain.Models.Entities
         protected MessageDomainEntity(Guid id, Guid userId, string text,bool isActive, Instant created, Instant modified)
             : base(id)
         {
-            if(created < modified)
+            if(created > modified)
             {
                 throw new ArgumentException($"Message created date [{nameof(created)}] cannot exceed the modified date [{nameof(modified)}].");
             }

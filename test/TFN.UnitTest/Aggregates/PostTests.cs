@@ -45,5 +45,35 @@ namespace TFN.UnitTest.Aggregates
         {
             return Post.Hydrate(PostIdDefault, UserIdDefault, TrackUrlDefault, TextDefault, LikesDefault, GenreDefault, TagsDefault, IsActiveDefault, created, ModifiedDefault);
         }
+
+        [Theory]
+        [InlineData(10020)]
+        [InlineData(1)]
+        public void Constructor_InvalidCreated_ArgumentExceptionThrown(int extraSeconds)
+        {
+            var instant = SystemClock.Instance.Now.Plus(Duration.FromSeconds(extraSeconds));
+
+            this.Invoking(x => x.make_Post(instant))
+                .ShouldThrow<ArgumentException>();
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData("   ")]
+        public void Constructor_InvalidText_ArgumentNullExceptionThrown(string text)
+        {
+            this.Invoking(x => x.make_PostByText(text))
+                .ShouldThrow<ArgumentNullException>();
+        }
+
+        [Theory]
+        [InlineData(-1)]
+        [InlineData(-5000)]
+        public void Constructor_InvalidLikes_ArgumentExceptionThrown(int likes)
+        {
+            this.Invoking(x => x.make_Post(likes))
+                .ShouldThrow<ArgumentException>();
+        }
     }
 }

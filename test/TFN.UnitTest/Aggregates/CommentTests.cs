@@ -38,6 +38,26 @@ namespace TFN.UnitTest.Aggregates
         {
             return make_Comment(CommentIdDefaault, UserIdDefault, PostIdDefault, TextDefault, ScoresDefault, IsActiveDefault, created, ModifiedDefault);
         }
-        //test push
+
+        [Theory]
+        [InlineData(1000)]
+        [InlineData(1)]
+        public void Constructor_InvalidCreated_ArgumentExceptionThrown(int extraSeconds)
+        {
+            var instant = SystemClock.Instance.Now.Plus(Duration.FromSeconds(extraSeconds));
+
+            this.Invoking(x => x.make_Comment(instant))
+                .ShouldThrow<ArgumentException>();
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        [InlineData("   ")]
+        public void Constructor_InvalidText_ArgumentNullExceptionThrown(string text)
+        {
+            this.Invoking(x => x.make_Comment(text))
+                .ShouldThrow<ArgumentNullException>();
+        }
     }
 }
