@@ -8,8 +8,8 @@ namespace TFN.DomainDrivenArchitecture.Domain.Repositories
        where TDomainEntity : DomainEntity<TKey>, IAggregateRoot
     {
 
-        Task AddAsync(TDomainEntity item);
+        Task AddAsync(TDomainEntity entity);
 
-        Task AddBulkAsync(IEnumerable<TDomainEntity> items);
+        Task AddBulkAsync(IEnumerable<TDomainEntity> entities);
     }
 }

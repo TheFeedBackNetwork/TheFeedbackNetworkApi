@@ -6,7 +6,7 @@ using TFN.DomainDrivenArchitecture.Domain.Repositories;
 
 namespace TFN.Domain.Interfaces.Repositories
 {
-    public interface IPostRepository : IRepository<Post,Guid>, IAddableRepository<Post,Guid> , IUpdateableRepository<Post,Guid>, IDeleteableRepository<Post,Guid>
+    public interface IPostRepository : IAddableRepository<Post,Guid> , IUpdateableRepository<Post,Guid>, IDeleteableRepository<Post,Guid>
     {
         
     }
