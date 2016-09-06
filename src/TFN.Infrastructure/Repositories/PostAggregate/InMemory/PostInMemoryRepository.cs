@@ -24,7 +24,7 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
             throw new NotImplementedException();
         }
 
-        public Post FindAsync(Guid id)
+        public Post GetAsync(Guid id)
         {
             throw new NotImplementedException();
         }

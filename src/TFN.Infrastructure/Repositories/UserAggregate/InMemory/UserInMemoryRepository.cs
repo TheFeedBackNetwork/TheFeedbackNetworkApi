@@ -24,12 +24,12 @@ namespace TFN.Infrastructure.Repositories.UserAggregate.InMemory
             throw new NotImplementedException();
         }
 
-        public User FindAsync(Guid id)
+        public User GetAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<User> FindAsync(string username)
+        public Task<User> GetAsync(string username)
         {
             throw new NotImplementedException();
         }

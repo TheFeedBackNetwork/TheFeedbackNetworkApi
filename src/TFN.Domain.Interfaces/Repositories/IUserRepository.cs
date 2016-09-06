@@ -7,6 +7,6 @@ namespace TFN.Domain.Interfaces.Repositories
 {
     public interface IUserRepository : IAddableRepository<User, Guid>, IDeleteableRepository<User, Guid>, IUpdateableRepository<User,Guid>
     {
-        Task<User> FindAsync(string username);
+        Task<User> GetAsync(string username);
     }
 }
