@@ -9,11 +9,11 @@ namespace TheFeedBackNetworkApi.UI.Logout
 {
     public class LogoutController : Controller
     {
-        private readonly IUserInteractionService _interaction;
+        private readonly IUserInteractionService Interaction;
 
         public LogoutController(IUserInteractionService interaction)
         {
-            _interaction = interaction;
+            Interaction = interaction;
         }
 
         [HttpGet(RoutePaths.LogoutUrl, Name = "Logout")]
@@ -32,7 +32,7 @@ namespace TheFeedBackNetworkApi.UI.Logout
             // set this so UI rendering sees an anonymous user
             HttpContext.User = new ClaimsPrincipal(new ClaimsIdentity());
 
-            var logout = await _interaction.GetLogoutContextAsync(logoutId);
+            var logout = await Interaction.GetLogoutContextAsync(logoutId);
 
             var vm = new LoggedOutViewModel()
             {

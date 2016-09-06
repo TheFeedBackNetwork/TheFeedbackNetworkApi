@@ -14,15 +14,15 @@ namespace TheFeedBackNetworkApi.UI.Login
 {
     public class LoginController : Controller
     {
-        private readonly LoginService _loginService;
-        private readonly IUserInteractionService _interaction;
+        private readonly LoginService LoginService;
+        private readonly IUserInteractionService Interaction;
 
         public LoginController(
             LoginService loginService,
             IUserInteractionService interaction)
         {
-            _loginService = loginService;
-            _interaction = interaction;
+            LoginService = loginService;
+            Interaction = interaction;
         }
 
         [HttpGet(RoutePaths.LoginUrl, Name = "Login")]
@@ -32,7 +32,7 @@ namespace TheFeedBackNetworkApi.UI.Login
 
             if (returnUrl != null)
             {
-                var context = await _interaction.GetLoginContextAsync();
+                var context = await Interaction.GetLoginContextAsync();
                 if (context != null)
                 {
                     vm.Username = context.LoginHint;
@@ -49,12 +49,12 @@ namespace TheFeedBackNetworkApi.UI.Login
         {
             if (ModelState.IsValid)
             {
-                if (_loginService.ValidateCredentials(model.Username, model.Password))
+                if (LoginService.ValidateCredentials(model.Username, model.Password))
                 {
-                    var user = _loginService.FindByUsername(model.Username);
+                    var user = LoginService.FindByUsername(model.Username);
                     await IssueCookie(user, "idsvr", "password");
 
-                    if (model.ReturnUrl != null && _interaction.IsValidReturnUrl(model.ReturnUrl))
+                    if (model.ReturnUrl != null && Interaction.IsValidReturnUrl(model.ReturnUrl))
                     {
                         return Redirect(model.ReturnUrl);
                     }
@@ -124,10 +124,10 @@ namespace TheFeedBackNetworkApi.UI.Login
             var provider = userIdClaim.Issuer;
             var userId = userIdClaim.Value;
 
-            var user = _loginService.FindByExternalProvider(provider, userId);
+            var user = LoginService.FindByExternalProvider(provider, userId);
             if (user == null)
             {
-                user = _loginService.AutoProvisionUser(provider, userId, claims);
+                user = LoginService.AutoProvisionUser(provider, userId, claims);
             }
 
             await IssueCookie(user, provider, "external");

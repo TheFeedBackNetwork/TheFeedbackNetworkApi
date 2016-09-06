@@ -11,32 +11,37 @@ namespace TFN.Infrastructure.Repositories.UserAggregate.InMemory
     {
         public Task AddAsync(User entity)
         {
-            throw new NotImplementedException();
+            InMemoryUsers.Users.Add(entity);
+            return Task.FromResult(0);
         }
 
         public Task AddBulkAsync(IEnumerable<User> entities)
         {
-            throw new NotImplementedException();
+            InMemoryUsers.Users.AddRange(entities);
+            return Task.FromResult(0);
         }
 
         public Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            InMemoryUsers.Users.RemoveAll(x => x.Id == id);
+            return Task.FromResult(0);
         }
 
-        public User GetAsync(Guid id)
+        public Task<User> GetAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(InMemoryUsers.Users.SingleOrDefault(x => x.Id == id));
         }
 
         public Task<User> GetAsync(string username)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(InMemoryUsers.Users.SingleOrDefault(x => x.Username == username));
         }
 
         public Task UpdateAsync(User entity)
         {
-            throw new NotImplementedException();
+            DeleteAsync(entity.Id);
+            AddAsync(entity);
+            return Task.FromResult(0);
         }
     }
 }

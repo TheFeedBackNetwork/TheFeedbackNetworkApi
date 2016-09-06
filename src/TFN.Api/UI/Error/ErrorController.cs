@@ -7,11 +7,11 @@ namespace TheFeedBackNetworkApi.UI.Error
 {
     public class ErrorController : Controller
     {
-        private readonly IUserInteractionService _interaction;
+        private readonly IUserInteractionService Interaction;
 
         public ErrorController(IUserInteractionService interaction)
         {
-            _interaction = interaction;
+            Interaction = interaction;
         }
 
         [Route(RoutePaths.ErrorUrl, Name ="Error")]
@@ -21,7 +21,7 @@ namespace TheFeedBackNetworkApi.UI.Error
 
             if (errorId != null)
             {
-                var message = await _interaction.GetErrorContextAsync(errorId);
+                var message = await Interaction.GetErrorContextAsync(errorId);
                 if (message != null)
                 {
                     vm.Error = message;

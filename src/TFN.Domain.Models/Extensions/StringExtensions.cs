@@ -11,11 +11,11 @@ namespace TFN.Domain.Models.Extensions
             {
                 return false;
             }
-            Uri uriResult;
             bool isValidUrl;
 
             try
             {
+                Uri uriResult;
                 isValidUrl = Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out uriResult) &&
                              (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
             }

@@ -11,27 +11,32 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
     {
         public Task AddAsync(Post entity)
         {
-            throw new NotImplementedException();
+            InMemoryPosts.Posts.Add(entity);
+            return Task.FromResult(0);
         }
 
         public Task AddBulkAsync(IEnumerable<Post> entities)
         {
-            throw new NotImplementedException();
+            InMemoryPosts.Posts.AddRange(entities);
+            return Task.FromResult(0);
         }
 
         public Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            InMemoryPosts.Posts.RemoveAll(x => x.Id == id);
+            return Task.FromResult(0);
         }
 
-        public Post GetAsync(Guid id)
+        public Task<Post> GetAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(InMemoryPosts.Posts.SingleOrDefault(x => x.Id == id));
         }
 
         public Task UpdateAsync(Post entity)
         {
-            throw new NotImplementedException();
+            DeleteAsync(entity.Id);
+            AddAsync(entity);
+            return Task.FromResult(0);
         }
     }
 }
