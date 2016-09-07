@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using TFN.Mvc.Constants;
 
 namespace TFN.Api
 {
@@ -41,6 +43,28 @@ namespace TFN.Api
                     options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
 
                 });
+
+            var builder = services.AddIdentityServer(options =>
+            {
+                options.SiteName = "WIMT Identity";
+
+                options.UserInteractionOptions.LoginUrl = "/" + RoutePaths.SignInUrl;
+                options.UserInteractionOptions.LogoutUrl = "/" + RoutePaths.SignOutUrl;
+                options.UserInteractionOptions.ConsentUrl = "/" + RoutePaths.ConsentUrl;
+                options.UserInteractionOptions.ErrorUrl = "/" + RoutePaths.ErrorUrl;
+                options.SiteName = "TFN STS";
+            }).SetTemporarySigningCredential();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", corsBuilder =>
+                {
+                    corsBuilder.AllowAnyHeader();
+                    corsBuilder.AllowAnyMethod();
+                    corsBuilder.AllowAnyOrigin();
+                    corsBuilder.AllowCredentials();
+                });
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -50,7 +74,7 @@ namespace TFN.Api
 
             app.UseApplicationInsightsRequestTelemetry();
 
-
+            app.UseCors("CorsPolicy");
             app.UseDeveloperExceptionPage();
             app.UseIdentityServer();
             app.UseStaticFiles();
