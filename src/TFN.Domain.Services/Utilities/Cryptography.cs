@@ -22,6 +22,10 @@ namespace TFN.Domain.Services.Utilities
 
         public static string CreateUrlSafeUniqueId(int length = 16)
         {
+            if (length < 1)
+            {
+                throw new ArgumentException($"The value of [{length}] must be positive.");
+            }
             var bytes = new byte[length];
             new RNGCryptoServiceProvider().GetBytes(bytes);
             var returnValue = Convert.ToBase64String(bytes)
