@@ -5,10 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using TheFeedBackNetworkApi.UI;
-using TheFeedBackNetworkApi.UI.Login;
 
-namespace TheFeedBackNetworkApi
+namespace TFN.Api
 {
     public class Startup
     {
@@ -35,21 +33,14 @@ namespace TheFeedBackNetworkApi
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddMvc()
-            .AddJsonOptions(options =>
-            {
-                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-                options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Include;
-                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                    options.SerializerSettings.DefaultValueHandling = DefaultValueHandling.Include;
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
 
-            })
-            .AddRazorOptions(razor =>
-            {
-                razor.ViewLocationExpanders.Add(new CustomViewLocationExpander());
-            });
-
-            //TODO Deprecate this in favour of UserService
-            services.AddTransient<LoginService>();
+                });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -59,9 +50,16 @@ namespace TheFeedBackNetworkApi
 
             app.UseApplicationInsightsRequestTelemetry();
 
+
+            app.UseDeveloperExceptionPage();
+            app.UseIdentityServer();
+            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
+
             app.UseApplicationInsightsExceptionTelemetry();
 
-            app.UseMvc();
+            var logger = loggerFactory.CreateLogger<Startup>();
+            logger.LogInformation("The Feedback Network API application configuration complete.");
         }
     }
 }
