@@ -21,7 +21,7 @@ namespace TFN.Domain.Services
             {
                 count = GetIterationsFromYear(GetCurrentYear());
             }
-            var result = Cryptography.HashPassword(password, count);
+            var result = CryptographyUtility.HashPassword(password, count);
             return EncodeIterations(count) + PasswordHashingIterationCountSeparator + result;
         }
 
@@ -65,9 +65,9 @@ namespace TFN.Domain.Services
 
                 hashedPassword = parts[1];
 
-                return Cryptography.VerifyHashedPassword(hashedPassword, password, count);
+                return CryptographyUtility.VerifyHashedPassword(hashedPassword, password, count);
             }
-            return Cryptography.VerifyHashedPassword(hashedPassword, password);
+            return CryptographyUtility.VerifyHashedPassword(hashedPassword, password);
         }
 
         // from OWASP : https://www.owasp.org/index.php/Password_Storage_Cheat_Sheet

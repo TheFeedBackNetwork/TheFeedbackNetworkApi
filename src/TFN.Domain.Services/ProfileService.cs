@@ -7,6 +7,7 @@ using IdentityServer4.Extensions;
 using IdentityServer4.Models;
 using IdentityServer4.Services;
 using TFN.Domain.Interfaces.Repositories;
+using TFN.Domain.Services.Utilities;
 
 namespace TFN.Domain.Services
 {
@@ -30,15 +31,7 @@ namespace TFN.Domain.Services
 
             var user = await UserRepository.GetAsync(subjectId);
 
-            var claims = new List<Claim>
-            {
-                new Claim(JwtClaimTypes.Subject, user.Id.ToString()),
-                new Claim(JwtClaimTypes.GivenName, user.GivenName),
-                new Claim(JwtClaimTypes.FamilyName, user.FamilyName),
-                new Claim(JwtClaimTypes.PreferredUserName, user.Username),
-                new Claim(JwtClaimTypes.Email, user.Email),
-                new Claim(JwtClaimTypes.Picture, user.ProfilePictureUrl),
-            };
+            var claims = ClaimsUtility.GetClaims(user);
 
             context.IssuedClaims = claims;
         }

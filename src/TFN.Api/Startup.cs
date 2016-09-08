@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using TFN.Domain.Resolution;
+using TFN.Resolution;
 using TFN.Mvc.Constants;
 
 namespace TFN.Api
@@ -49,14 +49,15 @@ namespace TFN.Api
 
             var builder = services.AddIdentityServer(options =>
             {
-                options.SiteName = "WIMT Identity";
 
                 options.UserInteractionOptions.LoginUrl = "/" + RoutePaths.SignInUrl;
                 options.UserInteractionOptions.LogoutUrl = "/" + RoutePaths.SignOutUrl;
                 options.UserInteractionOptions.ConsentUrl = "/" + RoutePaths.ConsentUrl;
                 options.UserInteractionOptions.ErrorUrl = "/" + RoutePaths.ErrorUrl;
                 options.SiteName = "TFN STS";
-            }).SetTemporarySigningCredential();
+            })
+                .AddInMemoryStores()
+                .SetTemporarySigningCredential();
 
             services.AddCors(options =>
             {

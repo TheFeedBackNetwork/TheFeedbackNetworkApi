@@ -1,7 +1,7 @@
 ﻿{
   "dependencies": {
     "TFN.Mvc": "1.0.0-*",
-    "TFN.Domain.Resolution": "1.0.0-*",
+    "TFN.Resolution": "1.0.0-*",
     "Microsoft.ApplicationInsights.AspNetCore": "1.0.0",
     "Microsoft.AspNetCore.Authorization": "1.0.0",
     "Microsoft.AspNetCore.Cors": "1.0.0",
