@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using TFN.Domain.Resolution;
 using TFN.Mvc.Constants;
 
 namespace TFN.Api
@@ -32,6 +33,8 @@ namespace TFN.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            Resolver.RegisterTypes(services);
+
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddMvc()

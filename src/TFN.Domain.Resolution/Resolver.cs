@@ -11,9 +11,9 @@ using TFN.Infrastructure.Repositories.UserAggregate.InMemory;
 
 namespace TFN.Domain.Resolution
 {
-    public class Resolver
+    public static class Resolver
     {
-        public void RegisterTypes(IServiceCollection services)
+        public static void RegisterTypes(IServiceCollection services)
         {
             services.AddTransient<IPasswordService, PasswordService>();
             services.AddTransient<IUserRepository, UserInMemoryRepository>();
@@ -23,7 +23,7 @@ namespace TFN.Domain.Resolution
             services.AddTransient<IScopeStore, ScopeInMemoryRepository>();
         }
 
-        public void RegisterAuthorizationPolicies(IServiceCollection services)
+        public static void RegisterAuthorizationPolicies(IServiceCollection services)
         {
         }
     }
