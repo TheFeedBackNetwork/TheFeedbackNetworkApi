@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -14,7 +13,6 @@ namespace TFN.Api
     public class Startup
     {
         private IConfigurationRoot Configuration { get; }
-        private IServiceCollection Services { get; set; }
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -47,7 +45,7 @@ namespace TFN.Api
 
                 });
 
-            var builder = services.AddIdentityServer(options =>
+            services.AddIdentityServer(options =>
             {
 
                 options.UserInteractionOptions.LoginUrl = "/" + RoutePaths.SignInUrl;
@@ -56,8 +54,8 @@ namespace TFN.Api
                 options.UserInteractionOptions.ErrorUrl = "/" + RoutePaths.ErrorUrl;
                 options.SiteName = "TFN STS";
             })
-                .AddInMemoryStores()
-                .SetTemporarySigningCredential();
+            .AddInMemoryStores()
+            .SetTemporarySigningCredential();
 
             services.AddCors(options =>
             {
