@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace TFN.Domain.Interfaces.Services
+﻿namespace TFN.Domain.Interfaces.Services
 {
     public interface IPasswordService
     {

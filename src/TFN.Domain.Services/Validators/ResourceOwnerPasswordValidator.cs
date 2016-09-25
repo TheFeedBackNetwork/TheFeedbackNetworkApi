@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using IdentityServer4.Validation;
 using TFN.Domain.Interfaces.Services;
 using TFN.Domain.Services.Utilities;

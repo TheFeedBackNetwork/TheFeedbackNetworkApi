@@ -1,5 +1,4 @@
-﻿
-namespace TFN.Mvc.Constants
+﻿namespace TFN.Mvc.Constants
 {
     public class RoutePaths
     {

@@ -11,6 +11,6 @@ namespace TFN.Api.Models.InputModels
         public string TrackUrl { get; set; }
         public IReadOnlyList<string> Tags { get; set; }
         [Required]
-        public GenreInputEnum Genre { get; set; }
+        public GenreEnumModel Genre { get; set; }
     }
 }

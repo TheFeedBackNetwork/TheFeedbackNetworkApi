@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace TFN.Api.Models
+﻿namespace TFN.Api.Models
 {
-    public enum GenreInputEnum
+    public enum GenreEnumModel
     {
         House = 0,
         Dubstep = 1,
