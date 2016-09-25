@@ -17,10 +17,11 @@ namespace TFN.UnitTest.Aggregates
         private static string FamilyNameDefault { get { return "bar"; } }
         public static Biography BiographyDefault { get { return Biography.From("FooBar", "www.instagram.com/foo", "www.soundcloud.com/bar", "www.foomusic.net"); } }
         public static Instant CreatedDefault { get { return SystemClock.Instance.Now; } }
+        public static bool IsActiveDefault { get { return true;} }
 
         public User make_User(Guid id, string username,string profilePictureUrl, string email, string givenName, string familyName, Biography biography, Instant created)
         {
-            return User.Hydrate(id, username, profilePictureUrl, email, givenName, familyName, biography, created);
+            return User.Hydrate(id, username, profilePictureUrl, email, givenName, familyName, biography, created, IsActiveDefault);
         }
 
         public User make_UserByUsername(string username)

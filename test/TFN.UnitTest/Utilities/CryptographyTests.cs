@@ -15,7 +15,7 @@ namespace TFN.UnitTest.Utilities
         [Trait("Category", Category)]
         public void UrlSafeId_CreateUrlSafeUniqueId_ArgumentExceptionThrown(int urllength)
         {
-            Action act = () => Cryptography.CreateUrlSafeUniqueId(urllength);
+            Action act = () => CryptographyUtility.CreateUrlSafeUniqueId(urllength);
 
             act.ShouldThrow<ArgumentException>();
         }

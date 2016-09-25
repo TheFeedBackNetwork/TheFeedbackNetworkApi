@@ -6,7 +6,7 @@
   "dependencies": {
     "TFN.Domain.Interfaces": "1.0.0-*",
     "TFN.Domain.Models": "1.0.0-*",
-    "IdentityServer4": "1.0.0-beta5",
+    "IdentityServer4": "1.0.0-rc1-update1",
     "Microsoft.Extensions.Options": "1.0.0"
   },
 
