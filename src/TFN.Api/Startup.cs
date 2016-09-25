@@ -48,6 +48,7 @@ namespace TheFeedBackNetworkApi
                 razor.ViewLocationExpanders.Add(new CustomViewLocationExpander());
             });
 
+            //TODO Deprecate this in favour of UserService
             services.AddTransient<LoginService>();
         }
 

@@ -4,16 +4,17 @@ using IdentityServer4.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using TFN.Mvc.Constants;
 
 namespace TheFeedBackNetworkApi.UI.Consent
 {
     public class ConsentController : Controller
     {
-        private readonly ILogger<ConsentController> _logger;
-        private readonly IClientStore _clientStore;
-        private readonly IUserInteractionService _interaction;
-        private readonly IScopeStore _scopeStore;
-        private readonly ILocalizationService _localization;
+        private readonly ILogger<ConsentController> Logger;
+        private readonly IClientStore ClientStore;
+        private readonly IUserInteractionService Interaction;
+        private readonly IScopeStore ScopeStore;
+        private readonly ILocalizationService Localization;
 
         public ConsentController(
             ILogger<ConsentController> logger,
@@ -22,14 +23,14 @@ namespace TheFeedBackNetworkApi.UI.Consent
             IScopeStore scopeStore,
             ILocalizationService localization)
         {
-            _logger = logger;
-            _interaction = interaction;
-            _clientStore = clientStore;
-            _scopeStore = scopeStore;
-            _localization = localization;
+            Logger = logger;
+            Interaction = interaction;
+            ClientStore = clientStore;
+            ScopeStore = scopeStore;
+            Localization = localization;
         }
 
-        [HttpGet("ui/consent", Name = "Consent")]
+        [HttpGet(RoutePaths.ConsentUrl, Name = "Consent")]
         public async Task<IActionResult> Index(string returnUrl)
         {
             var vm = await BuildViewModelAsync(returnUrl);
@@ -41,11 +42,11 @@ namespace TheFeedBackNetworkApi.UI.Consent
             return View("Error");
         }
 
-        [HttpPost("ui/consent")]
+        [HttpPost(RoutePaths.ConsentUrl)]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(string button, ConsentInputModel model)
         {
-            var request = await _interaction.GetConsentContextAsync(model.ReturnUrl);
+            var request = await Interaction.GetConsentContextAsync(model.ReturnUrl);
             ConsentResponse response = null;
 
             if (button == "no")
@@ -74,7 +75,7 @@ namespace TheFeedBackNetworkApi.UI.Consent
 
             if (response != null)
             {
-                await _interaction.GrantConsentAsync(request, response);
+                await Interaction.GrantConsentAsync(request, response);
                 return Redirect(model.ReturnUrl);
             }
 
@@ -91,7 +92,7 @@ namespace TheFeedBackNetworkApi.UI.Consent
         //{
         //    if (id != null)
         //    {
-        //        var request = await _interaction.GetRequestAsync(id);
+        //        var request = await Interaction.GetRequestAsync(id);
         //    }
 
         //    return View("Error");
@@ -101,35 +102,35 @@ namespace TheFeedBackNetworkApi.UI.Consent
         {
             if (returnUrl != null)
             {
-                var request = await _interaction.GetConsentContextAsync(returnUrl);
+                var request = await Interaction.GetConsentContextAsync(returnUrl);
                 if (request != null)
                 {
-                    var client = await _clientStore.FindClientByIdAsync(request.ClientId);
+                    var client = await ClientStore.FindClientByIdAsync(request.ClientId);
                     if (client != null)
                     {
-                        var scopes = await _scopeStore.FindScopesAsync(request.ScopesRequested);
+                        var scopes = await ScopeStore.FindScopesAsync(request.ScopesRequested);
                         if (scopes != null && scopes.Any())
                         {
-                            return new ConsentViewModel(model, returnUrl, request, client, scopes, _localization);
+                            return new ConsentViewModel(model, returnUrl, request, client, scopes, Localization);
                         }
                         else
                         {
-                            _logger.LogError("No scopes matching: {0}", request.ScopesRequested.Aggregate((x, y) => x + ", " + y));
+                            Logger.LogError("No scopes matching: {0}", request.ScopesRequested.Aggregate((x, y) => x + ", " + y));
                         }
                     }
                     else
                     {
-                        _logger.LogError("Invalid client id: {0}", request.ClientId);
+                        Logger.LogError("Invalid client id: {0}", request.ClientId);
                     }
                 }
                 else
                 {
-                    _logger.LogError("No consent request matching id: {0}", returnUrl);
+                    Logger.LogError("No consent request matching id: {0}", returnUrl);
                 }
             }
             else
             {
-                _logger.LogError("No returnUrl passed");
+                Logger.LogError("No returnUrl passed");
             }
 
             return null;

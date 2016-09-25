@@ -1,6 +1,7 @@
 ﻿{
   "dependencies": {
     "Microsoft.ApplicationInsights.AspNetCore": "1.0.0",
+    "TFN.Mvc": "1.0.0-*",
     "TFN.Domain.Resolution": "1.0.0-*",
     "Microsoft.AspNetCore.Mvc": "1.0.0",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
