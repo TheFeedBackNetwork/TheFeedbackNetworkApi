@@ -9,6 +9,8 @@ using TFN.Domain.Interfaces.Repositories;
 
 namespace TFN.Api.Controllers
 {
+    #pragma warning disable 1998
+    //TODO Remove when we async
     [Route("api/posts")]
     public class PostController : AppController
     {
