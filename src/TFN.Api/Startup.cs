@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using TFN.Resolution;
 using TFN.Mvc.Constants;
-using TFN.Mvc.Extensions;
 
 namespace TFN.Api
 {
@@ -33,6 +32,7 @@ namespace TFN.Api
         public void ConfigureServices(IServiceCollection services)
         {
             Resolver.RegisterTypes(services);
+            Resolver.RegisterAuthorizationPolicies(services);
 
             services.AddApplicationInsightsTelemetry(Configuration);
 
@@ -58,13 +58,7 @@ namespace TFN.Api
             .AddInMemoryStores()
             .SetTemporarySigningCredential();
 
-            services.AddAuthorization(options =>
-            {
-                options.AddScopePolicy("post.read")
-                    .AddScopePolicy("post.write")
-                    .AddScopePolicy("posts.edit")
-                    .AddScopePolicy("posts.delete");
-            });
+            
 
             services.AddCors(options =>
             {

@@ -1,4 +1,4 @@
-﻿{
+{
   "description": "TFN.Resolution Class Library",
   "authors": [ "Lutando Ngqakaza" ],
   "version": "1.0.0-*",
@@ -6,7 +6,9 @@
   "dependencies": {
     "TFN.Domain.Interfaces": "1.0.0-*",
     "TFN.Infrastructure": "1.0.0-*",
-    "IdentityServer4": "1.0.0-rc1-update1"
+    "TFN.Mvc": "1.0.0-*",
+    "IdentityServer4": "1.0.0-rc1-update1",
+    "Microsoft.AspNetCore.Mvc.Core": "1.0.1"
   },
 
   "frameworks": {

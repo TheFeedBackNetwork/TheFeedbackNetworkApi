@@ -8,6 +8,7 @@ using TFN.Infrastructure.Repositories.ClientAggregate.InMemory;
 using TFN.Infrastructure.Repositories.PostAggregate.InMemory;
 using TFN.Infrastructure.Repositories.ScopeAggregate.InMemory;
 using TFN.Infrastructure.Repositories.UserAggregate.InMemory;
+using TFN.Mvc.Extensions;
 
 namespace TFN.Resolution
 {
@@ -27,6 +28,13 @@ namespace TFN.Resolution
 
         public static void RegisterAuthorizationPolicies(IServiceCollection services)
         {
+            services.AddAuthorization(options =>
+            {
+                options.AddScopePolicy("post.read")
+                    .AddScopePolicy("post.write")
+                    .AddScopePolicy("posts.edit")
+                    .AddScopePolicy("posts.delete");
+            });
         }
     }
 }
