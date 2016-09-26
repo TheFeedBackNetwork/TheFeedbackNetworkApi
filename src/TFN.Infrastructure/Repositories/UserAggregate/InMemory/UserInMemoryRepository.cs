@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TFN.Domain.Interfaces.Repositories;
@@ -21,12 +20,6 @@ namespace TFN.Infrastructure.Repositories.UserAggregate.InMemory
             return Task.FromResult(0);
         }
 
-        public Task AddBulkAsync(IEnumerable<User> entities)
-        {
-            InMemoryUsers.Users.AddRange(entities);
-            return Task.FromResult(0);
-        }
-
         public Task DeleteAsync(Guid id)
         {
             InMemoryUsers.Users.RemoveAll(x => x.Id == id);
@@ -41,6 +34,11 @@ namespace TFN.Infrastructure.Repositories.UserAggregate.InMemory
         public Task<User> GetAsync(string username)
         {
             return Task.FromResult(InMemoryUsers.Users.SingleOrDefault(x => x.Username == username));
+        }
+
+        public Task<User> GetAsync(string username, string password)
+        {
+            return GetAsync(username);
         }
 
         public Task UpdateAsync(User entity)

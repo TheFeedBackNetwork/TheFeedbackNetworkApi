@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using TFN.Resolution;
 using TFN.Mvc.Constants;
+using TFN.Mvc.Extensions;
 
 namespace TFN.Api
 {
@@ -81,7 +82,24 @@ namespace TFN.Api
 
             app.UseCors("CorsPolicy");
             app.UseDeveloperExceptionPage();
-            app.UseIdentityServer();
+
+            //STS Fork
+            app.Map("/identity", identity =>
+            {
+                identity.UseIdentityServer();
+                app.UseStaticFiles();
+                app.UseMvcWithDefaultRoute();
+            });
+
+            //API Fork
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                Authority = "http://localhost/identity",
+                Audience = "http://localhost/identity/resources",
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                RequireHttpsMetadata = !env.IsLocal()
+            });
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
 

@@ -29,7 +29,7 @@ namespace TFN.Api.Controllers
             [ModelBinder(BinderType = typeof(OffsetQueryModelBinder))]short commentOffset = 0,
             [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short commentLimit = 25)
         {
-
+            var posts = PostRepository.GetAllAsync(postOffset, postlimit, commentOffset, commentLimit);
             throw new NotImplementedException();
         }
 

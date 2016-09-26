@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using TFN.DomainDrivenArchitecture.Domain.Models;
 
 namespace TFN.DomainDrivenArchitecture.Domain.Repositories
@@ -10,6 +9,5 @@ namespace TFN.DomainDrivenArchitecture.Domain.Repositories
 
         Task AddAsync(TDomainEntity entity);
 
-        Task AddBulkAsync(IEnumerable<TDomainEntity> entities);
     }
 }

@@ -1,9 +1,11 @@
 ﻿using IdentityServer4.Services;
 using IdentityServer4.Stores;
+using IdentityServer4.Validation;
 using Microsoft.Extensions.DependencyInjection;
 using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Interfaces.Services;
 using TFN.Domain.Services;
+using TFN.Domain.Services.Validators;
 using TFN.Infrastructure.Repositories.ClientAggregate.InMemory;
 using TFN.Infrastructure.Repositories.PostAggregate.InMemory;
 using TFN.Infrastructure.Repositories.ScopeAggregate.InMemory;
@@ -24,6 +26,8 @@ namespace TFN.Resolution
             services.AddTransient<IClientStore, ClientInMemoryRepository>();
             services.AddTransient<ICorsPolicyService, CorsPolicyService>();
             services.AddTransient<IScopeStore, ScopeInMemoryRepository>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
         }
 
         public static void RegisterAuthorizationPolicies(IServiceCollection services)

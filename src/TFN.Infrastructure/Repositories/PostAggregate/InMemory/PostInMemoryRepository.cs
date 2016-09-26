@@ -15,11 +15,6 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
             return Task.FromResult(0);
         }
 
-        public Task AddBulkAsync(IEnumerable<Post> entities)
-        {
-            InMemoryPosts.Posts.AddRange(entities);
-            return Task.FromResult(0);
-        }
 
         public Task DeleteAsync(Guid id)
         {

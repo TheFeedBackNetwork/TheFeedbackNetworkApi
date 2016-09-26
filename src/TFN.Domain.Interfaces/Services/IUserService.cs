@@ -9,7 +9,6 @@ namespace TFN.Domain.Interfaces.Services
     public interface IUserService : IUserRepository
     {
         
-        Task<User> GetAsync(string username, string password);
         Task<User> AutoProvisionUserAsync(string provider, string userId, List<Claim> claims);
         Task<bool> ValidateCredentialsAsync(string username, string password);
         Task<User> FindByExternalProviderAsync(string provider, string userId);

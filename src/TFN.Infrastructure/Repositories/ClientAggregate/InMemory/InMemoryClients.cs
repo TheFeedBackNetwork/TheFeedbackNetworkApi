@@ -18,6 +18,7 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
                 PrefixClientClaims = true,
                 AccessTokenType = AccessTokenType.Jwt,
                 AlwaysSendClientClaims = true,
+                RequireClientSecret = false,
                 AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
                 AllowedScopes = new List<string>
                 {

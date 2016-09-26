@@ -39,10 +39,6 @@ namespace TFN.Domain.Services
             await UserRepository.AddAsync(entity, password);
         }
 
-        public async Task AddBulkAsync(IEnumerable<User> entities)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<User> AutoProvisionUserAsync(string provider, string userId, List<Claim> claims)
         {
@@ -71,7 +67,8 @@ namespace TFN.Domain.Services
 
         public async Task<User> GetAsync(string username, string password)
         {
-            throw new NotImplementedException();
+            var user = await UserRepository.GetAsync(username, password);
+            return user;
         }
 
         public async Task UpdateAsync(User entity)
