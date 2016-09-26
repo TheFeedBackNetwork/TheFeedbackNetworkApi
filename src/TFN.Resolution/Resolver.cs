@@ -34,8 +34,8 @@ namespace TFN.Resolution
         {
             services.AddAuthorization(options =>
             {
-                options.AddScopePolicy("post.read")
-                    .AddScopePolicy("post.write")
+                options.AddScopePolicy("posts.read")
+                    .AddScopePolicy("posts.write")
                     .AddScopePolicy("posts.edit")
                     .AddScopePolicy("posts.delete");
             });

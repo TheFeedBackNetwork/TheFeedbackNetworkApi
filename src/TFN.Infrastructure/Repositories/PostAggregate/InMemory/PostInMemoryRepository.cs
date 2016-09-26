@@ -24,12 +24,18 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
 
         public Task<IReadOnlyList<Post>> GetAllAsync(int postOffset, int postLimit, int commentOffset, int commentLimit)
         {
-            throw new NotImplementedException();
+            IReadOnlyList<Post> posts = InMemoryPosts.Posts.Skip(postOffset).Take(postLimit).ToList();
+            return Task.FromResult(posts);
         }
 
         public Task<Post> GetAsync(Guid id)
         {
             return Task.FromResult(InMemoryPosts.Posts.SingleOrDefault(x => x.Id == id));
+        }
+
+        public Task<Post> GetAsync(Guid id, int commentOffset, int commentLimit)
+        {
+            throw new NotImplementedException();
         }
 
         public Task UpdateAsync(Post entity)

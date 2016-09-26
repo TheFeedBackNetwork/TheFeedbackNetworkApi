@@ -19,5 +19,23 @@ namespace TFN.Api.Extensions
                 return null;
             }
         }
+
+        public static string GetAbsoluteUri(this HttpContext context)
+        {
+            var request = context.Request;
+
+            var host = request.Host.ToUriComponent();
+            var scheme = request.Scheme;
+
+            if (!(host.Contains("localhost") || host.Contains("127.0.0.1")))
+            {
+                scheme = "https";
+            }
+
+            return String.Concat(
+                    scheme,
+                    "://",
+                    request.Host.ToUriComponent());
+        }
     }
 }

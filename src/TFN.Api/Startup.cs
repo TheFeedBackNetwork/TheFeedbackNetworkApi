@@ -21,7 +21,7 @@ namespace TFN.Api
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
-            if (env.IsEnvironment("Development"))
+            if (env.IsDevelopment() || env.IsLocal())
             {
                 builder.AddApplicationInsightsSettings(developerMode: true);
             }
@@ -82,7 +82,14 @@ namespace TFN.Api
 
             app.UseCors("CorsPolicy");
             app.UseDeveloperExceptionPage();
-
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                Authority = "http://localhost:5000/identity",
+                Audience = "http://localhost:5000/identity/resources",
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                RequireHttpsMetadata = !env.IsLocal()
+            });
             //STS Fork
             app.Map("/identity", identity =>
             {
@@ -92,14 +99,7 @@ namespace TFN.Api
             });
 
             //API Fork
-            app.UseJwtBearerAuthentication(new JwtBearerOptions
-            {
-                Authority = "http://localhost/identity",
-                Audience = "http://localhost/identity/resources",
-                AutomaticAuthenticate = true,
-                AutomaticChallenge = true,
-                RequireHttpsMetadata = !env.IsLocal()
-            });
+            
             app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
 

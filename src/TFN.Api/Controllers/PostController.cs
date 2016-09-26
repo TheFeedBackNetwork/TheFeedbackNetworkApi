@@ -29,8 +29,8 @@ namespace TFN.Api.Controllers
             [ModelBinder(BinderType = typeof(OffsetQueryModelBinder))]short commentOffset = 0,
             [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short commentLimit = 25)
         {
-            var posts = PostRepository.GetAllAsync(postOffset, postlimit, commentOffset, commentLimit);
-            throw new NotImplementedException();
+            var posts = await PostRepository.GetAllAsync(postOffset, postlimit, commentOffset, commentLimit);
+            return Json(posts);
         }
 
         [HttpGet("{postId:Guid}", Name = "GetPost")]
