@@ -8,6 +8,8 @@ using TFN.Domain.Models.Entities;
 
 namespace TFN.Domain.Services
 {
+    #pragma warning disable 1998
+    //TODO Remove when we async
     public class UserService : IUserService
     {
         public IUserRepository UserRepository { get; private set; }
