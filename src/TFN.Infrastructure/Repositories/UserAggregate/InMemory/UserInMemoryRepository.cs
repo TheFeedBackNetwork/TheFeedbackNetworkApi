@@ -15,6 +15,12 @@ namespace TFN.Infrastructure.Repositories.UserAggregate.InMemory
             return Task.FromResult(0);
         }
 
+        public Task AddAsync(User entity, string password)
+        {
+            InMemoryUsers.Users.Add(entity);
+            return Task.FromResult(0);
+        }
+
         public Task AddBulkAsync(IEnumerable<User> entities)
         {
             InMemoryUsers.Users.AddRange(entities);

@@ -16,8 +16,8 @@ namespace TFN.UnitTest.Aggregates
         private static Guid UserIdDefault { get { return new Guid("3d17d22b-9b76-4b2a-aecd-5937f018cda6"); } }
         private static string TextDefault { get { return "This foo is my bar"; } }
         private static bool IsActiveDefault { get { return true; } }
-        private static Instant CreatedDefault { get { return SystemClock.Instance.Now; } }
-        private static Instant ModifiedDefault { get { return SystemClock.Instance.Now; } }
+        private static Instant CreatedDefault { get { return Instant.FromUtc(2016, 4, 4, 5, 4); } }
+        private static Instant ModifiedDefault { get { return Instant.FromUtc(2016, 4, 4, 5, 5); } }
 
         public Comment make_Comment(Guid id, Guid userId, Guid postId, string text, IReadOnlyList<Score> scores,bool isActive, Instant created, Instant modified)
         {

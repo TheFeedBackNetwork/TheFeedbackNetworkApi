@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using TFN.Resolution;
 using TFN.Mvc.Constants;
+using TFN.Mvc.Extensions;
 
 namespace TFN.Api
 {
@@ -56,6 +57,14 @@ namespace TFN.Api
             })
             .AddInMemoryStores()
             .SetTemporarySigningCredential();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddScopePolicy("post.read")
+                    .AddScopePolicy("post.write")
+                    .AddScopePolicy("posts.edit")
+                    .AddScopePolicy("posts.delete");
+            });
 
             services.AddCors(options =>
             {

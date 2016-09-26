@@ -10,7 +10,7 @@ namespace TFN.Api.Controllers
 {
     public class SignOutController : Controller
     {
-        private readonly IIdentityServerInteractionService Interaction;
+        public  IIdentityServerInteractionService Interaction { get; private set; }
 
         public SignOutController( IIdentityServerInteractionService interaction)
         {

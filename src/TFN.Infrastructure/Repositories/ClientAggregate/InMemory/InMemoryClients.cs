@@ -40,7 +40,8 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
                 AccessTokenType = AccessTokenType.Jwt,
                 AllowAccessTokensViaBrowser = true,
                 AlwaysSendClientClaims = true,
-                AllowedGrantTypes = GrantTypes.Implicit,
+                AllowedGrantTypes = GrantTypes.ImplicitAndClientCredentials,
+                RequireClientSecret = false,
                 AllowedScopes = new List<string>
                 {
                     "openid",

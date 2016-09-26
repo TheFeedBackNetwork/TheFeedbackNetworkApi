@@ -13,7 +13,8 @@ namespace TFN.Domain.Models.Entities
         public int Likes { get; private set; }
         public IReadOnlyList<string> Tags { get; private set; }
         public Genre Genre { get; private set; }
-        private Post(Guid id, Guid userId, string trackurl, string text,int likes,Genre genre, IReadOnlyList<string> tags ,bool isActive, Instant created, Instant modified)
+        public IReadOnlyList<Comment> Comments { get; private set; }
+        private Post(Guid id, Guid userId, string trackurl, string text,int likes,Genre genre, IReadOnlyList<string> tags,IReadOnlyList<Comment> comments,bool isActive, Instant created, Instant modified)
             : base(id,userId,text,isActive,created,modified)
         {
             if(likes < 0)
@@ -29,18 +30,19 @@ namespace TFN.Domain.Models.Entities
             Likes = likes;
             Genre = genre;
             Tags = tags;
+            Comments = comments;
         }
 
-        public Post(Guid userId, string trackurl, string text, int likes, Genre genre, IReadOnlyList<string> tags)
-            :this(Guid.NewGuid(), userId,trackurl,text,likes,genre,tags,true, SystemClock.Instance.Now,SystemClock.Instance.Now)
+        public Post(Guid userId, string trackurl, string text, int likes, Genre genre, IReadOnlyList<string> tags, IReadOnlyList<Comment> comments)
+            :this(Guid.NewGuid(), userId,trackurl,text,likes,genre,tags,comments,true, SystemClock.Instance.Now,SystemClock.Instance.Now)
         {
             
         }
 
         public static Post Hydrate(Guid id, Guid userId, string trackurl, string text, int likes, Genre genre,
-            IReadOnlyList<string> tags,bool isActive, Instant created, Instant modified)
+            IReadOnlyList<string> tags, IReadOnlyList<Comment> comments, bool isActive, Instant created, Instant modified)
         {
-            return new Post(id,userId,trackurl,text,likes,genre,tags,isActive,created,modified);
+            return new Post(id,userId,trackurl,text,likes,genre,tags,comments,isActive,created,modified);
         }
     }
 }

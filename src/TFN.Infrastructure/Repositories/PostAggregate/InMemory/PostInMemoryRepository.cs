@@ -9,7 +9,7 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
 {
     public class PostInMemoryRepository : IPostRepository
     {
-        public Task AddAsync(Post entity)
+        public  Task AddAsync(Post entity)
         {
             InMemoryPosts.Posts.Add(entity);
             return Task.FromResult(0);

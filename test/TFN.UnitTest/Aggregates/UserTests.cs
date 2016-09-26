@@ -16,7 +16,7 @@ namespace TFN.UnitTest.Aggregates
         private static string GivenNameDefault { get { return "foo"; } }
         private static string FamilyNameDefault { get { return "bar"; } }
         public static Biography BiographyDefault { get { return Biography.From("FooBar", "www.instagram.com/foo", "www.soundcloud.com/bar", "www.foomusic.net"); } }
-        public static Instant CreatedDefault { get { return SystemClock.Instance.Now; } }
+        public static Instant CreatedDefault { get { return Instant.FromUtc(2016, 4, 4, 4, 0); } }
         public static bool IsActiveDefault { get { return true;} }
 
         public User make_User(Guid id, string username,string profilePictureUrl, string email, string givenName, string familyName, Biography biography, Instant created)

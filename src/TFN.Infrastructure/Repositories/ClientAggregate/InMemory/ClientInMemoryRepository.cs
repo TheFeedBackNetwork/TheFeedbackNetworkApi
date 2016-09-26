@@ -8,12 +8,12 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
 {
     public class ClientInMemoryRepository : IClientRepository
     {
-        public Task<Client> FindClientByIdAsync(string clientId)
+        public async Task<Client> FindClientByIdAsync(string clientId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<string>> GetAllAllowedCorsOriginsAsync()
+        public async Task<IEnumerable<string>> GetAllAllowedCorsOriginsAsync()
         {
             throw new NotImplementedException();
         }

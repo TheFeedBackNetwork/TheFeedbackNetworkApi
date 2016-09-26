@@ -12,20 +12,24 @@ using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using TFN.Api.Models.InputModels;
 using TFN.Api.Models.ViewModels;
+using TFN.Domain.Interfaces.Services;
 using TFN.Mvc.Constants;
 
 namespace TFN.Api.Controllers
 {
     public class SignInController : Controller
     {
-        private readonly InMemoryUserLoginService LoginService;
-        private readonly IIdentityServerInteractionService Interaction;
+        public  InMemoryUserLoginService LoginService { get; private set; }
+        public IUserService UserService { get; private set; }
+        public  IIdentityServerInteractionService Interaction { get; private set; }
 
         public SignInController(
             InMemoryUserLoginService loginService,
+            IUserService userService,
             IIdentityServerInteractionService interaction)
         {
             LoginService = loginService;
+            UserService = userService;
             Interaction = interaction;
         }
 
@@ -53,11 +57,11 @@ namespace TFN.Api.Controllers
             if (ModelState.IsValid)
             {
                 // validate username/password against in-memory store
-                if (LoginService.ValidateCredentials(model.Username, model.Password))
+                if (await UserService.ValidateCredentialsAsync(model.Username, model.Password))
                 {
                     // issue authentication cookie with subject ID and username
-                    var user = LoginService.FindByUsername(model.Username);
-                    await HttpContext.Authentication.SignInAsync(user.Subject, user.Username);
+                    var user = await UserService.GetAsync(model.Username);
+                    await HttpContext.Authentication.SignInAsync(user.Id.ToString(), user.Username);
 
                     // make sure the returnUrl is still valid, and if yes - redirect back to authorize endpoint
                     if (Interaction.IsValidReturnUrl(model.ReturnUrl))
@@ -130,12 +134,12 @@ namespace TFN.Api.Controllers
             var userId = userIdClaim.Value;
 
             // check if the external user is already provisioned
-            var user = LoginService.FindByExternalProvider(provider, userId);
+            var user = await UserService.FindByExternalProviderAsync(provider, userId);
             if (user == null)
             {
                 // this sample simply auto-provisions new external user
                 // another common approach is to start a registrations workflow first
-                user = LoginService.AutoProvisionUser(provider, userId, claims);
+                user = await UserService.AutoProvisionUserAsync(provider, userId, claims);
             }
 
             var additionalClaims = new List<Claim>();
@@ -148,7 +152,7 @@ namespace TFN.Api.Controllers
             }
 
             // issue authentication cookie for user
-            await HttpContext.Authentication.SignInAsync(user.Subject, user.Username, provider, additionalClaims.ToArray());
+            await HttpContext.Authentication.SignInAsync(user.Id.ToString(), user.Username, provider, additionalClaims.ToArray());
 
             // delete temporary cookie used during external authentication
             await HttpContext.Authentication.SignOutAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);

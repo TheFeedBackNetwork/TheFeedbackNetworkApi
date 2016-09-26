@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TFN.Api.Models.InputModels;
 using TFN.Api.Models.ModelBinders;
+using TFN.Api.Models.QueryModels;
 using TFN.Domain.Interfaces.Repositories;
 
 namespace TFN.Api.Controllers
@@ -20,10 +21,11 @@ namespace TFN.Api.Controllers
         [HttpGet(Name = "GetAllPosts")]
         [Authorize("posts.read")]
         public async Task<IActionResult> GetAllAsync(
+            [FromQuery]ExcludeQueryModel exclude,
             [ModelBinder(BinderType = typeof(OffsetQueryModelBinder))]short postOffset = 0,
-            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short postlimit = 100,
+            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short postlimit = 7,
             [ModelBinder(BinderType = typeof(OffsetQueryModelBinder))]short commentOffset = 0,
-            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short commentLimit = 100)
+            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short commentLimit = 25)
         {
 
             throw new NotImplementedException();
@@ -31,13 +33,17 @@ namespace TFN.Api.Controllers
 
         [HttpGet("{postId:Guid}", Name = "GetPost")]
         [Authorize("posts.read")]
-        public async Task<IActionResult> GetAsync(Guid postId)
+        public async Task<IActionResult> GetAsync(
+            Guid postId,
+            [FromQuery]ExcludeQueryModel exclude,
+            [ModelBinder(BinderType = typeof(OffsetQueryModelBinder))]short commentOffset = 0,
+            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short commentLimit = 25)
         {
             throw new NotImplementedException();
         }
 
         [HttpGet("{postId:Guid}/comments/{commentId:Guid}", Name = "GetComment")]
-        [Authorize("posts.write")]
+        [Authorize("posts.read")]
         public async Task<IActionResult> GetAsync(Guid postId, Guid commentId)
         {
             throw new NotImplementedException();
