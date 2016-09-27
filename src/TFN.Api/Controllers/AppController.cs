@@ -8,6 +8,8 @@ namespace TFN.Api.Controllers
     {
         protected Guid UserId => HttpContext.GetUserId().Value;
 
-        public string AbsoluteUri => HttpContext.GetAbsoluteUri();
+        protected string Username => HttpContext.GetUsername();
+
+        protected string AbsoluteUri => HttpContext.GetAbsoluteUri();
     }
 }

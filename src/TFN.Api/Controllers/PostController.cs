@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +10,8 @@ using TFN.Api.Models.QueryModels;
 using TFN.Api.Models.ResponseModels;
 using TFN.Api.Extensions;
 using TFN.Domain.Interfaces.Repositories;
+using TFN.Domain.Models.Entities;
+using TFN.Domain.Models.Enums;
 
 namespace TFN.Api.Controllers
 {
@@ -67,35 +70,110 @@ namespace TFN.Api.Controllers
 
         [HttpGet("{postId:Guid}/comments/{commentId:Guid}", Name = "GetComment")]
         [Authorize("posts.read")]
-        public async Task<IActionResult> GetAsync(Guid postId, Guid commentId)
+        public async Task<IActionResult> GetAsync(
+            Guid postId,
+            Guid commentId,
+            [FromQuery]ExcludeQueryModel exclude)
         {
-            throw new NotImplementedException();
+            var comment = await PostRepository.GetAsync(postId, commentId);
+
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            var model = CommentResponseModel.From(comment, AbsoluteUri);
+
+            if (exclude != null)
+            {
+                return this.Json(model, exclude.Attributes);
+            }
+
+            return Json(model);
         }
 
         [HttpGet("{postId:Guid}/comments/{commentId:Guid}/scores/{scoreId:Guid}", Name = "GetScore")]
         [Authorize("posts.read")]
         public async Task<IActionResult> GetAsync(Guid postId, Guid commentId, Guid scoreId)
         {
-            throw new NotImplementedException();
+            var score = await PostRepository.GetAsync(postId, commentId, scoreId);
+
+            if (score == null)
+            {
+                return NotFound();
+            }
+
+            var model = ScoreResponseModel.From(score, AbsoluteUri);
+
+            return Json(model);
         }
 
         [HttpPost(Name = "PostPost")]
         [Authorize("posts.write")]
         public async Task<IActionResult> PostAsync([FromBody]PostInputModel post)
         {
-            throw new NotImplementedException();
+            var genre = Genre.Other;
+            var parsed = Enum.TryParse(post.Genre.ToString(), out genre);
+
+            if (!parsed)
+            {
+                return BadRequest();
+            }
+            var entity = new Post(UserId, Username, post.TrackUrl, post.Text,genre,post.Tags);
+
+            await PostRepository.AddAsync(entity);
+
+            var model = PostResponseModel.From(entity, AbsoluteUri);
+
+            return CreatedAtAction("GetPost", new {postId = model.Id}, model);
         }
 
         [HttpPost("{postId:Guid}/comments", Name = "PostComment")]
         [Authorize("posts.write")]
-        public async Task<IActionResult> PostAsync([FromBody]CommentInputModel comment)
+        public async Task<IActionResult> PostAsync(
+            Guid postId,
+            [FromBody]CommentInputModel comment)
+        {
+            var post = await PostRepository.GetAsync(postId);
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            var entity = new Comment(UserId,postId,Username,comment.Text);
+
+            await PostRepository.AddAsync(entity);
+
+            var model = CommentResponseModel.From(entity, AbsoluteUri);
+
+            return CreatedAtAction("GetComment", new {postId = model.PostId, commentId = model.Id}, model);
+        }
+
+        [HttpPost("{postId:Guid}/comments/{commentId:Guid}/scores", Name = "PostScore")]
+        [Authorize("posts.write")]
+        public async Task<IActionResult> PostAsync(
+            Guid postId,
+            Guid commentId)
         {
             throw new NotImplementedException();
         }
 
         [HttpPatch("{postId:Guid}", Name = "EditPost")]
         [Authorize("posts.edit")]
-        public async Task<IActionResult> PatchAsync([FromBody]PostInputModel post)
+        public async Task<IActionResult> PatchAsync(
+            Guid postId,
+            [FromBody]PostInputModel post)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpPatch("{postId:Guid}/comments/{commentId:Guid}", Name = "EditComment")]
+        [Authorize("posts.edit")]
+        public async Task<IActionResult> PatchAsync(
+            Guid postId,
+            Guid commentId,
+            [FromBody]CommentInputModel post)
         {
             throw new NotImplementedException();
         }
@@ -106,8 +184,14 @@ namespace TFN.Api.Controllers
             throw new NotImplementedException();
         }
 
-        [HttpDelete("{postId:Guid}/comments/{commentId:Guid}")]
+        [HttpDelete("{postId:Guid}/comments/{commentId:Guid}", Name = "DeleteComment")]
         public async Task<IActionResult> DeleteAsync(Guid postId, Guid commentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpDelete("{postId:Guid}/comments/{commentId:Guid}/scores/{scoreId:Guid}", Name = "DeleteScore")]
+        public async Task<IActionResult> DeleteAsync(Guid postId, Guid commentId, Guid scoreId)
         {
             throw new NotImplementedException();
         }

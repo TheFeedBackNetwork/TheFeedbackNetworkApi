@@ -88,7 +88,7 @@ namespace TFN.Api
                 Audience = "http://localhost:5000/identity/resources",
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
-                RequireHttpsMetadata = !env.IsLocal()
+                RequireHttpsMetadata = !env.IsLocal(),
             });
             //STS Fork
             app.Map("/identity", identity =>

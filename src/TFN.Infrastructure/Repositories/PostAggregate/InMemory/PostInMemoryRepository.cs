@@ -15,6 +15,16 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
             return Task.FromResult(0);
         }
 
+        public Task AddAsync(Comment entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AddAsync(Score entity)
+        {
+            throw new NotImplementedException();
+        }
+
 
         public Task DeleteAsync(Guid id)
         {
@@ -60,6 +70,18 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
             DeleteAsync(entity.Id);
             AddAsync(entity);
             return Task.FromResult(0);
+        }
+
+        
+
+        public Task DeleteAsync(Guid postId, Guid commentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task DeleteAsync(Guid postId, Guid commentId, Guid scoreId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

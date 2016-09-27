@@ -33,8 +33,8 @@ namespace TFN.Domain.Models.Entities
             Comments = comments;
         }
 
-        public Post(Guid userId,string username, string trackurl, string text, int likes, Genre genre, IReadOnlyList<string> tags, IReadOnlyList<Comment> comments)
-            :this(Guid.NewGuid(), userId,username,trackurl,text,likes,genre,tags,comments,true, SystemClock.Instance.Now,SystemClock.Instance.Now)
+        public Post(Guid userId,string username, string trackurl, string text, Genre genre, IReadOnlyList<string> tags)
+            :this(Guid.NewGuid(), userId,username,trackurl,text,0,genre,tags,new List<Comment>(), true, SystemClock.Instance.Now,SystemClock.Instance.Now)
         {
             
         }

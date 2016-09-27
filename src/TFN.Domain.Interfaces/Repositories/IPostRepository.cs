@@ -10,9 +10,11 @@ namespace TFN.Domain.Interfaces.Repositories
     {
         Task<IReadOnlyList<Post>> GetAllAsync(int postOffset, int postLimit, int commentOffset,int commentLimit);
         Task<Post> GetAsync(Guid postId, int commentOffset, int commentLimit);
-
         Task<Comment> GetAsync(Guid postId, Guid commentId);
-
         Task<Score> GetAsync(Guid postId, Guid commentId,Guid scoreId);
+        Task AddAsync(Comment entity);
+        Task AddAsync(Score entity);
+        Task DeleteAsync(Guid postId, Guid commentId);
+        Task DeleteAsync(Guid postId, Guid commentId, Guid scoreId);
     }
 }

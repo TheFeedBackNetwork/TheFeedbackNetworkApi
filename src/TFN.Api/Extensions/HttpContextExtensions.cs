@@ -8,7 +8,8 @@ namespace TFN.Api.Extensions
     {
         public static Guid? GetUserId(this HttpContext context)
         {
-            var userId = context.User.Claims.FirstOrDefault(x => x.Type == "sub");
+            //var userId = context.User.Claims.FirstOrDefault(x => x.Type == "sub");
+            var userId = context.User.Claims.FirstOrDefault(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier");
 
             if (userId?.Value != null)
             {
@@ -18,6 +19,13 @@ namespace TFN.Api.Extensions
             {
                 return null;
             }
+        }
+
+        public static string GetUsername(this HttpContext context)
+        {
+            var userName = context.User.Claims.FirstOrDefault(x => x.Type == "preferred_username");
+
+            return userName?.Value;
         }
 
         public static string GetAbsoluteUri(this HttpContext context)
