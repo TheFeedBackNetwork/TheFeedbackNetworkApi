@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TFN.Api.Filters.ActionFilters;
 using TFN.Api.Models.Base;
 using TFN.Domain.Models.Entities;
 
@@ -13,6 +14,7 @@ namespace TFN.Api.Models.ResponseModels
         public string Text { get; private set; }
         public string Username { get; private set; }
         public Guid UserId { get; private set; }
+        [Excludable]
         public IReadOnlyList<ScoreResponseModel> Scores { get; private set; }
         public DateTime Created { get; private set; }
         public DateTime Modified { get; private set; }

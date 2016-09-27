@@ -28,14 +28,31 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
             return Task.FromResult(posts);
         }
 
-        public Task<Post> GetAsync(Guid id)
+        public Task<Post> GetAsync(Guid postId)
         {
-            return Task.FromResult(InMemoryPosts.Posts.SingleOrDefault(x => x.Id == id));
+            return Task.FromResult(InMemoryPosts.Posts.SingleOrDefault(x => x.Id == postId));
         }
 
-        public Task<Post> GetAsync(Guid id, int commentOffset, int commentLimit)
+        public Task<Post> GetAsync(Guid postId, int commentOffset, int commentLimit)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(InMemoryPosts.Posts.SingleOrDefault(x => x.Id == postId));
+        }
+
+        public Task<Comment> GetAsync(Guid postId, Guid commentId)
+        {
+            var comment =
+                InMemoryPosts.Posts.SingleOrDefault(x => x.Id == postId)?
+                    .Comments.SingleOrDefault(x => x.Id == commentId);
+            return Task.FromResult(comment);
+        }
+
+        public Task<Score> GetAsync(Guid postId, Guid commentId, Guid scoreId)
+        {
+            var score =
+                InMemoryPosts.Posts.SingleOrDefault(x => x.Id == postId)?
+                    .Comments.SingleOrDefault(x => x.Id == commentId)?
+                    .Scores.SingleOrDefault(z => z.Id == scoreId);
+            return Task.FromResult(score);
         }
 
         public Task UpdateAsync(Post entity)

@@ -1,5 +1,4 @@
 ﻿using System;
-using Newtonsoft.Json;
 using TFN.Api.Models.Base;
 using TFN.Domain.Models.Entities;
 

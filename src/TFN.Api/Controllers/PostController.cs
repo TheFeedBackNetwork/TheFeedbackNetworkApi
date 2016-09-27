@@ -7,6 +7,7 @@ using TFN.Api.Models.InputModels;
 using TFN.Api.Models.ModelBinders;
 using TFN.Api.Models.QueryModels;
 using TFN.Api.Models.ResponseModels;
+using TFN.Api.Extensions;
 using TFN.Domain.Interfaces.Repositories;
 
 namespace TFN.Api.Controllers
@@ -33,6 +34,10 @@ namespace TFN.Api.Controllers
         {
             var posts = await PostRepository.GetAllAsync(postOffset, postlimit, commentOffset, commentLimit);
             var model = posts.Select(x => PostResponseModel.From(x, AbsoluteUri));
+            if (exclude != null)
+            {
+                return this.Json(model,exclude.Attributes);
+            }
             return Json(model);
         }
 
@@ -44,12 +49,32 @@ namespace TFN.Api.Controllers
             [ModelBinder(BinderType = typeof(OffsetQueryModelBinder))]short commentOffset = 0,
             [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short commentLimit = 25)
         {
-            throw new NotImplementedException();
+            var post = await PostRepository.GetAsync(postId, commentOffset, commentLimit);
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            var model = PostResponseModel.From(post, AbsoluteUri);
+
+            if (exclude != null)
+            {
+                return this.Json(model, exclude.Attributes);
+            }
+            return Json(model);
         }
 
         [HttpGet("{postId:Guid}/comments/{commentId:Guid}", Name = "GetComment")]
         [Authorize("posts.read")]
         public async Task<IActionResult> GetAsync(Guid postId, Guid commentId)
+        {
+            throw new NotImplementedException();
+        }
+
+        [HttpGet("{postId:Guid}/comments/{commentId:Guid}/scores/{scoreId:Guid}", Name = "GetScore")]
+        [Authorize("posts.read")]
+        public async Task<IActionResult> GetAsync(Guid postId, Guid commentId, Guid scoreId)
         {
             throw new NotImplementedException();
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TFN.Api.Filters.ActionFilters;
 using TFN.Api.Models.Base;
 using TFN.Domain.Models.Entities;
 
@@ -15,6 +16,7 @@ namespace TFN.Api.Models.ResponseModels
         public int Likes { get; private set; }
         public IReadOnlyList<string> Tags { get; private set; }
         public string Genre { get; private set; }
+        [Excludable]
         public IReadOnlyList<CommentResponseModel> Comments { get; private set; }
         public DateTime Created { get; private set; }
         public DateTime Modified { get; private set; }
