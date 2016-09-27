@@ -15,8 +15,7 @@ using TFN.Domain.Models.Enums;
 
 namespace TFN.Api.Controllers
 {
-    #pragma warning disable 1998
-    //TODO Remove when we async
+    
     [Route("api/posts")]
     public class PostController : AppController
     {
@@ -156,9 +155,30 @@ namespace TFN.Api.Controllers
             Guid postId,
             Guid commentId)
         {
-            throw new NotImplementedException();
+            var comment = await PostRepository.GetAsync(postId, commentId);
+
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            //user cannot post a score on their own comment
+            //TODO consider auth policy here
+            if (comment.UserId == UserId)
+            {
+                return Forbid();
+            }
+
+            var entity = new Score(commentId,UserId,Username);
+            await PostRepository.AddAsync(entity);
+
+            var model = ScoreResponseModel.From(entity, AbsoluteUri);
+
+            return CreatedAtAction("GetScore", new { postId = comment.PostId, commentId = model.CommentId, scoreId = model.Id }, model);
         }
 
+        #pragma warning disable 1998
+        //TODO Remove when we async
         [HttpPatch("{postId:Guid}", Name = "EditPost")]
         [Authorize("posts.edit")]
         public async Task<IActionResult> PatchAsync(
@@ -167,7 +187,8 @@ namespace TFN.Api.Controllers
         {
             throw new NotImplementedException();
         }
-
+        #pragma warning disable 1998
+        //TODO Remove when we async
         [HttpPatch("{postId:Guid}/comments/{commentId:Guid}", Name = "EditComment")]
         [Authorize("posts.edit")]
         public async Task<IActionResult> PatchAsync(
@@ -178,18 +199,24 @@ namespace TFN.Api.Controllers
             throw new NotImplementedException();
         }
 
+        #pragma warning disable 1998
+        //TODO Remove when we async
         [HttpDelete("{postId:Guid}", Name = "DeletePost")]
         public async Task<IActionResult> DeleteAsync(Guid postId)
         {
             throw new NotImplementedException();
         }
 
+        #pragma warning disable 1998
+        //TODO Remove when we async
         [HttpDelete("{postId:Guid}/comments/{commentId:Guid}", Name = "DeleteComment")]
         public async Task<IActionResult> DeleteAsync(Guid postId, Guid commentId)
         {
             throw new NotImplementedException();
         }
 
+        #pragma warning disable 1998
+        //TODO Remove when we async
         [HttpDelete("{postId:Guid}/comments/{commentId:Guid}/scores/{scoreId:Guid}", Name = "DeleteScore")]
         public async Task<IActionResult> DeleteAsync(Guid postId, Guid commentId, Guid scoreId)
         {
