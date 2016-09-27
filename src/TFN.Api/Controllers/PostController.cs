@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TFN.Api.Models.InputModels;
 using TFN.Api.Models.ModelBinders;
 using TFN.Api.Models.QueryModels;
+using TFN.Api.Models.ResponseModels;
 using TFN.Domain.Interfaces.Repositories;
 
 namespace TFN.Api.Controllers
@@ -30,7 +32,8 @@ namespace TFN.Api.Controllers
             [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short commentLimit = 25)
         {
             var posts = await PostRepository.GetAllAsync(postOffset, postlimit, commentOffset, commentLimit);
-            return Json(posts);
+            var model = posts.Select(x => PostResponseModel.From(x, AbsoluteUri));
+            return Json(model);
         }
 
         [HttpGet("{postId:Guid}", Name = "GetPost")]

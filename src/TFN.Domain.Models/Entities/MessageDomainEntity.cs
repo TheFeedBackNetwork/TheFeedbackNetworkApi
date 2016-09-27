@@ -7,12 +7,13 @@ namespace TFN.Domain.Models.Entities
     public abstract class MessageDomainEntity : DomainEntity<Guid>
     {
         public Guid UserId { get; private set; }
+        public string Username { get; private set; }
         public string Text { get; private set; }
         public bool IsActive { get; private set; }
         public Instant Created { get; private set; }
         public Instant Modified { get; private set; }
 
-        protected MessageDomainEntity(Guid id, Guid userId, string text,bool isActive, Instant created, Instant modified)
+        protected MessageDomainEntity(Guid id, Guid userId,string username, string text,bool isActive, Instant created, Instant modified)
             : base(id)
         {
             if(created > modified)
@@ -21,10 +22,15 @@ namespace TFN.Domain.Models.Entities
             }
             if (string.IsNullOrEmpty(text) || string.IsNullOrWhiteSpace(text))
             {
-                throw new ArgumentNullException($"The username [{nameof(text)}] is either null or empty.");
+                throw new ArgumentNullException($"The text [{nameof(text)}] is either null or empty.");
+            }
+            if (text.Length <= 5)
+            {
+                throw new ArgumentException($"The text [{nameof(text)}] must be longer than 5 characters.");
             }
             Text = text;
             UserId = userId;
+            Username = username;
             IsActive = isActive;
             Created = created;
             Modified = modified;
