@@ -1,0 +1,123 @@
+{
+	"id": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a",
+	"name": "TFNPosts",
+	"description": "",
+	"order": [
+		"7a29c782-a88f-cf50-ac78-0db0e6cbbacf",
+		"a4042c91-74b5-d7a3-5df4-56066ac36d3e",
+		"84d6080a-8928-9415-7e4c-66638482779f"
+	],
+	"folders": [],
+	"timestamp": 1474908836072,
+	"owner": "26314",
+	"public": false,
+	"published": false,
+	"requests": [
+		{
+			"id": "7a29c782-a88f-cf50-ac78-0db0e6cbbacf",
+			"headers": "",
+			"url": "{{TFNStsUrl}}/connect/token",
+			"preRequestScript": "// Set variables for this test\npostman.setEnvironmentVariable(\"username\", \"postman@whereismytransport.com\");\npostman.setEnvironmentVariable(\"authority\", \"2CF0141F-B3DC-489B-86B8-DD0727C14497\");\npostman.setEnvironmentVariable(\"scope\", \"writerapi:agencies:read\");\npostman.setEnvironmentVariable(\"product\", [\"messenger\",\"writer\"]);\npostman.setEnvironmentVariable(\"amr\", [\"password\"]);",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "client_id",
+					"value": "{{TFNFrontendClient}}",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "grant_type",
+					"value": "client_credentials",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "scope",
+					"value": "posts.read",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"tests": "var schema = {\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"nbf\": { type: \"integer\" },\n        \"exp\": { type: \"integer\" },\n        \"iss\": { type: \"string\" },\n        \"aud\": { type: \"string\" },\n        \"client_id\": { type: \"string\" },\n        \"scope\": { type: \"string\" },\n        \"sub\": { type: \"string\" },\n        \"auth_time\": { type: \"integer\" },\n        \"idp\": { type: \"string\" },\n        \"email\": { type: \"string\" },\n        \"amr\": { type: \"array\" },\n        \"jti\": { type: \"string\" },\n    },\n    \"additionalProperties\": true,\n    \"required\": [\"nbf\",\"exp\",\"iss\",\"aud\",\"client_id\",\"scope\",\"sub\",\"auth_time\",\"idp\",\"email\",\"amr\", \"jti\"]\n};\n\ntests[\"Is 200\"] = responseCode.code === 200;\n\n\nif (tests[\"Is 200\"])\n{\n    var data = JSON.parse(responseBody);\n    \n    var token = \"Bearer \" + data.access_token;\n    tests[\"Has Bearer Token\"] = token !== null && token !== \"\";\n    postman.setEnvironmentVariable(\"BearerToken\", token);\n\n    \n    // Decode the token\n    var token = data.access_token;\n    var decodedToken = atob(token.split(\".\")[1]);\n    tests[\"Decoded Token: \" + decodedToken] = true;\n    \n    // Validate the decoded token\n    var decodedTokenJson = JSON.parse(decodedToken);\n    var result = tv4.validateResult(decodedTokenJson, schema);\n    console.log(tv4.error);\n    //tests[\"Decoded Token valid schema\"] = result.valid;\n    \n    // Check each field in the token\n    tests[\"Has 'iss'\"] = decodedTokenJson.iss = postman.getEnvironmentVariable(\"TFNStsUrl\"); \n    tests[\"Has 'aud'\"] = decodedTokenJson.aud = postman.getEnvironmentVariable(\"TFNStsUrl\") + \"/resources\";\n    tests[\"Has 'client_id'\"] = decodedTokenJson.client_id = postman.getEnvironmentVariable(\"TFNFrontendClient\");\n    tests[\"Has 'scope'\"] = decodedTokenJson.scope = postman.getEnvironmentVariable(\"scope\");\n    tests[\"Has 'sub'\"] = decodedTokenJson.sub = \"a46b8aaa-7e3b-444b-816a-4b4a2534fc12\";\n    tests[\"Has 'auth_time'\"] = decodedTokenJson.auth_time = \"1468858250\";\n}\n\n// Clear test environment variables\npostman.clearEnvironmentVariable(\"username\");\npostman.clearEnvironmentVariable(\"authority\");\npostman.clearEnvironmentVariable(\"scope\");\npostman.clearEnvironmentVariable(\"product\");\npostman.clearEnvironmentVariable(\"amr\");",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1474914735809,
+			"name": "Token [200] - Token for TFN Api (CC flow)",
+			"description": "",
+			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a",
+			"responses": []
+		},
+		{
+			"id": "84d6080a-8928-9415-7e4c-66638482779f",
+			"headers": "Authorization: {{BearerToken}}\n",
+			"url": "{{TFNApiUrl}}/posts",
+			"pathVariables": {},
+			"preRequestScript": null,
+			"method": "GET",
+			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a",
+			"data": null,
+			"dataMode": "params",
+			"name": "{{TFNApiUrl}}/posts",
+			"description": "",
+			"descriptionFormat": "html",
+			"time": 1474915160649,
+			"version": 2,
+			"responses": [],
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {}
+		},
+		{
+			"id": "a4042c91-74b5-d7a3-5df4-56066ac36d3e",
+			"headers": "",
+			"url": "{{TFNStsUrl}}/connect/token",
+			"preRequestScript": "// Set variables for this test\npostman.setEnvironmentVariable(\"username\", \"postman@whereismytransport.com\");\npostman.setEnvironmentVariable(\"authority\", \"2CF0141F-B3DC-489B-86B8-DD0727C14497\");\npostman.setEnvironmentVariable(\"scope\", \"writerapi:agencies:read\");\npostman.setEnvironmentVariable(\"product\", [\"messenger\",\"writer\"]);\npostman.setEnvironmentVariable(\"amr\", [\"password\"]);",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "client_id",
+					"value": "{{TFNPostmanClient}}",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "grant_type",
+					"value": "password",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "scope",
+					"value": "posts.read profile openid",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "username",
+					"value": "bob",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "whatever",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"tests": "var schema = {\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"nbf\": { type: \"integer\" },\n        \"exp\": { type: \"integer\" },\n        \"iss\": { type: \"string\" },\n        \"aud\": { type: \"string\" },\n        \"client_id\": { type: \"string\" },\n        \"scope\": { type: \"string\" },\n        \"sub\": { type: \"string\" },\n        \"auth_time\": { type: \"integer\" },\n        \"idp\": { type: \"string\" },\n        \"email\": { type: \"string\" },\n        \"authority\": { type: \"string\" },\n        \"product\": { type: \"array\" },\n        \"amr\": { type: \"array\" },\n        \"jti\": { type: \"string\" },\n    },\n    \"additionalProperties\": false,\n    \"required\": [\"nbf\",\"exp\",\"iss\",\"aud\",\"client_id\",\"scope\",\"sub\",\"auth_time\",\"idp\",\"email\",\"authority\",\"product\",\"amr\", \"jti\"]\n};\n\ntests[\"Is 200\"] = responseCode.code === 200;\n\nif (tests[\"Is 200\"])\n{\n    var data = JSON.parse(responseBody);\n    \n    // Decode the token\n    var token = data.access_token;\n    var decodedToken = atob(token.split(\".\")[1]);\n    tests[\"Decoded Token: \" + decodedToken] = true;\n    \n    // Validate the decoded token\n    var decodedTokenJson = JSON.parse(decodedToken);\n    var result = tv4.validateResult(decodedTokenJson, schema);\n    console.log(tv4.error);\n    tests[\"Decoded Token valid schema\"] = result.valid;\n    \n    // Check each field in the token\n    tests[\"Has 'nbf'\"] = decodedTokenJson.nbf = 1468858066;\n    tests[\"Has 'exp'\"] = decodedTokenJson.exp = 1468861850;\n    tests[\"Has 'iss'\"] = decodedTokenJson.iss = postman.getEnvironmentVariable(\"IdentityServerUrl\"); \n    tests[\"Has 'aud'\"] = decodedTokenJson.aud = postman.getEnvironmentVariable(\"IdentityServerUrl\") + \"/resources\";\n    tests[\"Has 'client_id'\"] = decodedTokenJson.client_id = postman.getEnvironmentVariable(\"WriterPostManClient\");\n    tests[\"Has 'scope'\"] = decodedTokenJson.scope = postman.getEnvironmentVariable(\"scope\");\n    tests[\"Has 'sub'\"] = decodedTokenJson.sub = \"a46b8aaa-7e3b-444b-816a-4b4a2534fc12\";\n    tests[\"Has 'auth_time'\"] = decodedTokenJson.auth_time = \"1468858250\";\n    tests[\"Has 'idp'\"] = decodedTokenJson.idp = \"idsrv\";\n    tests[\"Has 'email'\"] = decodedTokenJson.email = postman.getEnvironmentVariable(\"username\");\n    tests[\"Has 'authority'\"] = decodedTokenJson.authority = postman.getEnvironmentVariable(\"authority\");\n    tests[\"Has 'product'\"] = decodedTokenJson.product = postman.getEnvironmentVariable(\"product\");\n    tests[\"Has 'amr'\"] = decodedTokenJson.amr = postman.getEnvironmentVariable(\"amr\");\n}\n\n// Clear test environment variables\npostman.clearEnvironmentVariable(\"username\");\npostman.clearEnvironmentVariable(\"authority\");\npostman.clearEnvironmentVariable(\"scope\");\npostman.clearEnvironmentVariable(\"product\");\npostman.clearEnvironmentVariable(\"amr\");",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1474914733752,
+			"name": "Token [200] - Token for TFN Api (RoG flow)",
+			"description": "",
+			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a",
+			"responses": []
+		}
+	]
+}

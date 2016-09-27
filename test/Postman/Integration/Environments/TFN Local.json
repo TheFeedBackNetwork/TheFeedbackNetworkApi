@@ -1,0 +1,40 @@
+{
+  "id": "f176dfa6-ff95-7958-0292-fcda98d42fa8",
+  "name": "TFN: Local",
+  "values": [
+    {
+      "key": "TFNStsUrl",
+      "value": "http://localhost:5000/identity",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "TFNApiUrl",
+      "value": "http://localhost:5000/api",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "TFNPostmanClient",
+      "value": "tfn_postman",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "TFNFrontendClient",
+      "value": "tfn_frontend",
+      "type": "text",
+      "enabled": true
+    },
+    {
+      "key": "BearerToken",
+      "type": "text",
+      "value": "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjkzODcxMWVkMzdkNDY5OGU0NzQ0NDcxZTRkMGRiNzcxIiwidHlwIjoiSldUIn0.eyJuYmYiOjE0NzQ5MTgzMTksImV4cCI6MTQ3NDkyMTkxOSwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwL2lkZW50aXR5IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MDAwL2lkZW50aXR5L3Jlc291cmNlcyIsImNsaWVudF9pZCI6InRmbl9mcm9udGVuZCIsInNjb3BlIjoicG9zdHMucmVhZCIsImp0aSI6IjE4ZjNmZjRjYzY5MTdlODZlNjg3M2QxNjI0ZDQwNjYyIn0.bL9UuSYxVXdX79-nOAjJqVgZd1Iigy1Y06x4BunF_tBWzk04LBBC1KgMOQuaV62Ub6klCePVTDn0tIITx99YcAajLuVbFbcPGrPF6usNkwpP2Vzr34GWsRRomimwqWnA-iJh_LyTSrMsY-jhEboouxJq3b_QxDE_8i0bIHT1Inkw9CTyDjZ6dUxAz9mYdsMgRsOQZ0wtd7NFnjyvNOKK5dD2hF342wYTpaD8hCfES-jgrPcEdwPUkGEXS9fBMyVCMkuMeH8v6lDXzN2ixWs7LUP9uEFRoy4LrbJRa4AuqzUR-wLz1vR_PvrIqTKHuKrvqISUmb2e3927ZI8Ap23w-Q",
+      "enabled": true
+    }
+  ],
+  "timestamp": 1474955131941,
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2016-09-27T05:47:33.246Z",
+  "_postman_exported_using": "Postman/4.7.2"
+}
