@@ -14,11 +14,8 @@ namespace TFN.Api.Authorization.Handlers
 
             if (requirement.Name == "CommentWrite")
             {
-                if (context.User.HasClaim("sub", resource.OwnerId.ToString()))
-                {
-                    context.Succeed(requirement);
-                    return noOp;
-                }
+                context.Succeed(requirement);
+                return noOp;
             }
 
             if (requirement.Name == "CommentDelete")

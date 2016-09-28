@@ -154,7 +154,7 @@ namespace TFN.Api.Controllers
 
             var authZModel = CommentAuthorizationModel.From(entity);
 
-            if (await AuthorizationService.AuthorizeAsync(User, authZModel, CommentOperations.Write))
+            if (!await AuthorizationService.AuthorizeAsync(User, authZModel, CommentOperations.Write))
             {
                 return new ChallengeResult();
             }
@@ -184,7 +184,7 @@ namespace TFN.Api.Controllers
 
             var authZModel = ScoreAuthorizationModel.From(entity, comment.UserId);
 
-            if (await AuthorizationService.AuthorizeAsync(User, authZModel, ScoreOperations.Write))
+            if (!await AuthorizationService.AuthorizeAsync(User, authZModel, ScoreOperations.Write))
             {
                 return new ChallengeResult();
             }
@@ -218,28 +218,71 @@ namespace TFN.Api.Controllers
             throw new NotImplementedException();
         }
 
-        #pragma warning disable 1998
-        //TODO Remove when we async
+
         [HttpDelete("{postId:Guid}", Name = "DeletePost")]
         public async Task<IActionResult> DeleteAsync(Guid postId)
         {
-            throw new NotImplementedException();
+            var post = await PostRepository.GetAsync(postId);
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            var authZModel = PostAuthorizationModel.From(post);
+
+            if (!await AuthorizationService.AuthorizeAsync(User, authZModel, PostOperations.Delete))
+            {
+                return new ChallengeResult();
+            }
+
+            await PostRepository.DeleteAsync(postId);
+
+            return Ok();
         }
 
-        #pragma warning disable 1998
-        //TODO Remove when we async
         [HttpDelete("{postId:Guid}/comments/{commentId:Guid}", Name = "DeleteComment")]
         public async Task<IActionResult> DeleteAsync(Guid postId, Guid commentId)
         {
-            throw new NotImplementedException();
+            var comment = await PostRepository.GetAsync(postId, commentId);
+
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            var authZModel = CommentAuthorizationModel.From(comment);
+
+            if (!await AuthorizationService.AuthorizeAsync(User, authZModel, CommentOperations.Delete))
+            {
+                return new ChallengeResult();
+            }
+
+            await PostRepository.DeleteAsync(postId, commentId);
+
+            return Ok();
         }
 
-        #pragma warning disable 1998
-        //TODO Remove when we async
         [HttpDelete("{postId:Guid}/comments/{commentId:Guid}/scores/{scoreId:Guid}", Name = "DeleteScore")]
         public async Task<IActionResult> DeleteAsync(Guid postId, Guid commentId, Guid scoreId)
         {
-            throw new NotImplementedException();
+            var score = await PostRepository.GetAsync(postId, commentId,scoreId);
+
+            if (score == null)
+            {
+                return NotFound();
+            }
+
+            var authZModel = ScoreAuthorizationModel.From(score,score.CommentId);
+
+            if (!await AuthorizationService.AuthorizeAsync(User, authZModel, ScoreOperations.Delete))
+            {
+                return new ChallengeResult();
+            }
+
+            await PostRepository.DeleteAsync(postId, commentId,scoreId);
+
+            return Ok();
         }
     }
 }

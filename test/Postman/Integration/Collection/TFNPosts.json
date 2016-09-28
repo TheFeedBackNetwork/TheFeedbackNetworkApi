@@ -5,6 +5,12 @@
 	"order": [
 		"7a29c782-a88f-cf50-ac78-0db0e6cbbacf",
 		"a4042c91-74b5-d7a3-5df4-56066ac36d3e",
+		"4f64232d-3c09-788e-57e5-e4872a095478",
+		"7c69be7d-b68a-52a2-3583-b5093cf55ee6",
+		"cfaf4ddc-4267-1c29-3c80-0fb75a9417bc",
+		"7fa1d1b5-8dd4-9089-a18c-128913cf5385",
+		"c264a23a-9227-8159-c7c1-1e301ca29b79",
+		"7ea6caf1-2b8f-db3e-6c66-5f042535e662",
 		"84d6080a-8928-9415-7e4c-66638482779f"
 	],
 	"folders": [],
@@ -13,6 +19,55 @@
 	"public": false,
 	"published": false,
 	"requests": [
+		{
+			"id": "4f64232d-3c09-788e-57e5-e4872a095478",
+			"headers": "",
+			"url": "{{TFNStsUrl}}/connect/token",
+			"preRequestScript": "// Set variables for this test\npostman.setEnvironmentVariable(\"username\", \"postman@whereismytransport.com\");\npostman.setEnvironmentVariable(\"authority\", \"2CF0141F-B3DC-489B-86B8-DD0727C14497\");\npostman.setEnvironmentVariable(\"scope\", \"writerapi:agencies:read\");\npostman.setEnvironmentVariable(\"product\", [\"messenger\",\"writer\"]);\npostman.setEnvironmentVariable(\"amr\", [\"password\"]);",
+			"pathVariables": {},
+			"method": "POST",
+			"data": [
+				{
+					"key": "client_id",
+					"value": "{{TFNPostmanClient}}",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "grant_type",
+					"value": "password",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "scope",
+					"value": "posts.read posts.write posts.edit posts.delete profile openid",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "username",
+					"value": "alice",
+					"type": "text",
+					"enabled": true
+				},
+				{
+					"key": "password",
+					"value": "whatever",
+					"type": "text",
+					"enabled": true
+				}
+			],
+			"dataMode": "urlencoded",
+			"tests": "var schema = {\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"nbf\": { type: \"integer\" },\n        \"exp\": { type: \"integer\" },\n        \"iss\": { type: \"string\" },\n        \"aud\": { type: \"string\" },\n        \"client_id\": { type: \"string\" },\n        \"scope\": { type: \"string\" },\n        \"sub\": { type: \"string\" },\n        \"auth_time\": { type: \"integer\" },\n        \"idp\": { type: \"string\" },\n        \"email\": { type: \"string\" },\n        \"authority\": { type: \"string\" },\n        \"product\": { type: \"array\" },\n        \"amr\": { type: \"array\" },\n        \"jti\": { type: \"string\" },\n    },\n    \"additionalProperties\": false,\n    \"required\": [\"nbf\",\"exp\",\"iss\",\"aud\",\"client_id\",\"scope\",\"sub\",\"auth_time\",\"idp\",\"email\",\"authority\",\"product\",\"amr\", \"jti\"]\n};\n\ntests[\"Is 200\"] = responseCode.code === 200;\n\nif (tests[\"Is 200\"])\n{\n    var data = JSON.parse(responseBody);\n    \n    var token = \"Bearer \" + data.access_token;\n    tests[\"Has Bearer Token\"] = token !== null && token !== \"\";\n    postman.setEnvironmentVariable(\"BearerToken\", token);\n    postman.setEnvironmentVariable(\"AliceBearerToken\", token);\n    // Decode the token\n    var token = data.access_token;\n    var decodedToken = atob(token.split(\".\")[1]);\n    tests[\"Decoded Token: \" + decodedToken] = true;\n    \n    // Validate the decoded token\n    var decodedTokenJson = JSON.parse(decodedToken);\n    var result = tv4.validateResult(decodedTokenJson, schema);\n    console.log(tv4.error);\n    tests[\"Decoded Token valid schema\"] = result.valid;\n    postman.setEnvironmentVariable(\"AliceId\", decodedTokenJson.sub);\n    \n    // Check each field in the token\n    tests[\"Has 'nbf'\"] = decodedTokenJson.nbf = 1468858066;\n    tests[\"Has 'exp'\"] = decodedTokenJson.exp = 1468861850;\n    tests[\"Has 'iss'\"] = decodedTokenJson.iss = postman.getEnvironmentVariable(\"IdentityServerUrl\"); \n    tests[\"Has 'aud'\"] = decodedTokenJson.aud = postman.getEnvironmentVariable(\"IdentityServerUrl\") + \"/resources\";\n    tests[\"Has 'client_id'\"] = decodedTokenJson.client_id = postman.getEnvironmentVariable(\"WriterPostManClient\");\n    tests[\"Has 'scope'\"] = decodedTokenJson.scope = postman.getEnvironmentVariable(\"scope\");\n    tests[\"Has 'sub'\"] = decodedTokenJson.sub = \"a46b8aaa-7e3b-444b-816a-4b4a2534fc12\";\n    tests[\"Has 'auth_time'\"] = decodedTokenJson.auth_time = \"1468858250\";\n    tests[\"Has 'idp'\"] = decodedTokenJson.idp = \"idsrv\";\n    tests[\"Has 'email'\"] = decodedTokenJson.email = postman.getEnvironmentVariable(\"username\");\n    tests[\"Has 'authority'\"] = decodedTokenJson.authority = postman.getEnvironmentVariable(\"authority\");\n    tests[\"Has 'product'\"] = decodedTokenJson.product = postman.getEnvironmentVariable(\"product\");\n    tests[\"Has 'amr'\"] = decodedTokenJson.amr = postman.getEnvironmentVariable(\"amr\");\n}\n\n// Clear test environment variables\npostman.clearEnvironmentVariable(\"username\");\npostman.clearEnvironmentVariable(\"authority\");\npostman.clearEnvironmentVariable(\"scope\");\npostman.clearEnvironmentVariable(\"product\");\npostman.clearEnvironmentVariable(\"amr\");",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1475083819273,
+			"name": "Token [200] - Token for Alice",
+			"description": "",
+			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a",
+			"responses": []
+		},
 		{
 			"id": "7a29c782-a88f-cf50-ac78-0db0e6cbbacf",
 			"headers": "",
@@ -51,24 +106,82 @@
 			"responses": []
 		},
 		{
-			"id": "84d6080a-8928-9415-7e4c-66638482779f",
+			"id": "7c69be7d-b68a-52a2-3583-b5093cf55ee6",
+			"headers": "Authorization: {{BobBearerToken}}\nContent-Type: application/json\nAccept: application/json\n",
+			"url": "{{TFNApiUrl}}/posts",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"BobPostId\", data.id);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1475082618084,
+			"name": "Posts [204] - Bob Add Post",
+			"description": "",
+			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a",
+			"responses": [],
+			"rawModeData": "{\n  \"text\" : \"This is my test post please ignore\",\n  \"trackUrl\" : \"http://soundcloud.com/bar/foo\",\n  \"tags\" : [\"dub\",\"140\"],\n  \"genre\" : \"Dubstep\"\n}"
+		},
+		{
+			"id": "7ea6caf1-2b8f-db3e-6c66-5f042535e662",
 			"headers": "Authorization: {{BearerToken}}\n",
 			"url": "{{TFNApiUrl}}/posts",
 			"pathVariables": {},
 			"preRequestScript": null,
 			"method": "GET",
-			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a",
 			"data": null,
 			"dataMode": "params",
-			"name": "{{TFNApiUrl}}/posts",
+			"name": "Posts [401] - Get All",
 			"description": "",
 			"descriptionFormat": "html",
-			"time": 1474915160649,
-			"version": 2,
-			"responses": [],
 			"tests": null,
 			"currentHelper": "normal",
-			"helperAttributes": {}
+			"helperAttributes": "{}",
+			"folder": null,
+			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a",
+			"rawModeData": null
+		},
+		{
+			"id": "7fa1d1b5-8dd4-9089-a18c-128913cf5385",
+			"headers": "Authorization: {{AliceBearerToken}}\nContent-Type: application/json\nAccept: application/json\n",
+			"url": "{{TFNApiUrl}}/posts/{{BobPostId}}/comments",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"AliceComment\", data.id);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1475083195714,
+			"name": "Posts [204] - Alice Comments To Bob",
+			"description": "",
+			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a",
+			"responses": [],
+			"rawModeData": "{\n  \"text\" : \"foo bar baz bob foo bar baz!\",\n}"
+		},
+		{
+			"id": "84d6080a-8928-9415-7e4c-66638482779f",
+			"headers": "Authorization: {{BearerToken}}\n",
+			"url": "{{TFNApiUrl}}/posts",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"version": 2,
+			"tests": "var data = JSON.parse(responseBody);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1475001534374,
+			"name": "Posts [200] - Get All",
+			"description": "",
+			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a",
+			"responses": []
 		},
 		{
 			"id": "a4042c91-74b5-d7a3-5df4-56066ac36d3e",
@@ -92,7 +205,7 @@
 				},
 				{
 					"key": "scope",
-					"value": "posts.read profile openid",
+					"value": "posts.read posts.write posts.edit posts.delete profile openid",
 					"type": "text",
 					"enabled": true
 				},
@@ -110,14 +223,54 @@
 				}
 			],
 			"dataMode": "urlencoded",
-			"tests": "var schema = {\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"nbf\": { type: \"integer\" },\n        \"exp\": { type: \"integer\" },\n        \"iss\": { type: \"string\" },\n        \"aud\": { type: \"string\" },\n        \"client_id\": { type: \"string\" },\n        \"scope\": { type: \"string\" },\n        \"sub\": { type: \"string\" },\n        \"auth_time\": { type: \"integer\" },\n        \"idp\": { type: \"string\" },\n        \"email\": { type: \"string\" },\n        \"authority\": { type: \"string\" },\n        \"product\": { type: \"array\" },\n        \"amr\": { type: \"array\" },\n        \"jti\": { type: \"string\" },\n    },\n    \"additionalProperties\": false,\n    \"required\": [\"nbf\",\"exp\",\"iss\",\"aud\",\"client_id\",\"scope\",\"sub\",\"auth_time\",\"idp\",\"email\",\"authority\",\"product\",\"amr\", \"jti\"]\n};\n\ntests[\"Is 200\"] = responseCode.code === 200;\n\nif (tests[\"Is 200\"])\n{\n    var data = JSON.parse(responseBody);\n    \n    // Decode the token\n    var token = data.access_token;\n    var decodedToken = atob(token.split(\".\")[1]);\n    tests[\"Decoded Token: \" + decodedToken] = true;\n    \n    // Validate the decoded token\n    var decodedTokenJson = JSON.parse(decodedToken);\n    var result = tv4.validateResult(decodedTokenJson, schema);\n    console.log(tv4.error);\n    tests[\"Decoded Token valid schema\"] = result.valid;\n    \n    // Check each field in the token\n    tests[\"Has 'nbf'\"] = decodedTokenJson.nbf = 1468858066;\n    tests[\"Has 'exp'\"] = decodedTokenJson.exp = 1468861850;\n    tests[\"Has 'iss'\"] = decodedTokenJson.iss = postman.getEnvironmentVariable(\"IdentityServerUrl\"); \n    tests[\"Has 'aud'\"] = decodedTokenJson.aud = postman.getEnvironmentVariable(\"IdentityServerUrl\") + \"/resources\";\n    tests[\"Has 'client_id'\"] = decodedTokenJson.client_id = postman.getEnvironmentVariable(\"WriterPostManClient\");\n    tests[\"Has 'scope'\"] = decodedTokenJson.scope = postman.getEnvironmentVariable(\"scope\");\n    tests[\"Has 'sub'\"] = decodedTokenJson.sub = \"a46b8aaa-7e3b-444b-816a-4b4a2534fc12\";\n    tests[\"Has 'auth_time'\"] = decodedTokenJson.auth_time = \"1468858250\";\n    tests[\"Has 'idp'\"] = decodedTokenJson.idp = \"idsrv\";\n    tests[\"Has 'email'\"] = decodedTokenJson.email = postman.getEnvironmentVariable(\"username\");\n    tests[\"Has 'authority'\"] = decodedTokenJson.authority = postman.getEnvironmentVariable(\"authority\");\n    tests[\"Has 'product'\"] = decodedTokenJson.product = postman.getEnvironmentVariable(\"product\");\n    tests[\"Has 'amr'\"] = decodedTokenJson.amr = postman.getEnvironmentVariable(\"amr\");\n}\n\n// Clear test environment variables\npostman.clearEnvironmentVariable(\"username\");\npostman.clearEnvironmentVariable(\"authority\");\npostman.clearEnvironmentVariable(\"scope\");\npostman.clearEnvironmentVariable(\"product\");\npostman.clearEnvironmentVariable(\"amr\");",
+			"tests": "var schema = {\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"nbf\": { type: \"integer\" },\n        \"exp\": { type: \"integer\" },\n        \"iss\": { type: \"string\" },\n        \"aud\": { type: \"string\" },\n        \"client_id\": { type: \"string\" },\n        \"scope\": { type: \"string\" },\n        \"sub\": { type: \"string\" },\n        \"auth_time\": { type: \"integer\" },\n        \"idp\": { type: \"string\" },\n        \"email\": { type: \"string\" },\n        \"authority\": { type: \"string\" },\n        \"product\": { type: \"array\" },\n        \"amr\": { type: \"array\" },\n        \"jti\": { type: \"string\" },\n    },\n    \"additionalProperties\": false,\n    \"required\": [\"nbf\",\"exp\",\"iss\",\"aud\",\"client_id\",\"scope\",\"sub\",\"auth_time\",\"idp\",\"email\",\"authority\",\"product\",\"amr\", \"jti\"]\n};\n\ntests[\"Is 200\"] = responseCode.code === 200;\n\nif (tests[\"Is 200\"])\n{\n    var data = JSON.parse(responseBody);\n    \n    var token = \"Bearer \" + data.access_token;\n    tests[\"Has Bearer Token\"] = token !== null && token !== \"\";\n    postman.setEnvironmentVariable(\"BearerToken\", token);\n    postman.setEnvironmentVariable(\"BobBearerToken\", token);\n    // Decode the token\n    var token = data.access_token;\n    var decodedToken = atob(token.split(\".\")[1]);\n    tests[\"Decoded Token: \" + decodedToken] = true;\n    \n    // Validate the decoded token\n    var decodedTokenJson = JSON.parse(decodedToken);\n    var result = tv4.validateResult(decodedTokenJson, schema);\n    console.log(tv4.error);\n    tests[\"Decoded Token valid schema\"] = result.valid;\n    postman.setEnvironmentVariable(\"BobId\", decodedTokenJson.sub);\n    // Check each field in the token\n    tests[\"Has 'nbf'\"] = decodedTokenJson.nbf = 1468858066;\n    tests[\"Has 'exp'\"] = decodedTokenJson.exp = 1468861850;\n    tests[\"Has 'iss'\"] = decodedTokenJson.iss = postman.getEnvironmentVariable(\"IdentityServerUrl\"); \n    tests[\"Has 'aud'\"] = decodedTokenJson.aud = postman.getEnvironmentVariable(\"IdentityServerUrl\") + \"/resources\";\n    tests[\"Has 'client_id'\"] = decodedTokenJson.client_id = postman.getEnvironmentVariable(\"WriterPostManClient\");\n    tests[\"Has 'scope'\"] = decodedTokenJson.scope = postman.getEnvironmentVariable(\"scope\");\n    tests[\"Has 'sub'\"] = decodedTokenJson.sub = \"a46b8aaa-7e3b-444b-816a-4b4a2534fc12\";\n    tests[\"Has 'auth_time'\"] = decodedTokenJson.auth_time = \"1468858250\";\n    tests[\"Has 'idp'\"] = decodedTokenJson.idp = \"idsrv\";\n    tests[\"Has 'email'\"] = decodedTokenJson.email = postman.getEnvironmentVariable(\"username\");\n    tests[\"Has 'authority'\"] = decodedTokenJson.authority = postman.getEnvironmentVariable(\"authority\");\n    tests[\"Has 'product'\"] = decodedTokenJson.product = postman.getEnvironmentVariable(\"product\");\n    tests[\"Has 'amr'\"] = decodedTokenJson.amr = postman.getEnvironmentVariable(\"amr\");\n}\n\n// Clear test environment variables\npostman.clearEnvironmentVariable(\"username\");\npostman.clearEnvironmentVariable(\"authority\");\npostman.clearEnvironmentVariable(\"scope\");\npostman.clearEnvironmentVariable(\"product\");\npostman.clearEnvironmentVariable(\"amr\");",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1474914733752,
-			"name": "Token [200] - Token for TFN Api (RoG flow)",
+			"time": 1475085837142,
+			"name": "Token [200] - Token for Bob",
 			"description": "",
 			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a",
 			"responses": []
+		},
+		{
+			"id": "c264a23a-9227-8159-c7c1-1e301ca29b79",
+			"headers": "Authorization: {{BobBearerToken}}\nContent-Type: application/json\nAccept: application/json\n",
+			"url": "{{TFNApiUrl}}/posts/{{AlicePostId}}/comments",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"BobCommentId\", data.id);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1475083192393,
+			"name": "Posts [204] - Bob Comments To Alice",
+			"description": "",
+			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a",
+			"responses": [],
+			"rawModeData": "{\n  \"text\" : \"foo bar alice foo bar!\"\n}"
+		},
+		{
+			"id": "cfaf4ddc-4267-1c29-3c80-0fb75a9417bc",
+			"headers": "Authorization: {{AliceBearerToken}}\nContent-Type: application/json\nAccept: application/json\n",
+			"url": "{{TFNApiUrl}}/posts",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": "var data = JSON.parse(responseBody);\n\npostman.setEnvironmentVariable(\"AlicePostId\", data.id);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1475083131291,
+			"name": "Posts [204] - Alice Add Post",
+			"description": "",
+			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a",
+			"responses": [],
+			"rawModeData": "{\n  \"text\" : \"This is my test post please ignore\",\n  \"trackUrl\" : \"http://soundcloud.com/bar/foo\",\n  \"tags\" : [\"dub\",\"140\"],\n  \"genre\" : \"Dubstep\"\n}"
 		}
 	]
 }

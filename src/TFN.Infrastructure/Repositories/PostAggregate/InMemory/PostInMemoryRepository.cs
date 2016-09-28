@@ -17,20 +17,24 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
 
         public Task AddAsync(Comment entity)
         {
-            throw new NotImplementedException();
+            InMemoryPosts.Posts.Single(x => x.Id == entity.PostId).Comments.Add(entity);
+            return Task.CompletedTask;
         }
 
         public Task AddAsync(Score entity)
         {
-            throw new NotImplementedException();
+            foreach (var post in InMemoryPosts.Posts)
+            {
+                if (post.Comments.Any(x => x.Id == entity.CommentId))
+                {
+                    post.Comments.Single(x => x.Id == entity.CommentId).Scores.Add(entity);
+                }
+            }
+            return Task.CompletedTask;
         }
 
 
-        public Task DeleteAsync(Guid id)
-        {
-            InMemoryPosts.Posts.RemoveAll(x => x.Id == id);
-            return Task.FromResult(0);
-        }
+
 
         public Task<IReadOnlyList<Post>> GetAllAsync(int postOffset, int postLimit, int commentOffset, int commentLimit)
         {
@@ -72,16 +76,35 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
             return Task.FromResult(0);
         }
 
-        
+        public Task DeleteAsync(Guid id)
+        {
+            InMemoryPosts.Posts.RemoveAll(x => x.Id == id);
+            return Task.FromResult(0);
+        }
+
 
         public Task DeleteAsync(Guid postId, Guid commentId)
         {
-            throw new NotImplementedException();
+            foreach (var post in InMemoryPosts.Posts)
+            {
+                var comment = post.Comments.Single(x => x.Id == commentId);
+                post.Comments.Remove(comment);
+            }
+            return Task.FromResult(0);
         }
 
         public Task DeleteAsync(Guid postId, Guid commentId, Guid scoreId)
         {
-            throw new NotImplementedException();
+            foreach (var post in InMemoryPosts.Posts)
+            {
+                foreach (var comment in post.Comments)
+                {
+                    var score = comment.Scores.Single(x => x.Id == scoreId);
+                    comment.Scores.Remove(score);
+                }
+                
+            }
+            return Task.FromResult(0);
         }
     }
 }
