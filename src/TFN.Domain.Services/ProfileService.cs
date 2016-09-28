@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4.Extensions;
 using IdentityServer4.Models;
@@ -28,7 +29,7 @@ namespace TFN.Domain.Services
 
             var user = await UserRepository.GetAsync(subjectId);
 
-            var claims = ClaimsUtility.GetClaims(user);
+            var claims = ClaimsUtility.GetClaims(user).ToList();
 
             context.IssuedClaims = claims;
         }
