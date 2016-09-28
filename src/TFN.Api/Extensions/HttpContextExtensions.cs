@@ -23,9 +23,9 @@ namespace TFN.Api.Extensions
 
         public static string GetUsername(this HttpContext context)
         {
-            var userName = context.User.Claims.FirstOrDefault(x => x.Type == "preferred_username");
+            var userName = context.User.Identity.Name;
 
-            return userName?.Value;
+            return userName;
         }
 
         public static string GetAbsoluteUri(this HttpContext context)
