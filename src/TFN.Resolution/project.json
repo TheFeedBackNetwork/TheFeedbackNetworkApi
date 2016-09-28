@@ -4,6 +4,7 @@
   "version": "1.0.0-*",
 
   "dependencies": {
+    "TFN.Api.Authorization" :  "1.0.0-*", 
     "TFN.Domain.Interfaces": "1.0.0-*",
     "TFN.Infrastructure": "1.0.0-*",
     "TFN.Mvc": "1.0.0-*",

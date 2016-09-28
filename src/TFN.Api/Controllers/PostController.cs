@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TFN.Api.Authorization.Models.Resource;
+using TFN.Api.Authorization.Operations;
 using TFN.Api.Models.InputModels;
 using TFN.Api.Models.ModelBinders;
 using TFN.Api.Models.QueryModels;
@@ -19,9 +21,11 @@ namespace TFN.Api.Controllers
     public class PostController : AppController
     {
         public IPostRepository PostRepository { get; private set; }
-        public PostController(IPostRepository postRepository)
+        public IAuthorizationService AuthorizationService { get; private set; }
+        public PostController(IPostRepository postRepository, IAuthorizationService authorizationService)
         {
             PostRepository = postRepository;
+            AuthorizationService = authorizationService;
         }
 
         [HttpGet(Name = "GetAllPosts")]
@@ -119,6 +123,13 @@ namespace TFN.Api.Controllers
             }
             var entity = new Post(UserId, Username, post.TrackUrl, post.Text,genre,post.Tags);
 
+            var authZModel = PostAuthorizationModel.From(entity);
+
+            if (!await AuthorizationService.AuthorizeAsync(User, authZModel, PostOperations.Write))
+            {
+                return new ChallengeResult();
+            }
+
             await PostRepository.AddAsync(entity);
 
             var model = PostResponseModel.From(entity, AbsoluteUri);
@@ -141,6 +152,13 @@ namespace TFN.Api.Controllers
 
             var entity = new Comment(UserId,postId,Username,comment.Text);
 
+            var authZModel = CommentAuthorizationModel.From(entity);
+
+            if (await AuthorizationService.AuthorizeAsync(User, authZModel, CommentOperations.Write))
+            {
+                return new ChallengeResult();
+            }
+
             await PostRepository.AddAsync(entity);
 
             var model = CommentResponseModel.From(entity, AbsoluteUri);
@@ -161,14 +179,16 @@ namespace TFN.Api.Controllers
                 return NotFound();
             }
 
-            //user cannot post a score on their own comment
-            //TODO consider auth policy here
-            if (comment.UserId == UserId)
+            var entity = new Score(commentId, UserId, Username);
+
+
+            var authZModel = ScoreAuthorizationModel.From(entity, comment.UserId);
+
+            if (await AuthorizationService.AuthorizeAsync(User, authZModel, ScoreOperations.Write))
             {
-                return Forbid();
+                return new ChallengeResult();
             }
 
-            var entity = new Score(commentId,UserId,Username);
             await PostRepository.AddAsync(entity);
 
             var model = ScoreResponseModel.From(entity, AbsoluteUri);

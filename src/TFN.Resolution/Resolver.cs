@@ -1,7 +1,9 @@
 ﻿using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using IdentityServer4.Validation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
+using TFN.Api.Authorization.Handlers;
 using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Interfaces.Services;
 using TFN.Domain.Services;
@@ -39,6 +41,10 @@ namespace TFN.Resolution
                     .AddScopePolicy("posts.edit")
                     .AddScopePolicy("posts.delete");
             });
+
+            services.AddTransient<IAuthorizationHandler, PostAuthorizationHandler>();
+            services.AddTransient<IAuthorizationHandler, CommentAuthorizationHandler>();
+            services.AddTransient<IAuthorizationHandler, ScoreAuthorizationHandler>();
         }
     }
 }

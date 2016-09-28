@@ -1,0 +1,13 @@
+﻿{
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Microsoft.AspNetCore.Mvc": "1.0.1",
+    "TFN.Domain.Models": "1.0.0-*"
+  },
+
+  "frameworks": {
+    "net461": {
+    }
+  }
+}

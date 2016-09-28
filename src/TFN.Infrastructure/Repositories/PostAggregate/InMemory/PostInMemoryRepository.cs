@@ -34,13 +34,13 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
 
         public Task<IReadOnlyList<Post>> GetAllAsync(int postOffset, int postLimit, int commentOffset, int commentLimit)
         {
-            IReadOnlyList<Post> posts = InMemoryPosts.Posts.Skip(postOffset).Take(postLimit).ToList();
+            IReadOnlyList<Post> posts = InMemoryPosts.Posts.Skip(postOffset).Take(postLimit).Where(x => x.IsActive).ToList();
             return Task.FromResult(posts);
         }
 
         public Task<Post> GetAsync(Guid postId)
         {
-            return Task.FromResult(InMemoryPosts.Posts.SingleOrDefault(x => x.Id == postId));
+            return Task.FromResult(InMemoryPosts.Posts.SingleOrDefault(x => x.Id == postId && x.IsActive));
         }
 
         public Task<Post> GetAsync(Guid postId, int commentOffset, int commentLimit)

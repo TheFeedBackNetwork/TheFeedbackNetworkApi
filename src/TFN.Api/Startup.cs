@@ -1,4 +1,5 @@
-﻿using IdentityModel;
+﻿using System.IdentityModel.Tokens.Jwt;
+using IdentityModel;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -84,6 +85,8 @@ namespace TFN.Api
 
             app.UseCors("CorsPolicy");
             app.UseDeveloperExceptionPage();
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
                 Authority = "http://localhost:5000/identity",

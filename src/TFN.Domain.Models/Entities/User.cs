@@ -13,16 +13,17 @@ namespace TFN.Domain.Models.Entities
         public string Email { get; private set; }
         public string GivenName { get; private set; }
         public string FamilyName { get; private set; }
+        public int Credits { get; private set; }
         public Biography Biography { get; private set; }
         public Instant Created { get; private set; }
         public bool IsActive { get; private set; }
 
         public User(string username,string profilePictureUrl, string email, string givenName, string familyName, Biography biography)
-            : this(Guid.NewGuid(), username,profilePictureUrl, email, givenName, familyName, biography,SystemClock.Instance.Now, true)
+            : this(Guid.NewGuid(), username,profilePictureUrl, email, givenName, familyName,10, biography,SystemClock.Instance.Now, true)
         {
 
         }
-        private User(Guid id, string username, string profilePictureUrl, string email, string givenName, string familyName, Biography biography, Instant created, bool isActive)
+        private User(Guid id, string username, string profilePictureUrl, string email, string givenName, string familyName,int credits, Biography biography, Instant created, bool isActive)
             : base(id)
         {
             if(string.IsNullOrEmpty(username) || string.IsNullOrWhiteSpace(username))
@@ -45,6 +46,10 @@ namespace TFN.Domain.Models.Entities
             {
                 throw new ArgumentException($"The profile picture url [{nameof(profilePictureUrl)}] is not a valid profile picture Url.");
             }
+            if (credits < 0)
+            {
+                throw new ArgumentException($"The credit system does not allow for negative credits");
+            }
 
             Username = username;
             Email = email;
@@ -54,12 +59,13 @@ namespace TFN.Domain.Models.Entities
             Biography = biography;
             Created = created;
             IsActive = isActive;
+            Credits = credits;
         }
 
-        public static User Hydrate(Guid id, string username, string profilePictureUrl, string email, string givenName, string familyName, Biography biography,
+        public static User Hydrate(Guid id, string username, string profilePictureUrl, string email, string givenName, string familyName, int credits, Biography biography,
             Instant created, bool isActive)
         {
-            return new User(id, username,profilePictureUrl, email, givenName, familyName, biography, created, isActive);
+            return new User(id, username,profilePictureUrl, email, givenName, familyName,credits, biography, created, isActive);
         }
     }
 }
