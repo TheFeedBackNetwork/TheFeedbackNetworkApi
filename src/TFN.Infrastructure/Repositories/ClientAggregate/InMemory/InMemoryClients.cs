@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using IdentityServer4.Models;
 
 namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
@@ -29,7 +26,8 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
                     "posts.write",
                     "posts.read",
                     "posts.edit",
-                    "posts.delete"
+                    "posts.delete",
+                    "offline_access"
                 }
             },
             new Client
@@ -52,7 +50,8 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
                     "posts.write",
                     "posts.read",
                     "posts.edit",
-                    "posts.delete"
+                    "posts.delete",
+                    "offline_access"
                 }
             },
         };

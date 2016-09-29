@@ -10,5 +10,11 @@ namespace TFN.Mvc.HttpResults
         {
             StatusCode = 403;
         }
+
+        public HttpForbiddenResult(string message)
+            : base(ForbiddenModel.Create(message))
+        {
+            StatusCode = 403;
+        }
     }
 }

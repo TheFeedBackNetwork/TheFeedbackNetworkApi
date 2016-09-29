@@ -9,7 +9,8 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
 {
     public static class InMemoryPosts
     {
-        public static List<Post> Posts = new List<Post>
+        public static List<Post> Posts = new List<Post>();
+        /*public static List<Post> Posts = new List<Post>
         {
             Post.Hydrate(new Guid("6f7081f6-9072-4a51-ae0c-7d4c0041b45a"),new Guid("f42c8b85-c058-47cb-b504-57f750294469"),"bob","http://soundcloud.com/foo/bar","Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                 0,Genre.Dubstep,new List<string> {"dub","drop"},new List<Comment>(),true,Instant.FromUtc(2016,6,6,7,7), Instant.FromUtc(2016,6,6,7,8)  ),
@@ -21,6 +22,6 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
                 true,
                 Instant.FromUtc(2016,8,8,8,8), Instant.FromUtc(2016,8,8,8,8)) 
 
-        };
+        };*/
     }
 }

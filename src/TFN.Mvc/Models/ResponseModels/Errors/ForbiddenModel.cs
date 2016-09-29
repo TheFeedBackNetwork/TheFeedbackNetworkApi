@@ -1,4 +1,6 @@
-﻿namespace TFN.Mvc.Models.ResponseModels.Errors
+﻿using System;
+
+namespace TFN.Mvc.Models.ResponseModels.Errors
 {
     public class ForbiddenModel : ErrorModel
     {
@@ -12,6 +14,11 @@
         public static ForbiddenModel Create()
         {
             return new ForbiddenModel(ForbiddenMessage);
+        }
+
+        internal static ForbiddenModel Create(string message)
+        {
+            return new ForbiddenModel(message);
         }
     }
 }

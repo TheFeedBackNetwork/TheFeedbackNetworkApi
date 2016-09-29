@@ -46,5 +46,10 @@ namespace TFN.Domain.Models.Entities
         {
             return new Post(id,userId,username,trackurl,text,likes,genre,tags,comments,isActive,created,modified);
         }
+
+        public static Post EditPost(Post post, string text, string trackUrl, IReadOnlyList<string> tags, Genre genre)
+        {
+            return new Post(post.Id, post.UserId, post.Username, trackUrl, text, post.Likes, genre, tags, post.Comments.ToList(), post.IsActive, post.Created, post.Modified);
+        }
     }
 }

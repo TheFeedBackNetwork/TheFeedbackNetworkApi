@@ -13,6 +13,7 @@ using TFN.Api.Extensions;
 using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Models.Entities;
 using TFN.Domain.Models.Enums;
+using TFN.Mvc.HttpResults;
 
 namespace TFN.Api.Controllers
 {
@@ -127,7 +128,7 @@ namespace TFN.Api.Controllers
 
             if (!await AuthorizationService.AuthorizeAsync(User, authZModel, PostOperations.Write))
             {
-                return new ChallengeResult();
+                return new HttpForbiddenResult("A POST request for adding a new post resource was attempted, but the authorization policy challenged the request.");
             }
 
             await PostRepository.AddAsync(entity);
@@ -156,7 +157,7 @@ namespace TFN.Api.Controllers
 
             if (!await AuthorizationService.AuthorizeAsync(User, authZModel, CommentOperations.Write))
             {
-                return new ChallengeResult();
+                return new HttpForbiddenResult("A POST request for adding a new post comment resource was attempted, but the authorization policy challenged the request.");
             }
 
             await PostRepository.AddAsync(entity);
@@ -186,7 +187,7 @@ namespace TFN.Api.Controllers
 
             if (!await AuthorizationService.AuthorizeAsync(User, authZModel, ScoreOperations.Write))
             {
-                return new ChallengeResult();
+                return new HttpForbiddenResult("A POST request for adding a new comment score resource was attempted, but the authorization policy challenged the request.");
             }
 
             await PostRepository.AddAsync(entity);
@@ -202,12 +203,33 @@ namespace TFN.Api.Controllers
         [Authorize("posts.edit")]
         public async Task<IActionResult> PatchAsync(
             Guid postId,
-            [FromBody]PostInputModel post)
+            [FromBody]PostInputModel model)
         {
-            throw new NotImplementedException();
+            var post = await PostRepository.GetAsync(postId);
+
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            var genre = Genre.Other;
+            var parsed = Enum.TryParse(post.Genre.ToString(), out genre);
+
+            var authZModel = PostAuthorizationModel.From(post);
+
+            if (!await AuthorizationService.AuthorizeAsync(User, authZModel, PostOperations.Edit))
+            {
+                return new HttpForbiddenResult("A POST request for adding a new post resource was attempted, but the authorization policy challenged the request.");
+            }
+
+            var editedPost = Post.EditPost(post, model.Text, model.TrackUrl, model.Tags, genre);
+
+            await PostRepository.UpdateAsync(editedPost);
+
+            return NoContent();
         }
-        #pragma warning disable 1998
-        //TODO Remove when we async
+
+
         [HttpPatch("{postId:Guid}/comments/{commentId:Guid}", Name = "EditComment")]
         [Authorize("posts.edit")]
         public async Task<IActionResult> PatchAsync(
@@ -215,7 +237,16 @@ namespace TFN.Api.Controllers
             Guid commentId,
             [FromBody]CommentInputModel post)
         {
-            throw new NotImplementedException();
+            var comment = await PostRepository.GetAsync(postId, commentId);
+
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            var authZModel = CommentAuthorizationModel.From(comment);
+
+            return NoContent();
         }
 
 
@@ -233,7 +264,7 @@ namespace TFN.Api.Controllers
 
             if (!await AuthorizationService.AuthorizeAsync(User, authZModel, PostOperations.Delete))
             {
-                return new ChallengeResult();
+                return new HttpForbiddenResult("A DELETE request for deleting a post resource was attempted, but the authorization policy challenged the request.");
             }
 
             await PostRepository.DeleteAsync(postId);
@@ -255,7 +286,7 @@ namespace TFN.Api.Controllers
 
             if (!await AuthorizationService.AuthorizeAsync(User, authZModel, CommentOperations.Delete))
             {
-                return new ChallengeResult();
+                return new HttpForbiddenResult("A DELETE request for deleting a post's comment resource was attempted, but the authorization policy challenged the request.");
             }
 
             await PostRepository.DeleteAsync(postId, commentId);
@@ -277,7 +308,7 @@ namespace TFN.Api.Controllers
 
             if (!await AuthorizationService.AuthorizeAsync(User, authZModel, ScoreOperations.Delete))
             {
-                return new ChallengeResult();
+                return new HttpForbiddenResult("A DELETE request for deleting a score resource was attempted, but the authorization policy challenged the request.");
             }
 
             await PostRepository.DeleteAsync(postId, commentId,scoreId);

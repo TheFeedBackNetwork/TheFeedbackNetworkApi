@@ -11,6 +11,7 @@ namespace TFN.Infrastructure.Repositories.ScopeAggregate.InMemory
             StandardScopes.OpenId,
             StandardScopes.ProfileAlwaysInclude,
             StandardScopes.RolesAlwaysInclude,
+            StandardScopes.OfflineAccess,
             new Scope
             {
                 Name = "biography",
