@@ -69,6 +69,12 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
             return Task.FromResult(score);
         }
 
+        public async Task UpdateAsync(Comment entity)
+        {
+            var post = await GetAsync(entity.PostId);
+
+            post.EditComment(entity);
+        }
         public Task UpdateAsync(Post entity)
         {
             DeleteAsync(entity.Id);
@@ -87,7 +93,7 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
         {
             foreach (var post in InMemoryPosts.Posts)
             {
-                var comment = post.Comments.Single(x => x.Id == commentId);
+                var comment = post.Comments.SingleOrDefault(x => x.Id == commentId);
                 post.Comments.Remove(comment);
             }
             return Task.FromResult(0);
@@ -99,12 +105,14 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
             {
                 foreach (var comment in post.Comments)
                 {
-                    var score = comment.Scores.Single(x => x.Id == scoreId);
+                    var score = comment.Scores.SingleOrDefault(x => x.Id == scoreId);
                     comment.Scores.Remove(score);
                 }
                 
             }
             return Task.FromResult(0);
         }
+
+        
     }
 }

@@ -51,5 +51,10 @@ namespace TFN.Domain.Models.Entities
         {
             return new Post(post.Id, post.UserId, post.Username, trackUrl, text, post.Likes, genre, tags, post.Comments.ToList(), post.IsActive, post.Created, post.Modified);
         }
+
+        public void EditComment(Comment comment)
+        {
+            Comments.First(x => x.Id == comment.Id).EditComment(comment.Text);
+        }
     }
 }

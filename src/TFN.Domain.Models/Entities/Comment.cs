@@ -29,5 +29,11 @@ namespace TFN.Domain.Models.Entities
             return new Comment(id,userId,postId,username,text,scores,isActive,created,modified);
         }
 
+        public void EditComment(string text)
+        {
+            Text = text;
+            Modified = SystemClock.Instance.Now;
+        }
+
     }
 }

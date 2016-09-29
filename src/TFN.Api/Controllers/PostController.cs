@@ -180,6 +180,11 @@ namespace TFN.Api.Controllers
                 return NotFound();
             }
 
+            if (comment.Scores.Any(x => x.UserId == UserId))
+            {
+                return BadRequest();
+            }
+
             var entity = new Score(commentId, UserId, Username);
 
 
@@ -197,8 +202,6 @@ namespace TFN.Api.Controllers
             return CreatedAtAction("GetScore", new { postId = comment.PostId, commentId = model.CommentId, scoreId = model.Id }, model);
         }
 
-        #pragma warning disable 1998
-        //TODO Remove when we async
         [HttpPatch("{postId:Guid}", Name = "EditPost")]
         [Authorize("posts.edit")]
         public async Task<IActionResult> PatchAsync(
@@ -219,7 +222,7 @@ namespace TFN.Api.Controllers
 
             if (!await AuthorizationService.AuthorizeAsync(User, authZModel, PostOperations.Edit))
             {
-                return new HttpForbiddenResult("A POST request for adding a new post resource was attempted, but the authorization policy challenged the request.");
+                return new HttpForbiddenResult("A PATCH request for ammending a post resource was attempted, but the authorization policy challenged the request.");
             }
 
             var editedPost = Post.EditPost(post, model.Text, model.TrackUrl, model.Tags, genre);
@@ -245,6 +248,13 @@ namespace TFN.Api.Controllers
             }
 
             var authZModel = CommentAuthorizationModel.From(comment);
+
+            if (!await AuthorizationService.AuthorizeAsync(User, authZModel, CommentOperations.Edit))
+            {
+                return new HttpForbiddenResult("A PATCH request for ammending a comment resource was attempted, but the authorization policy challenged the request.");
+            }
+
+            await PostRepository.UpdateAsync(comment);
 
             return NoContent();
         }

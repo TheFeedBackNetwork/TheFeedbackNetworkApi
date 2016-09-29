@@ -8,10 +8,10 @@ namespace TFN.Domain.Models.Entities
     {
         public Guid UserId { get; private set; }
         public string Username { get; private set; }
-        public string Text { get; private set; }
+        public string Text { get; set; }
         public bool IsActive { get; private set; }
         public Instant Created { get; private set; }
-        public Instant Modified { get; private set; }
+        public Instant Modified { get; set; }
 
         protected MessageDomainEntity(Guid id, Guid userId,string username, string text,bool isActive, Instant created, Instant modified)
             : base(id)

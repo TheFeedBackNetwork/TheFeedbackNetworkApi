@@ -12,6 +12,7 @@ namespace TFN.Domain.Interfaces.Repositories
         Task<Post> GetAsync(Guid postId, int commentOffset, int commentLimit);
         Task<Comment> GetAsync(Guid postId, Guid commentId);
         Task<Score> GetAsync(Guid postId, Guid commentId,Guid scoreId);
+        Task UpdateAsync(Comment entity);
         Task AddAsync(Comment entity);
         Task AddAsync(Score entity);
         Task DeleteAsync(Guid postId, Guid commentId);
