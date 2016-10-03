@@ -15,5 +15,10 @@ namespace TFN.Mvc.HttpResults
             : base(BadRequestModel.Create(fields))
         {
         }
+
+        public HttpBadRequestResult(string message)
+            : base(BadRequestModel.Create(message))
+        {
+        }
     }
 }
