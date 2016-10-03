@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TFN.Mvc.Models.ResponseModels.Errors
 {
@@ -19,6 +20,11 @@ namespace TFN.Mvc.Models.ResponseModels.Errors
         internal static BadRequestModel Create()
         {
             return new BadRequestModel(BadRequestMessage);
+        }
+
+        internal static object Create(string message)
+        {
+            return new BadRequestModel(message);
         }
 
         internal static BadRequestModel Create(IDictionary<string, IEnumerable<string>> fields)

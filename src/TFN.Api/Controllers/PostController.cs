@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NodaTime;
 using TFN.Api.Authorization.Models.Resource;
 using TFN.Api.Authorization.Operations;
 using TFN.Api.Models.InputModels;
@@ -213,6 +215,11 @@ namespace TFN.Api.Controllers
             if (post == null)
             {
                 return NotFound();
+            }
+
+            if (NodaTime.SystemClock.Instance.Now.Minus(post.Created) > Duration.FromHours(1))
+            {
+                return new HttpBadRequestResult("Post Cannot be edited 1 hour after its creation.");
             }
 
             var genre = Genre.Other;
