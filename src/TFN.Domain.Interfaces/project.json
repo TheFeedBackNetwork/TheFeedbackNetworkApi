@@ -5,7 +5,7 @@
 
   "dependencies": {
     "TFN.Domain.Models": "1.0.0-*",
-    "IdentityServer4": "1.0.0-rc1-update2"
+    "IdentityServer4": "1.0.0-rc2"
   },
 
   "frameworks": {
