@@ -27,6 +27,9 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
                     "posts.read",
                     "posts.edit",
                     "posts.delete",
+                    "tracks.read",
+                    "tracks.write",
+                    "tracks.delete",
                     "offline_access"
                 }
             },
@@ -51,6 +54,9 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
                     "posts.read",
                     "posts.edit",
                     "posts.delete",
+                    "tracks.read",
+                    "tracks.write",
+                    "tracks.delete",
                     "offline_access"
                 }
             },

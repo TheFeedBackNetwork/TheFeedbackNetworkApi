@@ -39,7 +39,10 @@ namespace TFN.Resolution
                 options.AddScopePolicy("posts.read")
                     .AddScopePolicy("posts.write")
                     .AddScopePolicy("posts.edit")
-                    .AddScopePolicy("posts.delete");
+                    .AddScopePolicy("posts.delete")
+                    .AddScopePolicy("tracks.read")
+                    .AddScopePolicy("tracks.write")
+                    .AddScopePolicy("tracks.delete");
             });
 
             services.AddTransient<IAuthorizationHandler, PostAuthorizationHandler>();

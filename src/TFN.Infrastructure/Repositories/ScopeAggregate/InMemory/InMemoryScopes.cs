@@ -91,7 +91,59 @@ namespace TFN.Infrastructure.Repositories.ScopeAggregate.InMemory
                     new ScopeClaim("biography", true),
                     new ScopeClaim("profile_picture_url", true),
                 }
+            },
+            new Scope
+            {
+                Name = "tracks.delete",
+                DisplayName = "Tracks Delete",
+                Description = "Scope for deleting the tracks resource",
+                Type = ScopeType.Resource,
+                Claims = new List<ScopeClaim>
+                {
+                    new ScopeClaim(JwtClaimTypes.Email, true),
+                    new ScopeClaim(JwtClaimTypes.PreferredUserName, true),
+                    new ScopeClaim(JwtClaimTypes.Picture, true),
+                    new ScopeClaim(JwtClaimTypes.GivenName, true),
+                    new ScopeClaim(JwtClaimTypes.FamilyName, true),
+                    new ScopeClaim("biography", true),
+                    new ScopeClaim("profile_picture_url", true),
+                }
+            },
+            new Scope
+            {
+                Name = "tracks.read",
+                DisplayName = "Tracks Read",
+                Description = "Scope for reading the tracks resource",
+                Type = ScopeType.Resource,
+                Claims = new List<ScopeClaim>
+                {
+                    new ScopeClaim(JwtClaimTypes.Email, true),
+                    new ScopeClaim(JwtClaimTypes.PreferredUserName, true),
+                    new ScopeClaim(JwtClaimTypes.Picture, true),
+                    new ScopeClaim(JwtClaimTypes.GivenName, true),
+                    new ScopeClaim(JwtClaimTypes.FamilyName, true),
+                    new ScopeClaim("biography", true),
+                    new ScopeClaim("profile_picture_url", true),
+                }
+            },
+            new Scope
+            {
+                Name = "tracks.write",
+                DisplayName = "Tracks Write",
+                Description = "Scope for writing the tracks resource",
+                Type = ScopeType.Resource,
+                Claims = new List<ScopeClaim>
+                {
+                    new ScopeClaim(JwtClaimTypes.Email, true),
+                    new ScopeClaim(JwtClaimTypes.PreferredUserName, true),
+                    new ScopeClaim(JwtClaimTypes.Picture, true),
+                    new ScopeClaim(JwtClaimTypes.GivenName, true),
+                    new ScopeClaim(JwtClaimTypes.FamilyName, true),
+                    new ScopeClaim("biography", true),
+                    new ScopeClaim("profile_picture_url", true),
+                }
             }
+
         };
     }
 }
