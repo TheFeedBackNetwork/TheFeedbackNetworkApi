@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -10,9 +11,11 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using TFN.Domain.Interfaces.Services;
 using TFN.Domain.Models.Entities;
 using TFN.Mvc.Helpers;
 
@@ -21,17 +24,24 @@ namespace TFN.Api.Controllers
     [Route("api/tracks")]
     public class TracksController : Controller
     {
-        private IHostingEnvironment Environment;
+        public IHostingEnvironment Environment { get; private set; }
+        public ITrackStorageService TrackStorageService { get; private set; }
+        public ITrackProcessingService TrackProcessingService { get; private set; }
+        public ILogger Logger { get; private set; }
         // Get the default form options so that we can use them to set the default limits for
         // request body data
-        private static readonly FormOptions _defaultFormOptions = new FormOptions();
+        private static readonly FormOptions DefaultFormOptions = new FormOptions();
 
         private CloudBlobClient BlobClient;
-        public TracksController(IHostingEnvironment environment)
+        public TracksController(IHostingEnvironment environment, ITrackProcessingService trackProcessingService, ITrackStorageService trackStorageService, ILogger<TracksController> logger)
         {
             Environment = environment;
+            TrackStorageService = trackStorageService;
+            TrackProcessingService = trackProcessingService;
+            Logger = logger;
 
             BlobClient = CloudStorageAccount.Parse("UseDevelopmentStorage=true;").CreateCloudBlobClient();
+
         }
 
         [HttpGet("{trackId:Guid}", Name = "GetTrack")]
@@ -55,7 +65,7 @@ namespace TFN.Api.Controllers
             string targetFilePath = null;
 
             var boundary = MultipartRequestHelper.GetBoundary(
-                MediaTypeHeaderValue.Parse(Request.ContentType), _defaultFormOptions.MultipartBoundaryLengthLimit);
+                MediaTypeHeaderValue.Parse(Request.ContentType), DefaultFormOptions.MultipartBoundaryLengthLimit);
             var reader = new MultipartReader(boundary, HttpContext.Request.Body);
 
             var section = await reader.ReadNextSectionAsync();
@@ -69,16 +79,45 @@ namespace TFN.Api.Controllers
                     var name = HeaderUtilities.RemoveQuotes(contentDisposition.Name) ?? string.Empty;
                     var fileName = HeaderUtilities.RemoveQuotes(contentDisposition.FileName) ?? string.Empty;
 
+                    if (name.Equals("track", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        var format = fileName.Split('.').Last();
+
+                        var unprocessedFileName = $"{Guid.NewGuid()}.{format}";
+                        var processedFileName = $"{Guid.NewGuid()}.mp3";
+                        
+                        var memoryStream = new MemoryStream();
+                        
+                        section.Body.CopyTo(memoryStream);
+                       
+
+                        Logger.LogInformation($"track with name [{fileName}] to be processed with format [{format}] as [{unprocessedFileName}]");
+
+                        var unprocessedUri = await TrackStorageService.UploadUnprocessedAsync(memoryStream, unprocessedFileName);
+
+                        Logger.LogInformation($"unprocessed track is stored at [{unprocessedUri}]");
+
+                        Logger.LogInformation($"processing track [{unprocessedFileName}]");
+
+                        var waveSource = await TrackProcessingService.GetWaveSourceAsync(unprocessedUri);
+
+
+                        //var processedUri = await TrackStorageService.UploadProcessedAsync()
+
+                    }
+
                     // Here the uploaded file is being copied to local disk but you can also for example, copy the
                     // stream directly to let's say Azure blob storage
-                    targetFilePath = Path.Combine(Environment.ContentRootPath, Guid.NewGuid().ToString());
+                    //targetFilePath = Path.Combine(Environment.ContentRootPath, Guid.NewGuid().ToString());
 
-                    var blobContainer = BlobClient.GetContainerReference("tracks");
+                    
+
+                    /*var blobContainer = BlobClient.GetContainerReference("tracks");
                     blobContainer.CreateIfNotExists();
 
                     var block = blobContainer.GetBlockBlobReference("unprocessed");
 
-                    block.UploadFromStream(section.Body);
+                    block.UploadFromStream(section.Body);*/
 
                     /*using (var targetStream = System.IO.File.Create(targetFilePath))
                     {
@@ -113,10 +152,10 @@ namespace TFN.Api.Controllers
                         var value = await streamReader.ReadToEndAsync();
                         formAccumulator.Append(key, value);
 
-                        if (formAccumulator.ValueCount > _defaultFormOptions.ValueCountLimit)
+                        if (formAccumulator.ValueCount > DefaultFormOptions.ValueCountLimit)
                         {
                             throw new InvalidDataException(
-                                $"Form key count limit {_defaultFormOptions.ValueCountLimit} exceeded.");
+                                $"Form key count limit {DefaultFormOptions.ValueCountLimit} exceeded.");
                         }
                     }
                 }

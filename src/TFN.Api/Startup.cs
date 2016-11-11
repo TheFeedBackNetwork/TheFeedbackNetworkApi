@@ -38,6 +38,8 @@ namespace TFN.Api
             Resolver.RegisterTypes(services);
             Resolver.RegisterAuthorizationPolicies(services);
 
+            services.AddSingleton<IConfiguration>(Configuration);
+
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddMvc()
