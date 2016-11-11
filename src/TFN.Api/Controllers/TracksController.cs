@@ -86,14 +86,14 @@ namespace TFN.Api.Controllers
                         var unprocessedFileName = $"{Guid.NewGuid()}.{format}";
                         var processedFileName = $"{Guid.NewGuid()}.mp3";
                         
-                        var memoryStream = new MemoryStream();
+                        var unprocessedTrack = new MemoryStream();
                         
-                        section.Body.CopyTo(memoryStream);
+                        section.Body.CopyTo(unprocessedTrack);
                        
 
                         Logger.LogInformation($"track with name [{fileName}] to be processed with format [{format}] as [{unprocessedFileName}]");
 
-                        var unprocessedUri = await TrackStorageService.UploadUnprocessedAsync(memoryStream, unprocessedFileName);
+                        var unprocessedUri = await TrackStorageService.UploadUnprocessedAsync(unprocessedTrack, unprocessedFileName);
 
                         Logger.LogInformation($"unprocessed track is stored at [{unprocessedUri}]");
 
@@ -101,7 +101,14 @@ namespace TFN.Api.Controllers
 
                         var waveSource = await TrackProcessingService.GetWaveSourceAsync(unprocessedUri);
 
+                        var processedTrack = await TrackProcessingService.TranscodeAudioAsync(waveSource);
 
+                        Logger.LogInformation($"processed track with name [{processedFileName}] to be stored in storage.");
+
+                        var processedUri =
+                            await TrackStorageService.UploadProcessedAsync(processedTrack, processedFileName);
+
+                        Logger.LogInformation($"processed track is stored at [{processedUri}]");
                         //var processedUri = await TrackStorageService.UploadProcessedAsync()
 
                     }

@@ -42,12 +42,12 @@ namespace TFN.Domain.Services
                 throw new NotSupportedException("The current host does not support mp3 encoding");
             }
 
-            IWaveSource source = null;
+            IWaveSource source;
             try
             {
                 Logger.LogInformation($"getting source from [{trackUri}]");
 
-                source = CodecFactory.Instance.GetCodec(trackUri);
+                source = CodecFactory.Instance.GetCodec(new Uri(trackUri.AbsoluteUri));
 
                 Logger.LogInformation($"source retrieved [{source}]");
 
@@ -69,9 +69,10 @@ namespace TFN.Domain.Services
 
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Logger.LogCritical("format not supported");
+                Logger.LogCritical(e.ToString());
                 throw new NotSupportedException("format not supported");
             }
 
