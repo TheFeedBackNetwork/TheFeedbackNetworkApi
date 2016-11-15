@@ -14,7 +14,7 @@ namespace TFN.Infrastructure.Components.Storage
         public BlobStorageComponent(IConfiguration configuration)
         {
             BlobClient = CloudStorageAccount
-                .Parse("UseDevelopmentStorage=true;")
+                .Parse(configuration["Storage:StorageAccountConnectionString"])
                 .CreateCloudBlobClient();
         }
         public async Task DeleteAsync(string container, string fileName)
@@ -37,6 +37,9 @@ namespace TFN.Infrastructure.Components.Storage
             var block = blobContainer.GetBlockBlobReference(fileName);
 
             block.UploadFromStream(trackStream);
+
+            trackStream.Close();
+            trackStream.Dispose();
 
             return block.Uri;
         }

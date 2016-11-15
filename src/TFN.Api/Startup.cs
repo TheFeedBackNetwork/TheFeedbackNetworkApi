@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using TFN.Infrastructure.Modules;
 using TFN.Resolution;
 using TFN.Mvc.Constants;
 using TFN.Mvc.Extensions;
@@ -80,6 +81,13 @@ namespace TFN.Api
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            if (!env.IsLocal())
+            {
+                loggerFactory.AddAppendBlob(
+                    Configuration["Logging:StorageAccountConnectionString"],
+                    LogLevel.Information);
+            }
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -91,11 +99,11 @@ namespace TFN.Api
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             app.UseJwtBearerAuthentication(new JwtBearerOptions
             {
-                Authority = "http://localhost:5000/identity",
-                Audience = "http://localhost:5000/identity/resources",
+                Authority = Configuration["Authorization:Authority"],
+                Audience = Configuration["Authorization:Audience"],
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
-                RequireHttpsMetadata = !env.IsLocal(),
+                RequireHttpsMetadata = false,
 
                 TokenValidationParameters = new TokenValidationParameters
                 {

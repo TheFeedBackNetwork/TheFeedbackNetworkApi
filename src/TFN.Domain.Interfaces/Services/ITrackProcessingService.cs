@@ -12,6 +12,7 @@ namespace TFN.Domain.Interfaces.Services
         Task<IWaveSource> GetWaveSourceAsync(Stream trackStream);
         Task<IReadOnlyList<int>> GetSoundWaveAsync(IWaveSource track);
         Task<Stream> TranscodeAudioAsync(IWaveSource track);
+        Task<string> TranscodeAudioAsync(IWaveSource track, string fileName);
 
     }
 }

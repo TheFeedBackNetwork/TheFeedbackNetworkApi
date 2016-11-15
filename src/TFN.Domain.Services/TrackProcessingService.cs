@@ -7,18 +7,23 @@ using CSCore.MediaFoundation;
 using TFN.Domain.Interfaces.Services;
 using System.Linq;
 using CSCore.Codecs;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace TFN.Domain.Services
 {
-    public class TrackProcessingService : ITrackProcessingService
+    public class TrackProcessingService : ITrackProcessingService, IDisposable
     {
+        private MediaFoundationEncoder _encoder = null;
+        private MemoryStream _targetStream = null;
+        public IHostingEnvironment Environment { get; private set; }
         public ILogger Logger { get; private set; }
 
         public int Bitrate { get; private set; }
-        public TrackProcessingService(ILogger<TrackProcessingService> logger, IConfiguration configuration)
+        public TrackProcessingService(ILogger<TrackProcessingService> logger, IConfiguration configuration, IHostingEnvironment environment)
         {
+            Environment = environment;
             Logger = logger;
             Bitrate = Int32.Parse(configuration["TranscodeBitrate"]);
         }
@@ -48,7 +53,9 @@ namespace TFN.Domain.Services
                 Logger.LogInformation($"getting source from [{trackUri}]");
 
                 source = CodecFactory.Instance.GetCodec(new Uri(trackUri.AbsoluteUri));
-
+                /*source =
+                    CodecFactory.Instance.GetCodec(
+                        new Uri("https://identitydeveloptstorage.blob.core.windows.net/test/test.wav"));*/
                 Logger.LogInformation($"source retrieved [{source}]");
 
                 if (
@@ -62,8 +69,9 @@ namespace TFN.Domain.Services
                             .First(x => x.Channels == source.WaveFormat.Channels)
                             .SampleRate;
 
-                    Console.WriteLine("Samplerate {0} -> {1}", source.WaveFormat.SampleRate, sampleRate);
-                    Console.WriteLine("Channels {0} -> {1}", source.WaveFormat.Channels, 2);
+                    Logger.LogInformation($"Samplerate [{source.WaveFormat.SampleRate}] -> [{sampleRate}]");
+                    Logger.LogInformation($"Channels [{source.WaveFormat.Channels}] -> [{2}]");
+
                     source = source.ChangeSampleRate(sampleRate);
                 }
 
@@ -80,7 +88,7 @@ namespace TFN.Domain.Services
             
         }
 
-        public Task<Stream> TranscodeAudioAsync(IWaveSource track)
+        public Task<string> TranscodeAudioAsync(IWaveSource track, string fileName)
         {
             var supportedFormats = MediaFoundationEncoder.GetEncoderMediaTypes(AudioSubTypes.MpegLayer3);
             if (!supportedFormats.Any())
@@ -89,27 +97,66 @@ namespace TFN.Domain.Services
                 throw new NotSupportedException("The current host does not support mp3 encoding");
             }
 
-            var memoryStream = new MemoryStream();
+            var filePath = Path.Combine(Environment.ContentRootPath, fileName);
 
             using (track)
             {
-                using (var encoder = MediaFoundationEncoder.CreateMP3Encoder(track.WaveFormat, memoryStream))
+                var buffer = new byte[track.WaveFormat.BytesPerSecond];
+                int read;
+                using (var encoder = MediaFoundationEncoder.CreateMP3Encoder(track.WaveFormat, filePath))
                 {
-                    byte[] buffer = new byte[track.WaveFormat.BytesPerSecond];
-                    int read;
                     while ((read = track.Read(buffer, 0, buffer.Length)) > 0)
                     {
                         encoder.Write(buffer, 0, read);
-
-                        //Console.CursorLeft = 0;
-                        //Console.Write("{0:P}/{1:P}", (double)track.Position / track.Length, 1);
                     }
                 }
+
+            }
+               
+
+
+            return Task.FromResult(filePath);
+        }
+
+        public async Task<Stream> TranscodeAudioAsync(IWaveSource track)
+        {
+            var supportedFormats = MediaFoundationEncoder.GetEncoderMediaTypes(AudioSubTypes.MpegLayer3);
+            if (!supportedFormats.Any())
+            {
+                Logger.LogCritical($"The current host does not support mp3 encoding");
+                throw new NotSupportedException("The current host does not support mp3 encoding");
             }
 
-            return Task.FromResult((Stream)memoryStream);
+            var returnStream = new MemoryStream();
+            
+            var buffer = new byte[track.WaveFormat.BytesPerSecond];
+            _targetStream = new MemoryStream();
+            _encoder = MediaFoundationEncoder.CreateMP3Encoder(track.WaveFormat, _targetStream, Bitrate);
+            
+            int read;
+            while ((read = track.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                _encoder.Write(buffer,0,read);
+                
+            }
+
+            _targetStream.Position = 0L;
+            await _targetStream.CopyToAsync(returnStream,buffer.Length);
+            _targetStream.Flush();
+
+            return returnStream;
 
         }
 
+        public void Dispose()
+        {
+            if (_encoder != null)
+            {
+                _encoder.Dispose();
+            }
+            
+        }
+
+        
     }
 }

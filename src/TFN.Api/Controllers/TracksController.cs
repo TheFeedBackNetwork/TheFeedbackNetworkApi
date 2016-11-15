@@ -44,12 +44,12 @@ namespace TFN.Api.Controllers
 
         }
 
-        [HttpGet("{trackId:Guid}", Name = "GetTrack")]
+        /*[HttpGet("{trackId:Guid}", Name = "GetTrack")]
         [Authorize("tracks.read")]
         public async Task<IActionResult> GetAsync(Guid trackId)
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         [HttpPost(Name = "PostTrack")]
         //[Authorize("tracks.write")]
@@ -62,7 +62,7 @@ namespace TFN.Api.Controllers
 
             // Used to accumulate all the form url encoded key value pairs in the request.
             var formAccumulator = new KeyValueAccumulator();
-            string targetFilePath = null;
+            //string targetFilePath = null;
 
             var boundary = MultipartRequestHelper.GetBoundary(
                 MediaTypeHeaderValue.Parse(Request.ContentType), DefaultFormOptions.MultipartBoundaryLengthLimit);
@@ -101,40 +101,22 @@ namespace TFN.Api.Controllers
 
                         var waveSource = await TrackProcessingService.GetWaveSourceAsync(unprocessedUri);
 
-                        var processedTrack = await TrackProcessingService.TranscodeAudioAsync(waveSource);
+                        //Logger.LogInformation();
+
+                        var processedTrack = await TrackProcessingService.TranscodeAudioAsync(waveSource, processedFileName);
 
                         Logger.LogInformation($"processed track with name [{processedFileName}] to be stored in storage.");
 
                         var processedUri =
                             await TrackStorageService.UploadProcessedAsync(processedTrack, processedFileName);
 
+                        Logger.LogInformation($"track size [{processedTrack.Length}]");
+
                         Logger.LogInformation($"processed track is stored at [{processedUri}]");
-                        //var processedUri = await TrackStorageService.UploadProcessedAsync()
+                        
 
                     }
 
-                    // Here the uploaded file is being copied to local disk but you can also for example, copy the
-                    // stream directly to let's say Azure blob storage
-                    //targetFilePath = Path.Combine(Environment.ContentRootPath, Guid.NewGuid().ToString());
-
-                    
-
-                    /*var blobContainer = BlobClient.GetContainerReference("tracks");
-                    blobContainer.CreateIfNotExists();
-
-                    var block = blobContainer.GetBlockBlobReference("unprocessed");
-
-                    block.UploadFromStream(section.Body);*/
-
-                    /*using (var targetStream = System.IO.File.Create(targetFilePath))
-                    {
-                        await section.Body.CopyToAsync(targetStream);
-
-
-                        //copy to blob
-
-                        //_logger.LogInformation($"Copied the uploaded file '{fileName}' to '{targetFilePath}'.");
-                    }*/
                 }
                 else if (MultipartRequestHelper.HasFormDataContentDisposition(contentDisposition))
                 {

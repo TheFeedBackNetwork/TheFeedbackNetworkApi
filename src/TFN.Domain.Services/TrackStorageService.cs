@@ -23,6 +23,12 @@ namespace TFN.Domain.Services
             return await BlobStorageComponent.UploadAsync(trackStream, ProcessedContainer, fileName);
         }
 
+        public async Task<Uri> UploadProcessedAsync(string path, string fileName)
+        {
+            var stream = File.Open(path, FileMode.Open);
+            return await BlobStorageComponent.UploadAsync(stream, ProcessedContainer, fileName);
+        }
+
         public async Task<Uri> UploadUnprocessedAsync(Stream trackStream, string fileName)
         {
             return await BlobStorageComponent.UploadAsync(trackStream, UnprocessedContainer, fileName);
