@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -11,10 +12,13 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using TFN.Api.Models.ResponseModels;
+using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Interfaces.Services;
 using TFN.Domain.Models.Entities;
 using TFN.Mvc.Helpers;
@@ -22,37 +26,40 @@ using TFN.Mvc.Helpers;
 namespace TFN.Api.Controllers
 {
     [Route("api/tracks")]
-    public class TracksController : Controller
+    public class TracksController : AppController
     {
         public IHostingEnvironment Environment { get; private set; }
+        public IConfiguration Configuration { get; private set; }
         public ITrackStorageService TrackStorageService { get; private set; }
         public ITrackProcessingService TrackProcessingService { get; private set; }
+        public ITrackRepository TrackRepository { get; private set; }
         public ILogger Logger { get; private set; }
         // Get the default form options so that we can use them to set the default limits for
         // request body data
         private static readonly FormOptions DefaultFormOptions = new FormOptions();
 
-        private CloudBlobClient BlobClient;
-        public TracksController(IHostingEnvironment environment, ITrackProcessingService trackProcessingService, ITrackStorageService trackStorageService, ILogger<TracksController> logger)
+        public TracksController(IHostingEnvironment environment, ITrackProcessingService trackProcessingService,
+            ITrackStorageService trackStorageService, ILogger<TracksController> logger, IConfiguration configuration,
+            ITrackRepository trackRepository)
         {
             Environment = environment;
+            Configuration = configuration;
             TrackStorageService = trackStorageService;
             TrackProcessingService = trackProcessingService;
+            TrackRepository = trackRepository;
             Logger = logger;
-
-            BlobClient = CloudStorageAccount.Parse("UseDevelopmentStorage=true;").CreateCloudBlobClient();
 
         }
 
-        /*[HttpGet("{trackId:Guid}", Name = "GetTrack")]
+        [HttpGet("{trackId:Guid}", Name = "GetTrack")]
         [Authorize("tracks.read")]
-        public async Task<IActionResult> GetAsync(Guid trackId)
+        public Task<IActionResult> GetAsync(Guid trackId)
         {
             throw new NotImplementedException();
-        }*/
+        }
 
         [HttpPost(Name = "PostTrack")]
-        //[Authorize("tracks.write")]
+        [Authorize("tracks.write")]
         public async Task<IActionResult> PostAsync()
         {
             if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
@@ -81,29 +88,36 @@ namespace TFN.Api.Controllers
 
                     if (name.Equals("track", StringComparison.CurrentCultureIgnoreCase))
                     {
+                        var supportedTypes = Configuration["SupportedMedia"].Split(' ');
                         var format = fileName.Split('.').Last();
 
+                        if (supportedTypes.All(x => x != format))
+                        {
+                            return BadRequest($"Expected media types {supportedTypes} but got '{format}'.");
+                        }
+
                         var unprocessedFileName = $"{Guid.NewGuid()}.{format}";
-                        var processedFileName = $"{Guid.NewGuid()}.mp3";
-                        
-                        var unprocessedTrack = new MemoryStream();
-                        
-                        section.Body.CopyTo(unprocessedTrack);
-                       
+                        var unprocessedFilePath = Path.Combine(Environment.WebRootPath, "unprocessedtracks", unprocessedFileName);
+
+                        var resourceId = Guid.NewGuid();
+                        var processedFileName = $"{resourceId}.mp3";
+                        var processedFilePath = Path.Combine(Environment.WebRootPath, "processedtracks", processedFileName);
+
+                        using (var fileStream = System.IO.File.Create(unprocessedFilePath))
+                        {
+                            await section.Body.CopyToAsync(fileStream);
+
+                            Logger.LogInformation($"track with name [{fileName}] uploaded with [{format}] as [{unprocessedFileName}]");
+                            Logger.LogInformation($"track with name [{fileName}] uploaded to path [{unprocessedFilePath}]");
+                        }
 
                         Logger.LogInformation($"track with name [{fileName}] to be processed with format [{format}] as [{unprocessedFileName}]");
 
-                        var unprocessedUri = await TrackStorageService.UploadUnprocessedAsync(unprocessedTrack, unprocessedFileName);
-
-                        Logger.LogInformation($"unprocessed track is stored at [{unprocessedUri}]");
 
                         Logger.LogInformation($"processing track [{unprocessedFileName}]");
 
-                        var waveSource = await TrackProcessingService.GetWaveSourceAsync(unprocessedUri);
 
-                        //Logger.LogInformation();
-
-                        var processedTrack = await TrackProcessingService.TranscodeAudioAsync(waveSource, processedFileName);
+                        var processedTrack = await TrackProcessingService.TranscodeAudioAsync(unprocessedFilePath, processedFilePath);
 
                         Logger.LogInformation($"processed track with name [{processedFileName}] to be stored in storage.");
 
@@ -113,8 +127,20 @@ namespace TFN.Api.Controllers
                         Logger.LogInformation($"track size [{processedTrack.Length}]");
 
                         Logger.LogInformation($"processed track is stored at [{processedUri}]");
-                        
 
+
+                        Logger.LogInformation("deleting processed and unprocessed tracks in wwwroot.");
+
+                        await TrackStorageService.DeleteLocalAsync(unprocessedFilePath);
+                        await TrackStorageService.DeleteLocalAsync(processedFilePath);
+
+                        var track = new Track(resourceId,UserId,processedUri,new List<int>(), DateTime.UtcNow);
+
+                        await TrackRepository.AddAsync(track);
+
+                        var model = TrackResponseModel.From(track, AbsoluteUri);
+
+                        return CreatedAtAction("GetTrack", new {trackId = model.Id}, model);
                     }
 
                 }
@@ -169,85 +195,6 @@ namespace TFN.Api.Controllers
             }
             return encoding;
         }
-        /*
-       public bool ByteArrayToFile(string _FileName, byte[] _ByteArray)
-       {
-           try
-           {
-               // Open file for reading
-               System.IO.FileStream _FileStream =
-                  new System.IO.FileStream(_FileName, System.IO.FileMode.Create,
-                                           System.IO.FileAccess.Write);
-               // Writes a block of bytes to this stream using data from
-               // a byte array.
-               _FileStream.Write(_ByteArray, 0, _ByteArray.Length);
-
-               // close file stream
-               _FileStream.Close();
-
-               return true;
-           }
-           catch (Exception _Exception)
-           {
-               // Error
-               Console.WriteLine("Exception caught in process: {0}",
-                                 _Exception.ToString());
-           }
-
-           // error occured, return false
-           return false;
-       }
-
-       public static byte[] ReadToEnd(Stream stream)
-       {
-           long originalPosition = 0;
-
-           if (stream.CanSeek)
-           {
-               originalPosition = stream.Position;
-               stream.Position = 0;
-           }
-
-           try
-           {
-               byte[] readBuffer = new byte[4096];
-
-               int totalBytesRead = 0;
-               int bytesRead;
-
-               while ((bytesRead = stream.Read(readBuffer, totalBytesRead, readBuffer.Length - totalBytesRead)) > 0)
-               {
-                   totalBytesRead += bytesRead;
-
-                   if (totalBytesRead == readBuffer.Length)
-                   {
-                       int nextByte = stream.ReadByte();
-                       if (nextByte != -1)
-                       {
-                           byte[] temp = new byte[readBuffer.Length * 2];
-                           Buffer.BlockCopy(readBuffer, 0, temp, 0, readBuffer.Length);
-                           Buffer.SetByte(temp, totalBytesRead, (byte)nextByte);
-                           readBuffer = temp;
-                           totalBytesRead++;
-                       }
-                   }
-               }
-
-               byte[] buffer = readBuffer;
-               if (readBuffer.Length != totalBytesRead)
-               {
-                   buffer = new byte[totalBytesRead];
-                   Buffer.BlockCopy(readBuffer, 0, buffer, 0, totalBytesRead);
-               }
-               return buffer;
-           }
-           finally
-           {
-               if (stream.CanSeek)
-               {
-                   stream.Position = originalPosition;
-               }
-           }
-       }*/
+       
     }
 }

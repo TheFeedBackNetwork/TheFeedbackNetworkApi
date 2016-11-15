@@ -33,5 +33,15 @@ namespace TFN.Domain.Services
         {
             return await BlobStorageComponent.UploadAsync(trackStream, UnprocessedContainer, fileName);
         }
+
+        public Task DeleteLocalAsync(string fileName)
+        {
+            if (File.Exists(fileName))
+            {
+                File.Delete(fileName);
+            }
+
+            return Task.CompletedTask;
+        }
     }
 }

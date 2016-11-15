@@ -42,6 +42,7 @@
     "include": [
       "wwwroot",
       "Views",
+      "ffmpeg",
       "appsettings.json",
       "appsettings.development.json",
       "web.config"

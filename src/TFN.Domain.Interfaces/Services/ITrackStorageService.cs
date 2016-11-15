@@ -9,5 +9,6 @@ namespace TFN.Domain.Interfaces.Services
         Task<Uri> UploadUnprocessedAsync(Stream trackStream, string fileName);
         Task<Uri> UploadProcessedAsync(Stream trackStream, string fileName);
         Task<Uri> UploadProcessedAsync(string path, string fileName);
+        Task DeleteLocalAsync(string filePath);
     }
 }

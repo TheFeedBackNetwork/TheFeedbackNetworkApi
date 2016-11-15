@@ -13,6 +13,7 @@ using TFN.Infrastructure.Components.Storage;
 using TFN.Infrastructure.Repositories.ClientAggregate.InMemory;
 using TFN.Infrastructure.Repositories.PostAggregate.InMemory;
 using TFN.Infrastructure.Repositories.ScopeAggregate.InMemory;
+using TFN.Infrastructure.Repositories.TrackAggregate.InMemory;
 using TFN.Infrastructure.Repositories.UserAggregate.InMemory;
 using TFN.Mvc.Extensions;
 
@@ -28,6 +29,7 @@ namespace TFN.Resolution
             services.AddTransient<IClientRepository, ClientInMemoryRepository>();
             services.AddTransient<IPostRepository, PostInMemoryRepository>();
             services.AddTransient<IClientStore, ClientInMemoryRepository>();
+            services.AddTransient<ITrackRepository, TrackInMemoryRepository>();
             //services
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICorsPolicyService, CorsPolicyService>();
