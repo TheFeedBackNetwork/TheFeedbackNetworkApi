@@ -15,17 +15,16 @@ namespace TFN.Domain.Services
 {
     public class TrackProcessingService : ITrackProcessingService, IDisposable
     {
-        private MediaFoundationEncoder _encoder = null;
-        private MemoryStream _targetStream = null;
-        public IHostingEnvironment Environment { get; private set; }
+        public ITrackStorageService TrackStorageService { get; private set; }
         public ILogger Logger { get; private set; }
 
         public int Bitrate { get; private set; }
-        public TrackProcessingService(ILogger<TrackProcessingService> logger, IConfiguration configuration, IHostingEnvironment environment)
+        public TrackProcessingService(ILogger<TrackProcessingService> logger, IConfiguration configuration, ITrackStorageService trackStorageService)
         {
             Environment = environment;
             Logger = logger;
             Bitrate = Int32.Parse(configuration["TranscodeBitrate"]);
+            TrackStorageService = trackStorageService;
         }
 
         public Task<IReadOnlyList<int>> GetSoundWaveAsync(IWaveSource track)
@@ -97,7 +96,11 @@ namespace TFN.Domain.Services
                 throw new NotSupportedException("The current host does not support mp3 encoding");
             }
 
-            var filePath = Path.Combine(Environment.ContentRootPath, fileName);
+            var memoryStream = new MemoryStream();
+            var resultStream = new MemoryStream();
+            //memoryStream.
+            //return Task.FromResult((Stream) memoryStream);
+            byte[] buffer = new byte[track.WaveFormat.BytesPerSecond];
 
             using (track)
             {
@@ -105,58 +108,28 @@ namespace TFN.Domain.Services
                 int read;
                 using (var encoder = MediaFoundationEncoder.CreateMP3Encoder(track.WaveFormat, filePath))
                 {
+                    //byte[] buffer = new byte[track.WaveFormat.BytesPerSecond];
+                    int read;
                     while ((read = track.Read(buffer, 0, buffer.Length)) > 0)
                     {
                         encoder.Write(buffer, 0, read);
                     }
+                    resultStream = new MemoryStream(buffer);
+                    var a = TrackStorageService.UploadProcessedAsync(resultStream, "lol.mp3");
+                    
+                    //memoryStream.WriteTo(resultStream);
+
                 }
+                var b = TrackStorageService.UploadProcessedAsync(resultStream, "lol.mp3");
 
-            }
-               
-
+                return Task.FromResult((Stream)resultStream);
 
             return Task.FromResult(filePath);
         }
 
-        public async Task<Stream> TranscodeAudioAsync(IWaveSource track)
-        {
-            var supportedFormats = MediaFoundationEncoder.GetEncoderMediaTypes(AudioSubTypes.MpegLayer3);
-            if (!supportedFormats.Any())
-            {
-                Logger.LogCritical($"The current host does not support mp3 encoding");
-                throw new NotSupportedException("The current host does not support mp3 encoding");
-            }
-
-            var returnStream = new MemoryStream();
             
-            var buffer = new byte[track.WaveFormat.BytesPerSecond];
-            _targetStream = new MemoryStream();
-            _encoder = MediaFoundationEncoder.CreateMP3Encoder(track.WaveFormat, _targetStream, Bitrate);
-            
-            int read;
-            while ((read = track.Read(buffer, 0, buffer.Length)) > 0)
-            {
-                _encoder.Write(buffer,0,read);
-                
-            }
-
-            _targetStream.Position = 0L;
-            await _targetStream.CopyToAsync(returnStream,buffer.Length);
-            _targetStream.Flush();
-
-            return returnStream;
 
         }
 
-        public void Dispose()
-        {
-            if (_encoder != null)
-            {
-                _encoder.Dispose();
-            }
-            
-        }
-
-        
     }
 }

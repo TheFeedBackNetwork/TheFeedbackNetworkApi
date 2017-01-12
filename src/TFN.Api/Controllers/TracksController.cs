@@ -99,7 +99,11 @@ namespace TFN.Api.Controllers
 
                         Logger.LogInformation($"processing track [{unprocessedFileName}]");
 
-                        var waveSource = await TrackProcessingService.GetWaveSourceAsync(unprocessedUri);
+                        var waveSource =
+                            await
+                                TrackProcessingService.GetWaveSourceAsync(
+                                    new Uri("https://identitydeveloptstorage.blob.core.windows.net/test/test.wav"));
+                        //var waveSource = await TrackProcessingService.GetWaveSourceAsync(unprocessedUri);
 
                         //Logger.LogInformation();
 
@@ -107,13 +111,11 @@ namespace TFN.Api.Controllers
 
                         Logger.LogInformation($"processed track with name [{processedFileName}] to be stored in storage.");
 
-                        var processedUri =
-                            await TrackStorageService.UploadProcessedAsync(processedTrack, processedFileName);
+                        /*var processedUri =
+                            await TrackStorageService.UploadProcessedAsync(processedTrack, processedFileName);*/
 
-                        Logger.LogInformation($"track size [{processedTrack.Length}]");
-
-                        Logger.LogInformation($"processed track is stored at [{processedUri}]");
-                        
+                        //Logger.LogInformation($"processed track is stored at [{processedUri}]");
+                        //var processedUri = await TrackStorageService.UploadProcessedAsync()
 
                     }
 
