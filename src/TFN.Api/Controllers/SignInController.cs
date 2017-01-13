@@ -19,23 +19,20 @@ namespace TFN.Api.Controllers
 {
     public class SignInController : Controller
     {
-        public  InMemoryUserLoginService LoginService { get; private set; }
         public IUserService UserService { get; private set; }
         public  IIdentityServerInteractionService Interaction { get; private set; }
 
         public SignInController(
-            InMemoryUserLoginService loginService,
             IUserService userService,
             IIdentityServerInteractionService interaction)
         {
-            LoginService = loginService;
             UserService = userService;
             Interaction = interaction;
         }
 
         [HttpGet]
         [Route(RoutePaths.SignInUrl, Name = "SignIn")]
-        public async Task<IActionResult> Login(string returnUrl)
+        public async Task<IActionResult> SignIn(string returnUrl)
         {
             var vm = new SignInViewModel(HttpContext);
 
@@ -52,7 +49,7 @@ namespace TFN.Api.Controllers
         [HttpPost]
         [Route(RoutePaths.SignInUrl, Name = "SignIn")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(SignInInputModel model)
+        public async Task<IActionResult> SignIn(SignInInputModel model)
         {
             if (ModelState.IsValid)
             {

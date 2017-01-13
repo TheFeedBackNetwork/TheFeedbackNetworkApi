@@ -62,8 +62,8 @@ namespace TFN.Api
                 options.UserInteractionOptions.ErrorUrl = "/" + RoutePaths.ErrorUrl;
                 options.SiteName = "TFN STS";
             })
-            .AddInMemoryStores()
-            .SetTemporarySigningCredential();
+                .AddInMemoryPersistedGrants()
+                .AddTemporarySigningCredential();
 
             
 
@@ -111,12 +111,13 @@ namespace TFN.Api
                     RoleClaimType = JwtClaimTypes.Role,
                 }
             });
+
             //STS Fork
             app.Map("/identity", identity =>
             {
                 identity.UseIdentityServer();
-                app.UseStaticFiles();
-                app.UseMvcWithDefaultRoute();
+                identity.UseStaticFiles();
+                identity.UseMvcWithDefaultRoute();
             });
 
             //API Fork

@@ -62,7 +62,9 @@ namespace TFN.Domain.Services
 
         public async Task<User> GetAsync(string username)
         {
-            throw new NotImplementedException();
+            var user = await UserRepository.GetAsync(username);
+
+            return user;
         }
 
         public async Task<User> GetAsync(string username, string password)
@@ -78,7 +80,9 @@ namespace TFN.Domain.Services
 
         public async Task<bool> ValidateCredentialsAsync(string username, string password)
         {
-            throw new NotImplementedException();
+            var user = await UserRepository.GetAsync(username, password);
+
+            return user != null;
         }
     }
 }

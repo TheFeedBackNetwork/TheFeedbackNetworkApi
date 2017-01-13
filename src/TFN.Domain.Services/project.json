@@ -4,10 +4,9 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-    "CSCore": "1.1.0",
     "TFN.Domain.Interfaces": "1.0.0-*",
     "TFN.Domain.Models": "1.0.0-*",
-    "IdentityServer4": "1.0.0-rc2",
+    "IdentityServer4": "1.0.0-rc3",
     "Microsoft.Extensions.Options": "1.0.0",
     "WindowsAzure.Storage": "7.2.1"
   },
