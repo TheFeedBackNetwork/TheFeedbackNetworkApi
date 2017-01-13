@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Services;
-using IdentityServer4.Services.InMemory;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using TFN.Api.Models.InputModels;

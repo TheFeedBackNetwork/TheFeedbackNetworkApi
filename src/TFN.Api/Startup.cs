@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using IdentityModel;
+using IdentityServer4.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -54,14 +55,21 @@ namespace TFN.Api
                 });
 
             services.AddIdentityServer(options =>
-            {
+                {
+                    options.UserInteraction = new UserInteractionOptions
+                    {
+                        LoginUrl = "/" + RoutePaths.SignInUrl,
+                        LogoutUrl = "/" + RoutePaths.SignOutUrl,
+                        ConsentUrl = "/" + RoutePaths.ConsentUrl,
+                        ErrorUrl = "/" + RoutePaths.ErrorUrl
+                    };
 
-                options.UserInteractionOptions.LoginUrl = "/" + RoutePaths.SignInUrl;
-                options.UserInteractionOptions.LogoutUrl = "/" + RoutePaths.SignOutUrl;
-                options.UserInteractionOptions.ConsentUrl = "/" + RoutePaths.ConsentUrl;
-                options.UserInteractionOptions.ErrorUrl = "/" + RoutePaths.ErrorUrl;
-                options.SiteName = "TFN STS";
-            })
+                    /*options.UserInteractionOptions.LoginUrl = "/" + RoutePaths.SignInUrl;
+                    options.UserInteractionOptions.LogoutUrl = "/" + RoutePaths.SignOutUrl;
+                    options.UserInteractionOptions.ConsentUrl = "/" + RoutePaths.ConsentUrl;
+                    options.UserInteractionOptions.ErrorUrl = "/" + RoutePaths.ErrorUrl;
+                    options.SiteName = "TFN STS";*/
+                })
                 .AddInMemoryPersistedGrants()
                 .AddTemporarySigningCredential();
 

@@ -12,7 +12,7 @@ using TFN.Domain.Services.Validators;
 using TFN.Infrastructure.Components.Storage;
 using TFN.Infrastructure.Repositories.ClientAggregate.InMemory;
 using TFN.Infrastructure.Repositories.PostAggregate.InMemory;
-using TFN.Infrastructure.Repositories.ScopeAggregate.InMemory;
+using TFN.Infrastructure.Repositories.ResourceAggregate.InMemory;
 using TFN.Infrastructure.Repositories.TrackAggregate.InMemory;
 using TFN.Infrastructure.Repositories.UserAggregate.InMemory;
 using TFN.Mvc.Extensions;
@@ -24,7 +24,7 @@ namespace TFN.Resolution
         public static void RegisterTypes(IServiceCollection services)
         {
             //repositories
-            services.AddTransient<IScopeStore, ScopeInMemoryRepository>();
+            services.AddTransient<IResourceRepository, ResourceInMemoryRepository>();
             services.AddTransient<IUserRepository, UserInMemoryRepository>();
             services.AddTransient<IClientRepository, ClientInMemoryRepository>();
             services.AddTransient<IPostRepository, PostInMemoryRepository>();

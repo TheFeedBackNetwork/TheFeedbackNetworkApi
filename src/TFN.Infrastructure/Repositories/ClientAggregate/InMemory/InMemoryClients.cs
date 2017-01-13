@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IdentityServer4;
 using IdentityServer4.Models;
 
 namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
@@ -78,9 +79,9 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
                 
                 AllowedScopes =
                 {
-                    StandardScopes.OpenId.Name,
-                    StandardScopes.Profile.Name,
-                    StandardScopes.OfflineAccess.Name,
+                    IdentityServerConstants.StandardScopes.OpenId,
+                    IdentityServerConstants.StandardScopes.Profile,
+                    IdentityServerConstants.StandardScopes.OfflineAccess,
                     "biography",
                     "profile_picture_url",
                     "posts.write",

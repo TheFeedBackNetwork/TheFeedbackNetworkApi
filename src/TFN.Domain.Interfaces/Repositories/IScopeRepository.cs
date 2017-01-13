@@ -2,7 +2,7 @@
 
 namespace TFN.Domain.Interfaces.Repositories
 {
-    public interface IScopeRepository : IScopeStore
+    public interface IResourceRepository : IResourceStore
     {
     }
 }
