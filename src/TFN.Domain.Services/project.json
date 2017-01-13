@@ -6,8 +6,8 @@
   "dependencies": {
     "TFN.Domain.Interfaces": "1.0.0-*",
     "TFN.Domain.Models": "1.0.0-*",
-    "IdentityServer4": "1.0.0-rc2",
-    "Microsoft.Extensions.Options": "1.0.0"
+    "IdentityServer4": "1.0.1",
+    "Microsoft.Extensions.Options": "1.1.0"
   },
 
   "frameworks": {
