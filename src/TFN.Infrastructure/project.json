@@ -7,7 +7,7 @@
     "TFN.Domain.Interfaces": "1.0.0-*",
     "TFN.Domain.Models": "1.0.0-*",
     "TFN.Domain.Services": "1.0.0-*",
-    "IdentityServer4": "1.0.0-rc3"
+    "IdentityServer4": "1.0.1"
   },
 
   "frameworks": {

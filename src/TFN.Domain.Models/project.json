@@ -4,7 +4,7 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-    "IdentityServer4": "1.0.0-rc3",
+    "IdentityServer4": "1.0.1",
     "NodaTime": "1.3.2",
     "TFN.DomainDrivenArchitecture.Domain": "1.0.0-*"
   },
