@@ -254,3 +254,9 @@ paket-files/
 *.sln.iml
 # ===== End VisualStudio.gitignore =====
 
+# generated content from API
+*.png
+*.mp3
+*.wav
+*.ogg
+*.flac
