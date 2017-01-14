@@ -8,6 +8,9 @@ using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using TFN.MediaLibrary;
+using TFN.MediaLibrary.Model;
+using TFN.MediaLibrary.Options;
 
 namespace TFN.Domain.Services
 {
@@ -15,48 +18,39 @@ namespace TFN.Domain.Services
     {
         public IHostingEnvironment Environment { get; private set; }
         public ILogger Logger { get; private set; }
-        public string Bitrate { get; private set; }
+        public int Bitrate { get; private set; }
         public TrackProcessingService(ILogger<TrackProcessingService> logger, IConfiguration configuration, IHostingEnvironment environment)
         {
             Environment = environment;
             Logger = logger;
-            Bitrate = configuration["TranscodeBitrate"];
+            Bitrate = int.Parse(configuration["TranscodeBitrate"]);
         }
 
-        public Task<string> TranscodeAudioAsync(string sourceFilePath, string destinationFilePath)
+        public Task TranscodeAudioAsync(string sourceFilePath, string destinationFilePath)
         {
-
-
-            var ffmpegExe = Path.Combine(Environment.ContentRootPath, "ffmpeg", "bin", "ffmpeg.exe");
-
-            var transcodeCmd = $" -i {sourceFilePath} -ab {Bitrate} {destinationFilePath}";
-
-            var process = new Process
+            var options = new ConversionOptions
             {
-                StartInfo =
-                {
-                    UseShellExecute = false,
-                    RedirectStandardOutput = true,
-                    FileName = ffmpegExe,
-                    Arguments = transcodeCmd
-                }
+                AudioBitRate = Bitrate
             };
 
+            var ffmpegPath = Path.Combine(Environment.ContentRootPath, "ffmpeg.exe");
 
-            process.Start();
+            var inputFile = new MediaFile(sourceFilePath);
+            var outputFile = new MediaFile(destinationFilePath);
+            var outputWf = destinationFilePath.Split('.')[0] + ".png";
 
-            var g = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
-
-            var exitCode = process.ExitCode;
-
-            if (exitCode == 0)
+            using (var engine = new Engine(ffmpegPath))
             {
-                return Task.FromResult(destinationFilePath);
+                engine.Convert(inputFile,outputFile,options);
             }
 
-            throw new InvalidOperationException($"could not transcode the audio");
-            
+            return Task.CompletedTask;
+        }
+
+        public Task<List<int>> GetWaveformAsync(Guid processedFileId, string destinationFilePath)
+        {
+
+            throw new NotImplementedException();
         }
     }
 }

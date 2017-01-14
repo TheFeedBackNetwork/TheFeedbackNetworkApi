@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using TFN.Infrastructure.Modules;
+using TFN.Infrastructure.Repositories.ResourceAggregate.InMemory;
 using TFN.Resolution;
 using TFN.Mvc.Constants;
 using TFN.Mvc.Extensions;
@@ -64,11 +65,6 @@ namespace TFN.Api
                         ErrorUrl = "/" + RoutePaths.ErrorUrl
                     };
 
-                    /*options.UserInteractionOptions.LoginUrl = "/" + RoutePaths.SignInUrl;
-                    options.UserInteractionOptions.LogoutUrl = "/" + RoutePaths.SignOutUrl;
-                    options.UserInteractionOptions.ConsentUrl = "/" + RoutePaths.ConsentUrl;
-                    options.UserInteractionOptions.ErrorUrl = "/" + RoutePaths.ErrorUrl;
-                    options.SiteName = "TFN STS";*/
                 })
                 .AddInMemoryPersistedGrants()
                 .AddTemporarySigningCredential();

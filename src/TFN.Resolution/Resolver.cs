@@ -25,6 +25,7 @@ namespace TFN.Resolution
         {
             //repositories
             services.AddTransient<IResourceRepository, ResourceInMemoryRepository>();
+            services.AddTransient<IResourceStore, ResourceInMemoryRepository>();
             services.AddTransient<IUserRepository, UserInMemoryRepository>();
             services.AddTransient<IClientRepository, ClientInMemoryRepository>();
             services.AddTransient<IPostRepository, PostInMemoryRepository>();

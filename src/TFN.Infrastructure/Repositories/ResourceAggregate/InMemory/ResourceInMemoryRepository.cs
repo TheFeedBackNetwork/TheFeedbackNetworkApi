@@ -11,27 +11,32 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
     {
         public Task<ApiResource> FindApiResourceAsync(string name)
         {
-            var resource = InMemoryResources.ApiResources.FirstOrDefault(x => x.Name == name);
+            var api = from a in InMemoryResources.ApiResources
+                      where a.Name == name
+                      select a;
 
-            return Task.FromResult(resource);
+            return Task.FromResult(api.FirstOrDefault());
         }
 
         public Task<IEnumerable<ApiResource>> FindApiResourcesByScopeAsync(IEnumerable<string> scopeNames)
         {
-            if (scopeNames == null)
-                throw new ArgumentNullException(nameof(scopeNames));
+            if (scopeNames == null) throw new ArgumentNullException(nameof(scopeNames));
 
-            var resources = InMemoryResources.ApiResources.Where(x => scopeNames.Contains(x.Name));
+            var api = from a in InMemoryResources.ApiResources
+                      from s in a.Scopes
+                      where scopeNames.Contains(s.Name)
+                      select a;
 
-            return Task.FromResult(resources);
+            return Task.FromResult(api);
         }
 
         public Task<IEnumerable<IdentityResource>> FindIdentityResourcesByScopeAsync(IEnumerable<string> scopeNames)
         {
-            if (scopeNames == null)
-                throw new ArgumentNullException(nameof(scopeNames));
+            if (scopeNames == null) throw new ArgumentNullException(nameof(scopeNames));
 
-            var identity = InMemoryResources.IdentityResources.Where(x => scopeNames.Contains(x.Name));
+            var identity = from i in InMemoryResources.IdentityResources
+                           where scopeNames.Contains(i.Name)
+                           select i;
 
             return Task.FromResult(identity);
         }

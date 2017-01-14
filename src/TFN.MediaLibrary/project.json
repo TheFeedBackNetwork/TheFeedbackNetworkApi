@@ -1,0 +1,17 @@
+{
+  "description": "TFN.Infrastructure Class Library",
+  "authors": [ "Lutando Ngqakaza" ],
+  "version": "1.0.0-*",
+
+  "dependencies": {
+
+  },
+
+  "frameworks": {
+    "net461": {
+      "frameworkAssemblies": {
+        "System.Drawing": "4.0.0.0"
+      }
+    }
+  }
+}

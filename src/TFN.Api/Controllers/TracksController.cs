@@ -7,16 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
 using TFN.Api.Models.ResponseModels;
 using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Interfaces.Services;
@@ -101,7 +97,9 @@ namespace TFN.Api.Controllers
 
                         var resourceId = Guid.NewGuid();
                         var processedFileName = $"{resourceId}.mp3";
+                        var waveformFilename = $"{resourceId}.png";
                         var processedFilePath = Path.Combine(Environment.WebRootPath, "processedtracks", processedFileName);
+                        var waveformFilePath  = Path.Combine(Environment.WebRootPath, "processedwaveforms", waveformFilename);
 
                         using (var fileStream = System.IO.File.Create(unprocessedFilePath))
                         {
@@ -117,9 +115,13 @@ namespace TFN.Api.Controllers
                         Logger.LogInformation($"processing track [{unprocessedFileName}]");
 
 
-                        var processedTrack = await TrackProcessingService.TranscodeAudioAsync(unprocessedFilePath, processedFilePath);
+                        await TrackProcessingService.TranscodeAudioAsync(unprocessedFilePath, processedFilePath);
+
+                        var waveFormData = await TrackProcessingService.GetWaveformAsync(resourceId,waveformFilePath);
 
                         Logger.LogInformation($"processed track with name [{processedFileName}] to be stored in storage.");
+
+                        var processedTrack = new FileStream(processedFilePath, FileMode.Open);
 
                         var processedUri =
                             await TrackStorageService.UploadProcessedAsync(processedTrack, processedFileName);
@@ -134,7 +136,7 @@ namespace TFN.Api.Controllers
                         await TrackStorageService.DeleteLocalAsync(unprocessedFilePath);
                         await TrackStorageService.DeleteLocalAsync(processedFilePath);
 
-                        var track = new Track(resourceId,UserId,processedUri,new List<int>(), DateTime.UtcNow);
+                        var track = new Track(resourceId,UserId,processedUri,waveFormData, DateTime.UtcNow);
 
                         await TrackRepository.AddAsync(track);
 
