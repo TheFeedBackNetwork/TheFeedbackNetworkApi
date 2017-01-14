@@ -9,6 +9,6 @@ namespace TFN.Domain.Interfaces.Services
 
         Task TranscodeAudioAsync(string sourceFilePath, string destinationFilePath);
 
-        Task<List<int>> GetWaveformAsync(Guid processedFileId, string destinationFilePath);
+        Task<List<int>> GetWaveformAsync(string sourceFilePath, string destinationFilePath);
     }
 }

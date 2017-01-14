@@ -15,6 +15,17 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
                 Name = "posts.read",
                 DisplayName = "Posts Read",
                 Description = "Scope for retreiving the posts resource",
+                Scopes = new List<Scope>
+                {
+                    new Scope
+                    {
+                        Name = "posts.read",
+                        ShowInDiscoveryDocument = true,
+                        Description = "Scope for read",
+                        DisplayName = "Posts.Read"
+                    }
+
+                },
                 UserClaims =
                 {
                     JwtClaimTypes.Email,
@@ -31,6 +42,17 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
                 Name = "posts.write",
                 DisplayName = "Posts Write",
                 Description = "Scope for writing the posts resource",
+                Scopes = new List<Scope>
+                {
+                    new Scope
+                    {
+                        Name = "posts.write",
+                        ShowInDiscoveryDocument = true,
+                        Description = "Scope for writing",
+                        DisplayName = "Posts.Write"
+                    }
+
+                },
                 UserClaims =
                 {
                     JwtClaimTypes.Email,
@@ -47,6 +69,17 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
                 Name = "posts.edit",
                 DisplayName = "Posts Edit",
                 Description = "Scope for editing the posts resource",
+                Scopes = new List<Scope>
+                {
+                    new Scope
+                    {
+                        Name = "posts.edit",
+                        ShowInDiscoveryDocument = true,
+                        Description = "Scope for edit",
+                        DisplayName = "Posts.Edit"
+                    }
+
+                },
                 UserClaims =
                 {
                     JwtClaimTypes.Email,
@@ -61,8 +94,19 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
             new ApiResource
             {
                 Name = "posts.delete",
-                DisplayName = "Posts Edit",
+                DisplayName = "Posts Delete",
                 Description = "Scope for deleting the posts resource",
+                Scopes = new List<Scope>
+                {
+                    new Scope
+                    {
+                        Name = "posts.delete",
+                        ShowInDiscoveryDocument = true,
+                        Description = "Scope for deleting",
+                        DisplayName = "Posts.Delete"
+                    }
+                    
+                },
                 UserClaims =
                 {
                     JwtClaimTypes.Email,
@@ -79,6 +123,17 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
                 Name = "tracks.delete",
                 DisplayName = "Tracks Delete",
                 Description = "Scope for deleting the tracks resource",
+                Scopes = new List<Scope>
+                {
+                    new Scope
+                    {
+                        Name = "tracks.delete",
+                        ShowInDiscoveryDocument = true,
+                        Description = "Scope for deleting tracks",
+                        DisplayName = "Tracks.Delete"
+                    }
+
+                },
                 UserClaims =
                 {
                     JwtClaimTypes.Email,
@@ -95,6 +150,17 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
                 Name = "tracks.read",
                 DisplayName = "Tracks Read",
                 Description = "Scope for reading the tracks resource",
+                Scopes = new List<Scope>
+                {
+                    new Scope
+                    {
+                        Name = "tracks.read",
+                        ShowInDiscoveryDocument = true,
+                        Description = "Scope for reading tracks",
+                        DisplayName = "Tracks.Read"
+                    }
+
+                },
                 UserClaims =
                 {
                     JwtClaimTypes.Email,
@@ -111,6 +177,17 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
                 Name = "tracks.write",
                 DisplayName = "Tracks Write",
                 Description = "Scope for writing the tracks resource",
+                Scopes = new List<Scope>
+                {
+                    new Scope
+                    {
+                        Name = "tracks.write",
+                        ShowInDiscoveryDocument = true,
+                        Description = "Scope for writing tracks",
+                        DisplayName = "Tracks.Write"
+                    }
+
+                },
                 UserClaims =
                 {
                     JwtClaimTypes.Email,

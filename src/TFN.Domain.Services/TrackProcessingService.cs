@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
 using TFN.Domain.Interfaces.Services;
@@ -47,10 +49,71 @@ namespace TFN.Domain.Services
             return Task.CompletedTask;
         }
 
-        public Task<List<int>> GetWaveformAsync(Guid processedFileId, string destinationFilePath)
+        public Task<List<int>> GetWaveformAsync(string sourceSoundFilePath, string destinationPngFilePath)
         {
+            var input = new MediaFile(sourceSoundFilePath);
+            var output = new MediaFile(destinationPngFilePath);
 
-            throw new NotImplementedException();
+            var ffmpegPath = Path.Combine(Environment.ContentRootPath, "ffmpeg.exe");
+
+            using (var engine = new Engine(ffmpegPath))
+            {
+                engine.GetWaveform(input,output);
+            }
+
+            var data = GetWaveformData(destinationPngFilePath);
+
+            return Task.FromResult(data);
+        }
+
+        private static List<int> GetWaveformData(string filename)
+        {
+            var bmp = (Bitmap)Image.FromFile(filename);
+
+            var clearColour = Color.FromArgb(0, 0, 0, 0);
+
+            var waveform = new List<int>();
+
+            var pic = new Bitmap(bmp.Width, bmp.Height / 2);
+
+            pic = InitPic(pic);
+
+            for (int i = 0; i < pic.Width; i++)
+            {
+                for (int j = 0; j < pic.Height; j++)
+                {
+                    if (bmp.GetPixel(i, j + bmp.Height / 2) == clearColour)
+                    {
+                        pic.SetPixel(i, j, Color.Blue);
+                        waveform.Add(j);
+                        j = bmp.Height;
+
+                    }
+                    else
+                    {
+                        pic.SetPixel(i, j, Color.Blue);
+                    }
+
+                }
+            }
+
+            pic.RotateFlip(RotateFlipType.Rotate180FlipX);
+
+            pic.Save(@"D:\v.png", ImageFormat.Png);
+
+            return waveform;
+        }
+
+        public static Bitmap InitPic(Bitmap bmp)
+        {
+            for (int i = 0; i < bmp.Width; i++)
+            {
+                for (int j = 0; j < bmp.Height; j++)
+                {
+                    bmp.SetPixel(i, j, Color.FromArgb(0, 0, 0, 0));
+                }
+            }
+            return bmp;
         }
     }
 }
