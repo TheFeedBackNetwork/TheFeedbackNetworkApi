@@ -29,7 +29,7 @@ namespace TFN.MediaLibrary.Util
                     ? string.Empty
                     : string.Format(CultureInfo.InvariantCulture, value, args);
             }
-            catch (FormatException ex) {
+            catch (FormatException) {
                 return value;
             }
         }
