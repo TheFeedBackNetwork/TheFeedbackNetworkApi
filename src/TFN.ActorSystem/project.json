@@ -1,0 +1,15 @@
+{
+  "description": "TFN.ActorSystem library for the AKKA.NET Actor System",
+  "authors": [ "Lutando Ngqakaza" ],
+  "version": "1.0.0-*",
+
+  "dependencies": {
+    "Akka": "1.1.2",
+    "Akka.Persistence": "1.1.2.30-beta",
+    "Akka.Serialization.Wire": "1.1.2.30-beta"
+  },
+
+  "frameworks": {
+    "net461": {}
+  }
+}

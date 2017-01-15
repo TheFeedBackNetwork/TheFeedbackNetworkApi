@@ -1,4 +1,6 @@
 ﻿{
+  "description": "TFN.Authorization ASP.NET Core Authorization helper library",
+  "authors": [ "Lutando Ngqakaza" ],
   "version": "1.0.0-*",
 
   "dependencies": {
