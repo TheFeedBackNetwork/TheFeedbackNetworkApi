@@ -82,8 +82,10 @@ namespace TFN.Api
             });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IApplicationLifetime appLifetime)
         {
+            appLifetime.ApplicationStopping.Register(ApplicationStopping);
+
             if (!env.IsLocal())
             {
                 loggerFactory.AddAppendBlob(
@@ -132,6 +134,11 @@ namespace TFN.Api
 
             var logger = loggerFactory.CreateLogger<Startup>();
             logger.LogInformation("The Feedback Network API application configuration complete.");
+        }
+
+        protected void ApplicationStopping()
+        {
+            
         }
     }
 }

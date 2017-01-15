@@ -49,6 +49,7 @@
       "ffmpeg",
       "appsettings.json",
       "appsettings.development.json",
+      "config.development.json",
       "web.config"
     ]
   },
