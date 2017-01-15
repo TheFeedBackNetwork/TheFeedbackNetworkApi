@@ -1,6 +1,8 @@
-﻿namespace TFN.ActorSystem.Actors.PostsSystem
+﻿using Akka.Actor;
+
+namespace TFN.ActorSystem.Actors.PostsSystem
 {
-    public class PostsSystemActor
+    public class PostsSystemActor : ReceiveActor
     {
         
     }

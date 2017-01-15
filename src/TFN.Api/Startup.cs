@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.IO;
+using Akka.Actor;
 using IdentityModel;
 using IdentityServer4.Configuration;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +11,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using TFN.ActorSystem;
+using TFN.ActorSystem.Actors.PostsSystem;
+using TFN.ActorSystem.Actors.UsersSystem;
 using TFN.Infrastructure.Modules;
 using TFN.Resolution;
 using TFN.Mvc.Constants;
@@ -44,6 +48,12 @@ namespace TFN.Api
         {
             Resolver.RegisterTypes(services);
             Resolver.RegisterAuthorizationPolicies(services);
+
+            SystemActors.PostsSystemActor = ActorSystem.ActorOf(Props.Create(() => new PostsSystemActor()),
+                "posts-system");
+
+            SystemActors.UserSystemActor = ActorSystem.ActorOf(Props.Create(() => new UsersSystemActor()),
+                "users-system");
 
             services.AddSingleton<Akka.Actor.ActorSystem>(_ => ActorSystem);
 
@@ -134,7 +144,7 @@ namespace TFN.Api
 
             //API Fork
             
-            app.UseStaticFiles();
+            //app.UseStaticFiles();
             app.UseMvcWithDefaultRoute();
 
             app.UseApplicationInsightsExceptionTelemetry();

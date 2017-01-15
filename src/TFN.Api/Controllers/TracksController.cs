@@ -133,6 +133,7 @@ namespace TFN.Api.Controllers
 
                         await TrackStorageService.DeleteLocalAsync(unprocessedFilePath);
                         await TrackStorageService.DeleteLocalAsync(processedFilePath);
+                        await TrackStorageService.DeleteLocalAsync(waveformFilePath);
 
                         var track = new Track(resourceId,UserId,processedUri,waveFormData, DateTime.UtcNow);
 

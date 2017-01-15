@@ -97,6 +97,8 @@ namespace TFN.Domain.Services
 
             pic.Save(@"D:\v.png", ImageFormat.Png);
 
+            bmp.Dispose();
+
             return waveform;
         }
 
