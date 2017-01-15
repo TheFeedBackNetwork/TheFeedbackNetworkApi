@@ -1,4 +1,5 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using IdentityModel;
 using IdentityServer4.Configuration;
 using Microsoft.AspNetCore.Builder;
@@ -19,8 +20,10 @@ namespace TFN.Api
     public class Startup
     {
         private IConfigurationRoot Configuration { get; }
+        private Akka.Actor.ActorSystem ActorSystem { get; }
         public Startup(IHostingEnvironment env)
         {
+            
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -33,12 +36,16 @@ namespace TFN.Api
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            ActorSystem = Akka.Actor.ActorSystem.Create("tfn-system", File.ReadAllText($"Config.{env.EnvironmentName}.hocon"));
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             Resolver.RegisterTypes(services);
             Resolver.RegisterAuthorizationPolicies(services);
+
+            services.AddSingleton<Akka.Actor.ActorSystem>(_ => ActorSystem);
 
             services.AddSingleton<IConfiguration>(Configuration);
 
