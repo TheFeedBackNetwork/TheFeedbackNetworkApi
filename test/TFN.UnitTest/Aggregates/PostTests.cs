@@ -5,7 +5,6 @@ using TFN.Domain.Models.Entities;
 using TFN.Domain.Models.Enums;
 using Xunit;
 using FluentAssertions;
-using TFN.Domain.Models.ValueObjects;
 
 namespace TFN.UnitTest.Aggregates
 {

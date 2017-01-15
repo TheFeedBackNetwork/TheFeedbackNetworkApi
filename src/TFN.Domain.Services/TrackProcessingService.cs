@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Threading.Tasks;
 using TFN.Domain.Interfaces.Services;
-using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -39,7 +36,6 @@ namespace TFN.Domain.Services
 
             var inputFile = new MediaFile(sourceFilePath);
             var outputFile = new MediaFile(destinationFilePath);
-            var outputWf = destinationFilePath.Split('.')[0] + ".png";
 
             using (var engine = new Engine(ffmpegPath))
             {

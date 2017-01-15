@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using TFN.Domain.Models.Entities;
-using TFN.Domain.Models.ValueObjects;
 using Xunit;
 using FluentAssertions;
 

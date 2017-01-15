@@ -10,7 +10,6 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using TFN.Infrastructure.Modules;
-using TFN.Infrastructure.Repositories.ResourceAggregate.InMemory;
 using TFN.Resolution;
 using TFN.Mvc.Constants;
 using TFN.Mvc.Extensions;

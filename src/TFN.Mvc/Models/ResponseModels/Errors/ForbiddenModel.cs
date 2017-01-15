@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TFN.Mvc.Models.ResponseModels.Errors
+﻿namespace TFN.Mvc.Models.ResponseModels.Errors
 {
     public class ForbiddenModel : ErrorModel
     {
