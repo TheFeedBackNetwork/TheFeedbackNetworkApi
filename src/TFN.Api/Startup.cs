@@ -1,4 +1,6 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System;
+using System.Diagnostics;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using Akka.Actor;
 using IdentityModel;
@@ -56,6 +58,11 @@ namespace TFN.Api
                 "users-system");
 
             services.AddSingleton<Akka.Actor.ActorSystem>(_ => ActorSystem);
+            ActorSystem.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(10),
+                TimeSpan.FromSeconds(300),
+                SystemActors.PostsSystemActor,
+                new PostsSystemMessages.Tap(),
+                ActorRefs.Nobody);
 
             services.AddSingleton<IConfiguration>(Configuration);
 
@@ -155,7 +162,8 @@ namespace TFN.Api
 
         protected void ApplicationStopping()
         {
-            
+            Debug.WriteLine("Stopping Application");
+            ActorSystem.Terminate();
         }
     }
 }

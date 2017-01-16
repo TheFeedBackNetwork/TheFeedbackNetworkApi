@@ -49,7 +49,7 @@
       "ffmpeg",
       "appsettings.json",
       "appsettings.development.json",
-      "config.development.json",
+      "config.development.hocon",
       "web.config"
     ]
   },

@@ -108,7 +108,8 @@ namespace TFN.Domain.Models.ValueObjects
 
         public static bool CanParse(string value)
         {
-            return TryParse(value, out Squid squid);
+            Squid squid;
+            return TryParse(value, out squid);
         }
 
         public override bool Equals(object obj)
