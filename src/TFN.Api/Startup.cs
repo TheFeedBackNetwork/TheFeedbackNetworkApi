@@ -7,8 +7,10 @@ using IdentityModel;
 using IdentityServer4.Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -29,7 +31,7 @@ namespace TFN.Api
         private Akka.Actor.ActorSystem ActorSystem { get; }
         public Startup(IHostingEnvironment env)
         {
-            
+                        
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -141,6 +143,20 @@ namespace TFN.Api
                 }
             });
 
+            //API Fork
+            app.UseMvcWithDefaultRoute();
+            app.UseDefaultFiles(new DefaultFilesOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "build", "client")),
+            });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "build","client")),
+                //RequestPath = ""
+            });
+            
+
+
             //STS Fork
             app.Map("/identity", identity =>
             {
@@ -149,10 +165,7 @@ namespace TFN.Api
                 identity.UseMvcWithDefaultRoute();
             });
 
-            //API Fork
-            
-            //app.UseStaticFiles();
-            app.UseMvcWithDefaultRoute();
+           
 
             app.UseApplicationInsightsExceptionTelemetry();
 

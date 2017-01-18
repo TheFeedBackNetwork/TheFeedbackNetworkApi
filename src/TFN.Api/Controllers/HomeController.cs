@@ -5,6 +5,7 @@ using TFN.Api.Models.ViewModels;
 
 namespace TFN.Api.Controllers
 {
+    [Route("home")]
     public class HomeController : Controller
     {
         private readonly IIdentityServerInteractionService Interaction;
