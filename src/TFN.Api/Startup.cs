@@ -144,7 +144,7 @@ namespace TFN.Api
             });
 
             //API Fork
-            app.UseMvcWithDefaultRoute();
+            app.UseMvc();
             app.UseDefaultFiles(new DefaultFilesOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "build", "client")),
