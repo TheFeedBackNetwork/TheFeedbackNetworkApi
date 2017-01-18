@@ -110,21 +110,17 @@ namespace TFN.Api.Controllers
                         Logger.LogInformation($"track with name [{fileName}] to be processed with format [{format}] as [{unprocessedFileName}]");
 
 
-                        Logger.LogInformation($"processing track [{unprocessedFileName}]");
+                        Logger.LogInformation($"{DateTime.UtcNow} processing track [{unprocessedFileName}]");
 
 
                         await TrackProcessingService.TranscodeAudioAsync(unprocessedFilePath, processedFilePath);
 
                         var waveFormData = await TrackProcessingService.GetWaveformAsync(processedFilePath,waveformFilePath);
 
-                        Logger.LogInformation($"processed track with name [{processedFileName}] to be stored in storage.");
-
-                        //var processedTrack = new FileStream(processedFilePath, FileMode.Open);
+                        Logger.LogInformation($"{DateTime.UtcNow} processed track with name [{processedFileName}] to be stored in storage.");
 
                         var processedUri =
                             await TrackStorageService.UploadProcessedAsync(processedFilePath, processedFileName);
-
-                        //Logger.LogInformation($"track size [{processedTrack.Length}]");
 
                         Logger.LogInformation($"processed track is stored at [{processedUri}]");
 
