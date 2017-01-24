@@ -147,11 +147,11 @@ namespace TFN.Api
             app.UseMvc();
             app.UseDefaultFiles(new DefaultFilesOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "build", "client")),
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "client")),
             });
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "build","client")),
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath,"client")),
                 //RequestPath = ""
             });
             
