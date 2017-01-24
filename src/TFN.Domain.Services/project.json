@@ -6,7 +6,7 @@
   "dependencies": {
     "TFN.Domain.Interfaces": "1.0.0-*",
     "TFN.Domain.Models": "1.0.0-*",
-    "IdentityServer4": "1.0.1",
+    "IdentityServer4": "1.0.2",
     "Microsoft.Extensions.Options": "1.1.0",
     "WindowsAzure.Storage": "7.2.1",
     "TFN.MediaLibrary": "1.0.0-*"

@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
+using TFN.Api.Models.ModelBinders;
+using TFN.Api.Models.QueryModels;
 using TFN.Api.Models.ResponseModels;
 using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Interfaces.Services;
@@ -23,6 +25,7 @@ namespace TFN.Api.Controllers
     public class TracksController : AppController
     {
         public IHostingEnvironment Environment { get; private set; }
+        public IAuthorizationService AuthorizationService { get; private set; }
         public IConfiguration Configuration { get; private set; }
         public ITrackStorageService TrackStorageService { get; private set; }
         public ITrackProcessingService TrackProcessingService { get; private set; }
@@ -32,11 +35,12 @@ namespace TFN.Api.Controllers
         // request body data
         private static readonly FormOptions DefaultFormOptions = new FormOptions();
 
-        public TracksController(IHostingEnvironment environment, ITrackProcessingService trackProcessingService,
+        public TracksController(IHostingEnvironment environment, IAuthorizationService authorizationService, ITrackProcessingService trackProcessingService,
             ITrackStorageService trackStorageService, ILogger<TracksController> logger, IConfiguration configuration,
             ITrackRepository trackRepository)
         {
             Environment = environment;
+            AuthorizationService = authorizationService;
             Configuration = configuration;
             TrackStorageService = trackStorageService;
             TrackProcessingService = trackProcessingService;
@@ -47,9 +51,18 @@ namespace TFN.Api.Controllers
 
         [HttpGet("{trackId:Guid}", Name = "GetTrack")]
         [Authorize("tracks.read")]
-        public Task<IActionResult> GetAsync(Guid trackId)
+        public async Task<IActionResult> GetAsync(Guid trackId)
         {
-            throw new NotImplementedException();
+            var track = await TrackRepository.GetAsync(trackId);
+
+            if (track == null)
+            {
+                return NotFound();
+            }
+
+            var model = TrackResponseModel.From(track, AbsoluteUri);
+
+            return Json(model);
         }
 
         [HttpPost(Name = "PostTrack")]
