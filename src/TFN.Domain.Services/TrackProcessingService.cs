@@ -33,6 +33,7 @@ namespace TFN.Domain.Services
             };
 
             var ffmpegPath = Path.Combine(Environment.ContentRootPath, "ffmpeg.exe");
+            Logger.LogInformation($"PATH {ffmpegPath}");
 
             var inputFile = new MediaFile(sourceFilePath);
             var outputFile = new MediaFile(destinationFilePath);
@@ -92,11 +93,7 @@ namespace TFN.Domain.Services
 
                 }
             }
-
-            pic.RotateFlip(RotateFlipType.Rotate180FlipX);
-
-            pic.Save(@"D:\v.png", ImageFormat.Png);
-
+            
             bmp.Dispose();
 
             return waveform;

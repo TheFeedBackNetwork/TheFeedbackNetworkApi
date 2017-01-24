@@ -41,14 +41,15 @@
 
   "buildOptions": {
     "emitEntryPoint": true,
-    "preserveCompilationContext": true
+    "preserveCompilationContext": true,
+    "copyToOutput": ["ffmpeg.exe"]
   },
 
   "publishOptions": {
     "include": [
       "wwwroot",
       "Views",
-      "ffmpeg",
+      "ffmpeg.exe",
       "appsettings.json",
       "appsettings.development.json",
       "config.development.hocon",
