@@ -261,3 +261,4 @@ paket-files/
 *.ogg
 *.flac
 **/build/**
+**/wwwroot/client/**
