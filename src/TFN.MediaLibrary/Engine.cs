@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Text.RegularExpressions;
-using TFN.MediaLibrary.Model;
-using TFN.MediaLibrary.Options;
-using TFN.MediaLibrary.Properties;
-using TFN.MediaLibrary.Util;
-
-namespace TFN.MediaLibrary
+﻿namespace TFN.MediaLibrary
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Text.RegularExpressions;
+
+    using TFN.MediaLibrary.Model;
+    using TFN.MediaLibrary.Options;
+    using TFN.MediaLibrary.Properties;
+    using TFN.MediaLibrary.Util;
+
     /// -------------------------------------------------------------------------------------------------
     /// <summary>   An engine. This class cannot be inherited. </summary>
     public class Engine : EngineBase
@@ -21,12 +22,22 @@ namespace TFN.MediaLibrary
 
         public Engine()
         {
-            
+
         }
 
         public Engine(string ffMpegPath) : base(ffMpegPath)
         {
-            
+
+        }
+
+        public Engine(bool enableMultipleRunningProcesses) : base(enableMultipleRunningProcesses)
+        {
+
+        }
+
+        public Engine(string ffMpegPath, bool enableMultipleRunningProcesses) : base(ffMpegPath, enableMultipleRunningProcesses)
+        {
+
         }
 
         /// -------------------------------------------------------------------------------------------------
@@ -40,12 +51,12 @@ namespace TFN.MediaLibrary
         public void Convert(MediaFile inputFile, MediaFile outputFile, ConversionOptions options)
         {
             EngineParameters engineParams = new EngineParameters
-                {
-                    InputFile = inputFile,
-                    OutputFile = outputFile,
-                    ConversionOptions = options,
-                    Task = FFmpegTask.Convert
-                };
+            {
+                InputFile = inputFile,
+                OutputFile = outputFile,
+                ConversionOptions = options,
+                Task = FFmpegTask.Convert
+            };
 
             this.FFmpegEngine(engineParams);
         }
@@ -60,11 +71,11 @@ namespace TFN.MediaLibrary
         public void Convert(MediaFile inputFile, MediaFile outputFile)
         {
             EngineParameters engineParams = new EngineParameters
-                {
-                    InputFile = inputFile,
-                    OutputFile = outputFile,
-                    Task = FFmpegTask.Convert
-                };
+            {
+                InputFile = inputFile,
+                OutputFile = outputFile,
+                Task = FFmpegTask.Convert
+            };
 
             this.FFmpegEngine(engineParams);
         }
@@ -92,10 +103,10 @@ namespace TFN.MediaLibrary
         public void GetMetadata(MediaFile inputFile)
         {
             EngineParameters engineParams = new EngineParameters
-                {
-                    InputFile = inputFile,
-                    Task = FFmpegTask.GetMetaData
-                };
+            {
+                InputFile = inputFile,
+                Task = FFmpegTask.GetMetaData
+            };
 
             this.FFmpegEngine(engineParams);
         }
@@ -121,33 +132,39 @@ namespace TFN.MediaLibrary
         public void GetThumbnail(MediaFile inputFile, MediaFile outputFile, ConversionOptions options)
         {
             EngineParameters engineParams = new EngineParameters
-                {
-                    InputFile = inputFile,
-                    OutputFile = outputFile,
-                    ConversionOptions = options,
-                    Task = FFmpegTask.GetThumbnail
-                };
+            {
+                InputFile = inputFile,
+                OutputFile = outputFile,
+                ConversionOptions = options,
+                Task = FFmpegTask.GetThumbnail
+            };
 
             this.FFmpegEngine(engineParams);
         }
-        
+
         #region Private method - Helpers
 
         private void FFmpegEngine(EngineParameters engineParameters)
         {
-            if (!engineParameters.InputFile.Filename.StartsWith("http://") && engineParameters.InputFile.Filename.StartsWith("https://") && !File.Exists(engineParameters.InputFile.Filename))
+            if (!engineParameters.InputFile.Filename.StartsWith("http://") && !File.Exists(engineParameters.InputFile.Filename))
             {
                 throw new FileNotFoundException(Resources.Exception_Media_Input_File_Not_Found, engineParameters.InputFile.Filename);
             }
 
             try
             {
-                this.Mutex.WaitOne();
+                if (Mutex != null)
+                {
+                    this.Mutex.WaitOne();
+                }
                 this.StartFFmpegProcess(engineParameters);
             }
             finally
             {
-                this.Mutex.ReleaseMutex();
+                if (Mutex != null)
+                {
+                    this.Mutex.ReleaseMutex();
+                }
             }
         }
 
@@ -190,7 +207,7 @@ namespace TFN.MediaLibrary
                 };
             }
         }
-        
+
         #endregion
 
         /// -------------------------------------------------------------------------------------------------
@@ -232,8 +249,8 @@ namespace TFN.MediaLibrary
         {
             List<string> receivedMessagesLog = new List<string>();
             TimeSpan totalMediaDuration = new TimeSpan();
-         
-            ProcessStartInfo processStartInfo = engineParameters.HasCustomArguments 
+
+            ProcessStartInfo processStartInfo = engineParameters.HasCustomArguments
                                               ? this.GenerateStartInfo(engineParameters.CustomArguments)
                                               : this.GenerateStartInfo(engineParameters);
 
@@ -253,13 +270,13 @@ namespace TFN.MediaLibrary
 #endif
                     try
                     {
-                        
+
                         receivedMessagesLog.Insert(0, received.Data);
                         if (engineParameters.InputFile != null)
                         {
                             RegexEngine.TestVideo(received.Data, engineParameters);
                             RegexEngine.TestAudio(received.Data, engineParameters);
-                        
+
                             Match matchDuration = RegexEngine.Index[RegexEngine.Find.Duration].Match(received.Data);
                             if (matchDuration.Success)
                             {
@@ -306,7 +323,7 @@ namespace TFN.MediaLibrary
                 this.FFmpegProcess.BeginErrorReadLine();
                 this.FFmpegProcess.WaitForExit();
 
-                 if ((this.FFmpegProcess.ExitCode != 0 && this.FFmpegProcess.ExitCode != 1) || caughtException != null)
+                if ((this.FFmpegProcess.ExitCode != 0 && this.FFmpegProcess.ExitCode != 1) || caughtException != null)
                 {
                     throw new Exception(
                         this.FFmpegProcess.ExitCode + ": " + receivedMessagesLog[1] + receivedMessagesLog[0],

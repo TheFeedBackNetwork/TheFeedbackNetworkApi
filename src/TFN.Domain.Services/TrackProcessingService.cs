@@ -37,9 +37,9 @@ namespace TFN.Domain.Services
             var inputFile = new MediaFile(sourceFilePath);
             var outputFile = new MediaFile(destinationFilePath);
 
-            using (var engine = new Engine(ffmpegPath))
+            using (var engine = new Engine(ffmpegPath,true))
             {
-                engine.Convert(inputFile,outputFile,options);
+                engine.Convert(inputFile, outputFile, options);
             }
 
             return Task.CompletedTask;
@@ -52,7 +52,7 @@ namespace TFN.Domain.Services
 
             var ffmpegPath = Path.Combine(Environment.ContentRootPath, "ffmpeg.exe");
 
-            using (var engine = new Engine(ffmpegPath))
+            using (var engine = new Engine(ffmpegPath,true))
             {
                 engine.GetWaveform(input,output);
             }

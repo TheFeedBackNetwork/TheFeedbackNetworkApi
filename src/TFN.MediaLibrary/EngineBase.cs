@@ -1,14 +1,16 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
-using System.Reflection;
-using System.Threading;
-using TFN.MediaLibrary.Properties;
-using TFN.MediaLibrary.Util;
-
-namespace TFN.MediaLibrary
+﻿namespace TFN.MediaLibrary
 {
+    using System;
+    using System.Configuration;
+    using System.Diagnostics;
+    using System.IO;
+    using System.IO.Compression;
+    using System.Reflection;
+    using System.Threading;
+
+    using TFN.MediaLibrary.Properties;
+    using TFN.MediaLibrary.Util;
+
     public class EngineBase : IDisposable
     {
         private bool isDisposed;
@@ -22,14 +24,20 @@ namespace TFN.MediaLibrary
         protected readonly string FFmpegFilePath;
 
         /// <summary>   The Mutex. </summary>
+        /// <remarks>Null if concurrently running FFmpeg instances are allowed.</remarks>
         protected readonly Mutex Mutex;
 
         /// <summary>   The ffmpeg process. </summary>
         protected Process FFmpegProcess;
 
 
-         protected EngineBase()
-            //: this(ConfigurationManager.AppSettings["mediaToolkit.ffmpeg.path"])
+        protected EngineBase()
+           //: this(ConfigurationManager.AppSettings["mediaToolkit.ffmpeg.path"])
+        {
+        }
+
+        protected EngineBase(bool enableMultipleRunningProcesses)
+            //: this(ConfigurationManager.AppSettings["mediaToolkit.ffmpeg.path"], enableMultipleRunningProcesses)
         {
         }
 
@@ -38,9 +46,23 @@ namespace TFN.MediaLibrary
         ///     <para> Initializes FFmpeg.exe; Ensuring that there is a copy</para>
         ///     <para> in the clients temp folder &amp; isn't in use by another process.</para>
         /// </summary>
-        protected EngineBase(string ffMpegPath)
+        protected EngineBase(string ffMpegPath) : this(ffMpegPath, false)
         {
-            this.Mutex = new Mutex(false, LockName);
+        }
+
+        ///-------------------------------------------------------------------------------------------------
+        /// <summary>
+        ///     <para> Initializes FFmpeg.exe; Ensuring that there is a copy</para>
+        ///     <para> in the clients temp folder &amp; isn't in use by another process.</para>
+        /// </summary>
+        /// <param name="enableMultipleRunningProcesses">Whether or not to allow multiple instances of FFmpeg to run concurrently.</param>
+        protected EngineBase(string ffMpegPath, bool enableMultipleRunningProcesses)
+        {
+            if (!enableMultipleRunningProcesses)
+            {
+                this.Mutex = new Mutex(false, LockName);
+            }
+
             this.isDisposed = false;
 
             if (ffMpegPath.IsNullOrWhiteSpace())
@@ -50,9 +72,13 @@ namespace TFN.MediaLibrary
 
             this.FFmpegFilePath = ffMpegPath;
 
-            this.EnsureDirectoryExists ();
+            this.EnsureDirectoryExists();
             this.EnsureFFmpegFileExists();
-            this.EnsureFFmpegIsNotUsed ();
+
+            if (!enableMultipleRunningProcesses)
+            {
+                this.EnsureFFmpegIsNotUsed();
+            }
         }
 
         private void EnsureFFmpegIsNotUsed()
@@ -131,10 +157,10 @@ namespace TFN.MediaLibrary
                 return;
             }
 
-            if(FFmpegProcess != null)
+            if (FFmpegProcess != null)
             {
                 this.FFmpegProcess.Dispose();
-            }            
+            }
             this.FFmpegProcess = null;
             this.isDisposed = true;
         }
