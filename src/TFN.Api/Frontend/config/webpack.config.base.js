@@ -7,18 +7,18 @@ const autoprefixer = require('autoprefixer');
 module.exports = {
   output: {
     filename: 'js/[name].js',
-    path: path.resolve(__dirname, '../../wwwroot/build/client'),
+    path: path.resolve(__dirname, '../build/client'),
     publicPath: '/'
   },
   resolve: {
     modules: [
-      path.join(__dirname, '../src/client/scripts'),
-      path.join(__dirname, '../src/client/assets'),
-      path.join(__dirname, '../src/client/assets/javascripts'),
+      path.join(__dirname, '../src/environments'),
+      path.join(__dirname, '../src/assets'),
+      path.join(__dirname, '../src/scripts'),
       'node_modules'
     ],
     alias: {
-      models: path.join(__dirname, '../src/client/assets/javascripts/models')
+      models: path.join(__dirname, '../src/scripts/models')
     },
     extensions: ['.js', '.jsx', '.json', '.scss']
   },
@@ -38,7 +38,7 @@ module.exports = {
       // JavaScript / ES6
       {
         test: /\.jsx?$/,
-        include: path.resolve(__dirname, '../src/client/assets/javascripts'),
+        include: path.resolve(__dirname, '../src/scripts'),
         loader: 'babel'
       },
       // Images
