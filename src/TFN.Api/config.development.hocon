@@ -29,7 +29,7 @@ akka.persistence{
             plugin-dispatcher = "akka.actor.default-dispatcher"
 
             # connection string used for database access
-            connection-string = "Server=tcp:akka-experiment-sqlserver.database.windows.net,1433;Initial Catalog=akka-experiment-sql;Persist Security Info=False;User ID=WimtAdministrator;Password=wimt1985!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+            connection-string = "Server=tcp:tfn-sqlserver.database.windows.net,1433;Initial Catalog=tfn-sql;Persist Security Info=False;User ID={DB_USER};Password={DB_PASS};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 
             # default SQL commands timeout
             connection-timeout = 30s
@@ -62,7 +62,7 @@ akka.persistence{
             plugin-dispatcher = "akka.actor.default-dispatcher"
 
             # connection string used for database access
-            connection-string = "Server=tcp:akka-experiment-sqlserver.database.windows.net,1433;Initial Catalog=akka-experiment-sql;Persist Security Info=False;User ID=WimtAdministrator;Password=wimt1985!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+            connection-string = "Server=tcp:tfn-sqlserver.database.windows.net,1433;Initial Catalog=tfn-sql;Persist Security Info=False;User ID={DB_USER};Password={DB_PASS};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
 
             # default SQL commands timeout
             connection-timeout = 30s
