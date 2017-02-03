@@ -11,8 +11,6 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
-using TFN.Api.Models.ModelBinders;
-using TFN.Api.Models.QueryModels;
 using TFN.Api.Models.ResponseModels;
 using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Interfaces.Services;
@@ -21,6 +19,7 @@ using TFN.Mvc.Helpers;
 
 namespace TFN.Api.Controllers
 {
+    [Obsolete]
     [Route("api/tracks")]
     public class TracksController : AppController
     {

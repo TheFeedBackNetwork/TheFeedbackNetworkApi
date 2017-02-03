@@ -38,6 +38,7 @@ namespace TFN.Resolution
             services.AddTransient<IPasswordService, PasswordService>();
             services.AddTransient<ITrackProcessingService, TrackProcessingService>();
             services.AddTransient<ITrackStorageService, TrackStorageService>();
+            services.AddTransient<IUsersEventsService, UsersEventsService>();
             //validators
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
             //components
