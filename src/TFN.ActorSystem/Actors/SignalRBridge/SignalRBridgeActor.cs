@@ -10,8 +10,8 @@ namespace TFN.ActorSystem.Actors.SignalRBridge
         public IActorRef UserCoordinator { get; private set; }
         public SignalRBridgeActor(IUsersEventsService usersEventsService)
         {
-            UsersEventsService = usersEventsService;
-            
+            UsersEventsService = usersEventsService;          
+            SystemActors.UserSystemActor.Tell(new SignalRBridgeMessages.GetUserCoordinatorRef());
 
             Become(Waiting);
         }

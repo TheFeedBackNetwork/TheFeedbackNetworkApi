@@ -65,7 +65,7 @@ namespace TFN.Api.Controllers
         }
 
         [HttpPost(Name = "PostTrack")]
-        [Authorize("tracks.write")]
+        //[Authorize("tracks.write")]
         public async Task<IActionResult> PostAsync()
         {
             if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))

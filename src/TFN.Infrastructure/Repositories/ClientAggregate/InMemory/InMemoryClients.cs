@@ -45,6 +45,7 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
                 AlwaysSendClientClaims = true,
                 AllowedGrantTypes = GrantTypes.ImplicitAndClientCredentials,
                 RequireClientSecret = false,
+                RedirectUris = { "http://localhost:5001.com/callback.html" },
                 AllowedScopes = new List<string>
                 {
                     "openid",

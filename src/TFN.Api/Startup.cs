@@ -64,13 +64,6 @@ namespace TFN.Api
             SystemActors.UserSystemActor = ActorSystem.ActorOf(Props.Create(() => new UsersSystemActor()),
                 "users-system");
 
-            services.AddSingleton<Akka.Actor.ActorSystem>(_ => ActorSystem);
-            ActorSystem.Scheduler.ScheduleTellRepeatedly(TimeSpan.FromSeconds(10),
-                TimeSpan.FromSeconds(300),
-                SystemActors.PostsSystemActor,
-                new PostsSystemMessages.Tap(),
-                ActorRefs.Nobody);
-
             services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddApplicationInsightsTelemetry(Configuration);
@@ -122,7 +115,7 @@ namespace TFN.Api
             var userEventsService = new UsersEventsService(connectionManager);
             SystemActors.SignalRBridgeActor =
                 ActorSystem.ActorOf(
-                    Props.Create(() => new SignalRBridgeActor(userEventsService, SystemActors.UserSystemActor)));
+                    Props.Create(() => new SignalRBridgeActor(userEventsService)));
 
             if (!env.IsLocal())
             {

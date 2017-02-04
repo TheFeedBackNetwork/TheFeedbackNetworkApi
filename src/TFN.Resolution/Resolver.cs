@@ -2,11 +2,13 @@
 using IdentityServer4.Stores;
 using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using TFN.Api.Authorization.Handlers;
 using TFN.Domain.Interfaces.Components;
 using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Interfaces.Services;
+using TFN.Domain.Models.Entities;
 using TFN.Domain.Services;
 using TFN.Domain.Services.Validators;
 using TFN.Infrastructure.Components.Storage;
@@ -38,7 +40,9 @@ namespace TFN.Resolution
             services.AddTransient<IPasswordService, PasswordService>();
             services.AddTransient<ITrackProcessingService, TrackProcessingService>();
             services.AddTransient<ITrackStorageService, TrackStorageService>();
+
             services.AddTransient<IUsersEventsService, UsersEventsService>();
+            services.AddTransient<IUserIdProvider, UserIdProvider>();
             //validators
             services.AddTransient<IResourceOwnerPasswordValidator, ResourceOwnerPasswordValidator>();
             //components

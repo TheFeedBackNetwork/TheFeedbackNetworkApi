@@ -19,7 +19,7 @@ namespace TFN.ActorSystem.Actors.UsersSystem
         {
             base.PreStart();
 
-            UserCoordinator = Context.ActorOf(Props.Create(() => new UserCoordinatorActor(UsersEventsService)));
+            UserCoordinator = Context.ActorOf(Props.Create(() => new UserCoordinatorActor(UsersEventsService)),"user-coordinator");
         }
 
         public void Ready()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,7 @@ using TFN.ActorSystem.Actors.User;
 using TFN.Api.Models.ResponseModels;
 using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Interfaces.Services;
+using TFN.Domain.Models.Entities;
 
 namespace TFN.Api.Controllers
 {
@@ -65,9 +67,10 @@ namespace TFN.Api.Controllers
         }
 
         [HttpPost(Name = "PostTrack2")]
-        [Authorize("tracks.write")]
-        public async Task<IActionResult> PostAsync(IFormFile file)
+        //[Authorize("tracks.write")]
+        public async Task<IActionResult> PostAsync(IList<IFormFile> files)
         {
+            var file = files.FirstOrDefault();
             long totalBytes = file.Length;
 
             var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName;
@@ -111,142 +114,57 @@ namespace TFN.Api.Controllers
                 }
             }
 
-            /* if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
-            {
-                return BadRequest($"Expected a multipart request, but got '{Request.ContentType}'.");
-            }
+            Logger.LogInformation($"track with name [{fileName}] uploaded with [{format}] as [{unprocessedFileName}]");
+            Logger.LogInformation($"track with name [{fileName}] uploaded to path [{unprocessedFilePath}]");
 
-            // Used to accumulate all the form url encoded key value pairs in the request.
-            var formAccumulator = new KeyValueAccumulator();
-            //string targetFilePath = null;
-
-            var boundary = MultipartRequestHelper.GetBoundary(
-                MediaTypeHeaderValue.Parse(Request.ContentType), DefaultFormOptions.MultipartBoundaryLengthLimit);
-            var reader = new MultipartReader(boundary, HttpContext.Request.Body);
-
-            var section = await reader.ReadNextSectionAsync();
-            while (section != null)
-            {
-                ContentDispositionHeaderValue contentDisposition;
-                ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out contentDisposition);
-
-                if (MultipartRequestHelper.HasFileContentDisposition(contentDisposition))
-                {
-                    var name = HeaderUtilities.RemoveQuotes(contentDisposition.Name) ?? string.Empty;
-                    var fileName = HeaderUtilities.RemoveQuotes(contentDisposition.FileName) ?? string.Empty;
-
-                    if (name.Equals("track", StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        var supportedTypes = Configuration["SupportedMedia"].Split(' ');
-                        var format = fileName.Split('.').Last();
-
-                        if (supportedTypes.All(x => x != format))
-                        {
-                            return BadRequest($"Expected media types {supportedTypes} but got '{format}'.");
-                        }
-
-                        var unprocessedFileName = $"{Guid.NewGuid()}.{format}";
-                        var unprocessedFilePath = Path.Combine(Environment.WebRootPath, "unprocessedtracks", unprocessedFileName);
-
-                        var resourceId = Guid.NewGuid();
-                        var processedFileName = $"{resourceId}.mp3";
-                        var waveformFilename = $"{resourceId}.png";
-                        var processedFilePath = Path.Combine(Environment.WebRootPath, "processedtracks", processedFileName);
-                        var waveformFilePath = Path.Combine(Environment.WebRootPath, "processedwaveforms", waveformFilename);
-
-                        using (var fileStream = System.IO.File.Create(unprocessedFilePath))
-                        {
-                            await section.Body.CopyToAsync(fileStream);
-
-                            Logger.LogInformation($"track with name [{fileName}] uploaded with [{format}] as [{unprocessedFileName}]");
-                            Logger.LogInformation($"track with name [{fileName}] uploaded to path [{unprocessedFilePath}]");
-                        }
-
-                        Logger.LogInformation($"track with name [{fileName}] to be processed with format [{format}] as [{unprocessedFileName}]");
+            Logger.LogInformation($"track with name [{fileName}] to be processed with format [{format}] as [{unprocessedFileName}]");
 
 
-                        Logger.LogInformation($"{DateTime.UtcNow} processing track [{unprocessedFileName}]");
+            Logger.LogInformation($"{DateTime.UtcNow} processing track [{unprocessedFileName}]");
 
 
-                        await TrackProcessingService.TranscodeAudioAsync(unprocessedFilePath, processedFilePath);
+            await TrackProcessingService.TranscodeAudioAsync(unprocessedFilePath, processedFilePath);
 
-                        var waveFormData = await TrackProcessingService.GetWaveformAsync(processedFilePath, waveformFilePath);
+            var processProgress = new UserMessages.ProcessProgress(UserId,33);
+            SystemActors.SignalRBridgeActor.Tell(processProgress,ActorRefs.NoSender);
 
-                        Logger.LogInformation($"{DateTime.UtcNow} processed track with name [{processedFileName}] to be stored in storage.");
+            var waveFormData = await TrackProcessingService.GetWaveformAsync(processedFilePath, waveformFilePath);
 
-                        var processedUri =
-                            await TrackStorageService.UploadProcessedAsync(processedFilePath, processedFileName);
+            processProgress = new UserMessages.ProcessProgress(UserId, 66);
+            SystemActors.SignalRBridgeActor.Tell(processProgress, ActorRefs.NoSender);
 
-                        Logger.LogInformation($"processed track is stored at [{processedUri}]");
+            Logger.LogInformation($"{DateTime.UtcNow} processed track with name [{processedFileName}] to be stored in storage.");
 
+            var processedUri =
+                await TrackStorageService.UploadProcessedAsync(processedFilePath, processedFileName);
 
-                        Logger.LogInformation("deleting processed and unprocessed tracks in wwwroot.");
+            processProgress = new UserMessages.ProcessProgress(UserId, 80);
 
-                        await TrackStorageService.DeleteLocalAsync(unprocessedFilePath);
-                        await TrackStorageService.DeleteLocalAsync(processedFilePath);
-                        await TrackStorageService.DeleteLocalAsync(waveformFilePath);
-
-                        var track = new Track(resourceId, UserId, processedUri, waveFormData, DateTime.UtcNow);
-
-                        await TrackRepository.AddAsync(track);
-
-                        var model = TrackResponseModel.From(track, AbsoluteUri);
-
-                        return CreatedAtAction("GetTrack2", new { trackId = model.Id }, model);
-                    }
-
-                }
-                else if (MultipartRequestHelper.HasFormDataContentDisposition(contentDisposition))
-                {
-                    // Content-Disposition: form-data; name="key"
-                    //
-                    // value
-
-                    // Do not limit the key name length here because the mulipart headers length
-                    // limit is already in effect.
-                    var key = HeaderUtilities.RemoveQuotes(contentDisposition.Name);
-                    MediaTypeHeaderValue mediaType;
-                    MediaTypeHeaderValue.TryParse(section.ContentType, out mediaType);
-                    var encoding = FilterEncoding(mediaType?.Encoding);
-                    using (var streamReader = new StreamReader(
-                        section.Body,
-                        encoding,
-                        detectEncodingFromByteOrderMarks: true,
-                        bufferSize: 1024,
-                        leaveOpen: true))
-                    {
-                        // The value length limit is enforced by MultipartBodyLengthLimit
-                        var value = await streamReader.ReadToEndAsync();
-                        formAccumulator.Append(key, value);
-
-                        if (formAccumulator.ValueCount > DefaultFormOptions.ValueCountLimit)
-                        {
-                            throw new InvalidDataException(
-                                $"Form key count limit {DefaultFormOptions.ValueCountLimit} exceeded.");
-                        }
-                    }
-                }
-
-                // Drains any remaining section body that has not been consumed and
-                // reads the headers for the next section.
-                section = await reader.ReadNextSectionAsync();
-            }
+            Logger.LogInformation($"processed track is stored at [{processedUri}]");
 
 
-        */
+            Logger.LogInformation("deleting processed and unprocessed tracks in wwwroot.");
 
-                return Json("ok");
+            await TrackStorageService.DeleteLocalAsync(unprocessedFilePath);
+
+            processProgress = new UserMessages.ProcessProgress(UserId, 90);
+            SystemActors.SignalRBridgeActor.Tell(processProgress, ActorRefs.NoSender);
+
+            await TrackStorageService.DeleteLocalAsync(processedFilePath);
+            await TrackStorageService.DeleteLocalAsync(waveformFilePath);
+
+            var track = new Track(resourceId, UserId, processedUri, waveFormData, DateTime.UtcNow);
+
+            await TrackRepository.AddAsync(track);
+
+            processProgress = new UserMessages.ProcessProgress(UserId, 100);
+            SystemActors.SignalRBridgeActor.Tell(processProgress, ActorRefs.NoSender);
+
+            var model = TrackResponseModel.From(track, AbsoluteUri);
+
+            return CreatedAtAction("GetTrack2", new { trackId = model.Id }, model);
         }
-
-        private static Encoding FilterEncoding(Encoding encoding)
-        {
-            // UTF-7 is insecure and should not be honored. UTF-8 will succeed for most cases.
-            if (encoding == null || Encoding.UTF7.Equals(encoding))
-            {
-                return Encoding.UTF8;
-            }
-            return encoding;
-        }
+        
 
     }
 }

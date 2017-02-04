@@ -29,7 +29,7 @@ namespace TFN.ActorSystem.Actors.PostsSystem
         {
             Receive<PostsSystemMessages.Tap>(message =>
             {
-                Console.WriteLine(DateTime.UtcNow);
+                //Console.WriteLine(DateTime.UtcNow);
                 Time.Add(DateTime.UtcNow);
             });
 
