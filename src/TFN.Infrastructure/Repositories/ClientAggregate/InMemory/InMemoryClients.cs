@@ -38,6 +38,7 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
             {
                 ClientId = "tfn_frontend",
                 ClientName = "TFN Frontent Client",
+                RequireConsent =  false,
                 IncludeJwtId = true,
                 PrefixClientClaims = true,
                 AccessTokenType = AccessTokenType.Jwt,
@@ -45,7 +46,7 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
                 AlwaysSendClientClaims = true,
                 AllowedGrantTypes = GrantTypes.ImplicitAndClientCredentials,
                 RequireClientSecret = false,
-                RedirectUris = { "http://localhost:5001.com/callback.html" },
+                RedirectUris = { "http://localhost:5001/callback.html" },
                 AllowedScopes = new List<string>
                 {
                     "openid",

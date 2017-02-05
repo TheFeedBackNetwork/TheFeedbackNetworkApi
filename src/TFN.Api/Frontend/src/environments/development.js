@@ -2,4 +2,4 @@
 require('styles/styles.scss');
 
 // JavaScript main file
-require('../scripts/app');
+require('../scripts/containers');
