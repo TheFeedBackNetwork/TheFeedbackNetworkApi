@@ -3,8 +3,10 @@ import { persistState } from 'redux-devtools';
 import promiseMiddleware from 'redux-promise';
 import createLogger from 'redux-logger';
 
-import authMiddleware from '../middleware/authMiddleware';
-import authHash from '../middleware/authHash';
+import createOidcMiddleware, { createUserManager } from 'redux-oidc';
+//import authMiddleware from '../middleware/authMiddleware';
+//import authHash from '../middleware/authHash';
+import userManager from '../utils/userManager';
 
 import thunk from 'redux-thunk';
 import rootReducer from '../reducers';
@@ -17,8 +19,9 @@ import DevTools from '../components/dev/DevTools';
  * with your standard DevTools monitor gives you great flexibility.
  */
 const logger = createLogger();
+const oidcMiddleware = createOidcMiddleware(userManager);
 
-const middlewares = [ promiseMiddleware, thunk, logger, authMiddleware, authHash, require('redux-immutable-state-invariant')()];
+const middlewares = [ promiseMiddleware, thunk, oidcMiddleware, logger, require('redux-immutable-state-invariant')()];
 
 // By default we try to read the key from ?debug_session=<key> in the address bar
 const getDebugSessionKey = function () {

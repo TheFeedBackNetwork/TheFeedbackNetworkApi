@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 
-import auth from './auth'
+import { reducer as auth } from 'redux-oidc';
 
 export default combineReducers({
     auth

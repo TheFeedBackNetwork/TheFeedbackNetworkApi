@@ -2,6 +2,10 @@
 
 import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
+import { OidcProvider } from 'redux-oidc';
+import { BrowserRouter as Router } from 'react-router-dom';
+
+import userManager from '../utils/userManager';
 import  App  from './App';
 
 
@@ -28,10 +32,14 @@ const Root = ({ store }) => {
 
     ComponentEl = (
       <Provider store={store}>
-        <div>
-          <App />
-          {!window.devToolsExtension ? <DevTools /> : null}
-        </div>
+        <OidcProvider store={store} userManager={userManager}>
+         <Router>
+          <div>
+            <App />
+            {!window.devToolsExtension ? <DevTools /> : null}
+            </div>
+          </Router>
+        </OidcProvider>
       </Provider>
     );
   }

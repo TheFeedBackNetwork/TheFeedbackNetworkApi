@@ -33,6 +33,11 @@ app.use(webpackDevMiddleware(compiler, {
 
 app.use(webpackHotMiddleware(compiler));
 
+app.get('/silent_renew.html', (req, res) => {
+  res.sendFile(path.join(__dirname, './src/assets/silent_renew.html'));
+});
+
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './src/assets/index.html'));
 });

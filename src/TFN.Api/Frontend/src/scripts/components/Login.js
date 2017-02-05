@@ -1,38 +1,36 @@
-import React, { PropTypes } from 'react'
-import { connect } from 'react-redux'
+import React from 'react';
+import userManager from '../utils/userManager';
+import { createUserManager } from 'redux-oidc';
+import config from '../config/config'
 
-import { login, logout } from '../actions/auth'
+class LoginPage extends React.Component {
+  onLoginButtonClick = (event) => {
+    event.preventDefault();
+    userManager.signinRedirect();
+  };
 
-const config = {
-        url: "http://localhost:5000/identity/connect/authorize",
-        client: "tfn_frontend",
-        redirect: "http://localhost:5001/callback.html",
-        scope: "posts.write posts.read posts.edit posts.delete tracks.read tracks.write tracks.delete"
-}
-const test = () => {
-        console.log('lol')
-}
-const Login = ({ isLoggedIn, login, logout }) => {
-  if (isLoggedIn) {
-    return <button type='button' onClick={logout}>Logout</button>
-  } else {
-    return <button type='button' onClick={login}>Login</button>
+  componentDidMount() {
+          userManager.signinSilent();
+  }
+
+  render() {
+    return (
+      <div style={styles.root}>
+        
+        <button onClick={this.onLoginButtonClick}>Login with OIDC</button>
+      </div>
+    );
   }
 }
 
-Login.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  login: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired
+const styles = {
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    flexShrink: 1,
+  }
 }
 
-const mapStateToProps = ({ auth }) => ({
-  isLoggedIn: auth.isLoggedIn
-})
-
-const mapDispatchToProps = {
-  login: () => login(config),
-  logout
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default LoginPage;

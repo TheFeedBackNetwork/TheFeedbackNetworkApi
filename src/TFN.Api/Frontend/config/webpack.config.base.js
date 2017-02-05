@@ -39,7 +39,8 @@ module.exports = {
       {
         test: /\.jsx?$/,
         include: path.resolve(__dirname, '../src/scripts'),
-        loader: 'babel'
+        loader: 'babel',
+        plugins: ['transform-runtime']
       },
       // Images
       // Inline base64 URLs for <=8k images, direct URLs for the rest
