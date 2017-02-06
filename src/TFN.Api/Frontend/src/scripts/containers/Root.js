@@ -28,7 +28,7 @@ const Root = ({ store }) => {
   );
 
   if (process.env.NODE_ENV !== 'production') {
-    const DevTools = require('./DevTools').default;
+    const DevTools = require('../components/dev/DevTools').default;
 
     ComponentEl = (
       <Provider store={store}>

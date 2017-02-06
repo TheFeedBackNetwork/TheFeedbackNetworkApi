@@ -9,7 +9,6 @@ const App = (props) => (
     <h1> HIII </h1>
     <Login />
     <Route exact path='/oidc-callback' component={withRouter(Callback)} />
-    <Route exact path='/silentrenew' component={silentrenew} />
 
   </div>
 );

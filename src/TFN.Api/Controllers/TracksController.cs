@@ -19,7 +19,6 @@ using TFN.Mvc.Helpers;
 
 namespace TFN.Api.Controllers
 {
-    [Obsolete]
     [Route("api/tracks")]
     public class TracksController : AppController
     {
@@ -188,9 +187,6 @@ namespace TFN.Api.Controllers
                 // reads the headers for the next section.
                 section = await reader.ReadNextSectionAsync();
             }
-
-            
-
             
             return Json("ok");
         }

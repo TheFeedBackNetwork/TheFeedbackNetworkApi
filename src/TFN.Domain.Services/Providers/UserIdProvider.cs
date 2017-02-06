@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 
-namespace TFN.Domain.Services
+namespace TFN.Domain.Services.Providers
 {
     public class UserIdProvider : IUserIdProvider
     {

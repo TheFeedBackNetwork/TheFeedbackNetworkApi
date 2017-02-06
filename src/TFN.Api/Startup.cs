@@ -55,7 +55,7 @@ namespace TFN.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            Resolver.RegisterTypes(services);
+            Resolver.RegisterTypes(services, Configuration);
             Resolver.RegisterAuthorizationPolicies(services);
 
             SystemActors.PostsSystemActor = ActorSystem.ActorOf(Props.Create(() => new PostsSystemActor()),
@@ -122,6 +122,16 @@ namespace TFN.Api
                 loggerFactory.AddAppendBlob(
                     Configuration["Logging:StorageAccountConnectionString"],
                     LogLevel.Information);
+
+                loggerFactory.AddEmail(
+                    Configuration["Logging:Email:SupportEmail"],
+                    Configuration["Logging:Email:Username"],
+                    Configuration["Logging:Email:Username"],
+                    Configuration["Configuration:Email:Password"],
+                    Configuration["Logging:Email:Host"],
+                    Convert.ToInt32(Configuration["Logging:Email:Port"]),
+                     env.EnvironmentName,
+                     LogLevel.Error);
             }
 
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));

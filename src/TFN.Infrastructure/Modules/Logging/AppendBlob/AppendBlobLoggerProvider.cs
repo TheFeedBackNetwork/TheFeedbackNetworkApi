@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace TFN.Infrastructure.Modules.Logging.AppendBlobLogger
+namespace TFN.Infrastructure.Modules.Logging.AppendBlob
 {
     internal class AppendBlobLoggerProvider : ILoggerProvider
     {
@@ -16,7 +16,7 @@ namespace TFN.Infrastructure.Modules.Logging.AppendBlobLogger
 
         public ILogger CreateLogger(string name)
         {
-            return new AppendBlobLogger(StorageAccountConnectionString, MinimumLevel, name);
+            return new AppendBlobLogger.AppendBlobLogger(StorageAccountConnectionString, MinimumLevel, name);
         }
 
         public void Dispose()

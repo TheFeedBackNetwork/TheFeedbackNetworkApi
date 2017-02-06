@@ -1,15 +1,19 @@
-﻿using IdentityServer4.Services;
+﻿using System;
+using System.Net;
+using System.Net.Mail;
+using IdentityServer4.Services;
 using IdentityServer4.Stores;
 using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TFN.Api.Authorization.Handlers;
 using TFN.Domain.Interfaces.Components;
 using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Interfaces.Services;
-using TFN.Domain.Models.Entities;
 using TFN.Domain.Services;
+using TFN.Domain.Services.Providers;
 using TFN.Domain.Services.Validators;
 using TFN.Infrastructure.Components.Storage;
 using TFN.Infrastructure.Repositories.ClientAggregate.InMemory;
@@ -18,12 +22,13 @@ using TFN.Infrastructure.Repositories.ResourceAggregate.InMemory;
 using TFN.Infrastructure.Repositories.TrackAggregate.InMemory;
 using TFN.Infrastructure.Repositories.UserAggregate.InMemory;
 using TFN.Mvc.Extensions;
+using TFN.Resolution.Extensions;
 
 namespace TFN.Resolution
 {
     public static class Resolver
     {
-        public static void RegisterTypes(IServiceCollection services)
+        public static void RegisterTypes(IServiceCollection services, IConfiguration configuration)
         {
             //repositories
             services.AddTransient<IResourceRepository, ResourceInMemoryRepository>();
@@ -48,6 +53,21 @@ namespace TFN.Resolution
             //components
             services.AddTransient<IS3StorageComponent, S3StorageComponent>();
             services.AddTransient<IBlobStorageComponent, BlobStorageComponent>();
+
+            //email
+            services.AddEmailService<EmailService>(options =>
+            {
+                options.Sender = new MailAddress(configuration["Messaging:Email:sender"]);
+                options.Credentials = new NetworkCredential(configuration["Messaging:Email:Username"], configuration["Messaging:Email:Password"]);
+                options.SmtpHost = configuration["Messaging:Email:SmtpHost"];
+                options.SmtpPort = Convert.ToInt32(configuration["Messaging:Email:SmtpPort"]);
+            });
+
+            services.AddAccountEmailService<AccountEmailService>(options =>
+            {
+                options.VerificationKeyBaseUrl = configuration["Messaging:VerificationKeyBaseUrl"];
+            });
+
         }
 
         public static void RegisterAuthorizationPolicies(IServiceCollection services)
