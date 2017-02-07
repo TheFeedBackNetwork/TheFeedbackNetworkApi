@@ -16,7 +16,7 @@ namespace TFN.Infrastructure.Modules.Logging.AppendBlob
 
         public ILogger CreateLogger(string name)
         {
-            return new AppendBlobLogger.AppendBlobLogger(StorageAccountConnectionString, MinimumLevel, name);
+            return new AppendBlobLogger(StorageAccountConnectionString, MinimumLevel, name);
         }
 
         public void Dispose()

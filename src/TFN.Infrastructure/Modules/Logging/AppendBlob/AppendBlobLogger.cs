@@ -7,7 +7,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
-namespace TFN.Infrastructure.Modules.Logging.AppendBlobLogger
+namespace TFN.Infrastructure.Modules.Logging.AppendBlob
 {
     internal class AppendBlobLogger : ILogger
     {
