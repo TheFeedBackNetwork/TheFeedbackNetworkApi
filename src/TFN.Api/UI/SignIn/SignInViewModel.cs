@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
 using System.Linq;
-using TFN.Api.Models.InputModels;
+using Microsoft.AspNetCore.Http;
 
-namespace TFN.Api.Models.ViewModels
+namespace TFN.Api.UI.SignIn
 {
     public class SignInViewModel : SignInInputModel
     {

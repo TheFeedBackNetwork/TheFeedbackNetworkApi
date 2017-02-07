@@ -1,4 +1,4 @@
-﻿namespace TFN.Api.Models.ViewModels
+﻿namespace TFN.Api.UI.SignOut
 {
     public class SignOutViewModel
     {

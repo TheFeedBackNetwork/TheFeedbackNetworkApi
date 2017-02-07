@@ -22,6 +22,7 @@ using TFN.ActorSystem.Actors.PostsSystem;
 using TFN.ActorSystem.Actors.SignalRBridge;
 using TFN.ActorSystem.Actors.UsersSystem;
 using TFN.Api.Extensions;
+using TFN.Api.UI;
 using TFN.Domain.Services;
 using TFN.Infrastructure.Modules;
 using TFN.Resolution;
@@ -76,6 +77,10 @@ namespace TFN.Api
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
 
+                })
+                .AddRazorOptions(options =>
+                {
+                    options.ViewLocationExpanders.Add(new ViewLocationExpander());
                 });
 
             services.AddIdentityServer(options =>

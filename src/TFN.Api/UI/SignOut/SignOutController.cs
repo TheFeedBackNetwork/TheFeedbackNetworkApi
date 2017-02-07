@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
-using TFN.Api.Models.ViewModels;
 using Microsoft.AspNetCore.Http.Authentication;
+using TFN.Api.UI.SignOut;
 using TFN.Mvc.Constants;
 
 namespace TFN.Api.Controllers

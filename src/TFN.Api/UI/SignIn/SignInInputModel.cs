@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TFN.Api.Models.InputModels
+namespace TFN.Api.UI.SignIn
 {
     public class SignInInputModel
     {

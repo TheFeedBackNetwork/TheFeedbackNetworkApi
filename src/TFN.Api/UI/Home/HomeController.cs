@@ -1,7 +1,7 @@
 ﻿using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using TFN.Api.Models.ViewModels;
+using TFN.Api.UI.Error;
 
 namespace TFN.Api.Controllers
 {
