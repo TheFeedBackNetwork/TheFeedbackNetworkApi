@@ -65,7 +65,7 @@ namespace TFN.Resolution
 
             services.AddAccountEmailService<AccountEmailService>(options =>
             {
-                options.VerificationKeyBaseUrl = configuration["Messaging:VerificationKeyBaseUrl"];
+                options.KeyBaseUrl = configuration["Messaging:KeyBaseUrl"];
             });
 
         }

@@ -2,6 +2,6 @@
 {
     public class AccountEmailServiceOptions
     {
-        public string VerificationKeyBaseUrl { get; set; }
+        public string KeyBaseUrl { get; set; }
     }
 }
