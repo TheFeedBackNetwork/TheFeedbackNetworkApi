@@ -43,6 +43,11 @@ namespace TFN.Api
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
+            if (env.IsLocal())
+            {
+                builder.AddUserSecrets();
+            }
+
             if (env.IsDevelopment() || env.IsLocal())
             {
                 builder.AddApplicationInsightsSettings(developerMode: true);
