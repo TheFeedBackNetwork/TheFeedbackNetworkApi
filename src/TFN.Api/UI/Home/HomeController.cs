@@ -5,7 +5,6 @@ using TFN.Api.UI.Error;
 
 namespace TFN.Api.Controllers
 {
-    //[Route("home")]
     public class HomeController : Controller
     {
         private readonly IIdentityServerInteractionService Interaction;
