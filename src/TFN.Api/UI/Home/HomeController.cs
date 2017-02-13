@@ -1,9 +1,9 @@
-﻿using IdentityServer4.Services;
+﻿using System.Threading.Tasks;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using TFN.Api.UI.Error;
 
-namespace TFN.Api.Controllers
+namespace TFN.Api.UI.Home
 {
     public class HomeController : Controller
     {

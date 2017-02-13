@@ -1,13 +1,13 @@
 ﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityServer4.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.Authentication;
-using TFN.Api.UI.SignOut;
+using Microsoft.AspNetCore.Mvc;
 using TFN.Mvc.Constants;
 
-namespace TFN.Api.Controllers
+namespace TFN.Api.UI.SignOut
 {
+    [Route(RoutePaths.SignOutUrl)]
     public class SignOutController : Controller
     {
         public  IIdentityServerInteractionService Interaction { get; private set; }

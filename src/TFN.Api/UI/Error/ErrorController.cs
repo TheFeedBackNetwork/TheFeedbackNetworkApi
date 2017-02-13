@@ -1,6 +1,8 @@
-﻿namespace TFN.Api.UI.Error
+﻿using TFN.Api.UI.Base;
+
+namespace TFN.Api.UI.Error
 {
-    public class ErrorController
+    public class ErrorController : UIController
     {
         
     }

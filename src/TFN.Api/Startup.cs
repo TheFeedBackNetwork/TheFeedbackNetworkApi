@@ -200,14 +200,14 @@ namespace TFN.Api
 
 
             //STS Fork
-            app.Map("/identity", identity =>
+            app.Map($"/{RoutePaths.IdentityRootBase}", identity =>
             {
                 identity.UseIdentityServer();
                 identity.UseStaticFiles();
                 identity.UseMvcWithDefaultRoute();
             });
 
-            app.Map("/signalr", signalR =>
+            app.Map($"/{RoutePaths.SignalRRootBase}", signalR =>
             {
                 signalR.UseSignalR();
             });

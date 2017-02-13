@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TFN.Api.UI.Base;
 
 namespace TFN.Api.UI.ForgotPassword
 {
-    public class ForgotPasswordController : Controller
+    [Route("forgotpassword")]
+    public class ForgotPasswordController : UIController
     {
+
     }
 }

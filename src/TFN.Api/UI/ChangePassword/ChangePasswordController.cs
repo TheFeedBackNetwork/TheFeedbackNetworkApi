@@ -1,11 +1,12 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using TFN.Api.UI.Base;
 using TFN.Domain.Interfaces.Services;
 
 namespace TFN.Api.UI.ChangePassword
 {
-    public class ChangePasswordController : Controller
+    public class ChangePasswordController : UIController
     {
+
         public IAccountEmailService AccountEmailService { get; private set; }
         public ChangePasswordController(IAccountEmailService accountEmailService)
         {
@@ -13,9 +14,12 @@ namespace TFN.Api.UI.ChangePassword
         }
 
         [HttpGet]
-        public IActionResult Post()
+        [Route("changepassword", Name = "ChangePassword")]
+        public IActionResult ChangePassword()
         {
-            throw new NotImplementedException();
+            var vm = new ChangePasswordViewModel(new ChangePasswordInputModel());
+
+            return View(vm);
         }
     }
 }

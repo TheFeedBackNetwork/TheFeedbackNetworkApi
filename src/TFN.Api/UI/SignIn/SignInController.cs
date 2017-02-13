@@ -9,12 +9,12 @@ using IdentityServer4;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using TFN.Api.UI.SignIn;
 using TFN.Domain.Interfaces.Services;
 using TFN.Mvc.Constants;
 
-namespace TFN.Api.Controllers
+namespace TFN.Api.UI.SignIn
 {
+    [Route(RoutePaths.SignInUrl)]
     public class SignInController : Controller
     {
         public IUserService UserService { get; private set; }
