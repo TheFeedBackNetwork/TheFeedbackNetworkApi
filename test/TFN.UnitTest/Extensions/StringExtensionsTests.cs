@@ -22,6 +22,8 @@ namespace TFN.UnitTest.Extensions
         [InlineData("http://www.foo.com")]
         [InlineData("http://foo.ac.za")]
         [InlineData("https://foo.ac.za")]
+        [InlineData("https://lol.com/this.png")]
+        [InlineData("http://i.imgur.com/Rum0zSz.gifv")]
         public void Url_CheckValidUrl_ReturnsTrue(string testValue)
         {
             testValue.IsUrl().Should().Be(true);
