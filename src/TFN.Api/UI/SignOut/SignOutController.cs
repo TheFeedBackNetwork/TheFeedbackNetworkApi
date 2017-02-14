@@ -7,7 +7,6 @@ using TFN.Mvc.Constants;
 
 namespace TFN.Api.UI.SignOut
 {
-    [Route(RoutePaths.SignOutUrl)]
     public class SignOutController : Controller
     {
         public  IIdentityServerInteractionService Interaction { get; private set; }

@@ -8,7 +8,7 @@
         {
             Password = other.Password;
             ConfirmPassword = other.ConfirmPassword;
-            ValidationKey = other.ValidationKey;
+            ChangePasswordKey = other.ChangePasswordKey;
         }
 
         public ChangePasswordViewModel()

@@ -14,7 +14,6 @@ using TFN.Mvc.Constants;
 
 namespace TFN.Api.UI.SignIn
 {
-    [Route(RoutePaths.SignInUrl)]
     public class SignInController : Controller
     {
         public IUserService UserService { get; private set; }
