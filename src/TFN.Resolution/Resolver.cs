@@ -48,6 +48,7 @@ namespace TFN.Resolution
             services.AddTransient<ITrackProcessingService, TrackProcessingService>();
             services.AddTransient<ITrackStorageService, TrackStorageService>();
             services.AddTransient<IKeyService, KeyService>();
+            services.AddTransient<ITransientUserService, TransientUserService>();
 
             services.AddTransient<IUsersEventsService, UsersEventsService>();
             services.AddTransient<IUserIdProvider, UserIdProvider>();

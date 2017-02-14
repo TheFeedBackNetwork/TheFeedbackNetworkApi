@@ -8,8 +8,6 @@ using TFN.Domain.Models.Entities;
 
 namespace TFN.Domain.Services
 {
-    #pragma warning disable 1998
-    //TODO Remove when we async
     public class UserService : IUserService
     {
         public IUserRepository UserRepository { get; private set; }
@@ -17,10 +15,9 @@ namespace TFN.Domain.Services
         {
             UserRepository = userRepository;
         }
-        public Task AddAsync(User entity)
+        public async Task AddAsync(User entity)
         {
-            //this one wont be needed for a bit
-            throw new NotImplementedException();
+            await UserRepository.AddAsync(entity);
         }
 
         public async Task AddAsync(User entity, string password)
@@ -39,30 +36,21 @@ namespace TFN.Domain.Services
             await UserRepository.AddAsync(entity, password);
         }
 
-
-        public async Task<User> AutoProvisionUserAsync(string provider, string userId, List<Claim> claims)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<User> FindByExternalProviderAsync(string provider, string userId)
-        {
-            throw new NotImplementedException();
+            await UserRepository.DeleteAsync(id);
         }
 
         public async Task<User> GetAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var user = await UserRepository.GetAsync(id);
+
+            return user;
         }
 
-        public async Task<User> GetAsync(string username)
+        public async Task<User> GetByUsernameAsync(string username)
         {
-            var user = await UserRepository.GetAsync(username);
+            var user = await UserRepository.GetByUsernameAsync(username);
 
             return user;
         }
@@ -75,7 +63,12 @@ namespace TFN.Domain.Services
 
         public async Task UpdateAsync(User entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+            {
+                throw new ArgumentNullException($"{nameof(entity)}");
+            }
+
+            await UserRepository.UpdateAsync(entity);
         }
 
         public async Task<bool> ValidateCredentialsAsync(string username, string password)
@@ -83,6 +76,39 @@ namespace TFN.Domain.Services
             var user = await UserRepository.GetAsync(username, password);
 
             return user != null;
+        }
+
+        public async Task<bool> ExistsByEmail(string email)
+        {
+            var user = await UserRepository.GetByEmailAsync(email);
+
+            return user != null;
+        }
+
+        public async Task<bool> ExistsByUsername(string username)
+        {
+            var user = await UserRepository.GetByUsernameAsync(username);
+
+            return user != null;
+        }
+
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            var user = await UserRepository.GetByEmailAsync(email);
+
+            return user;
+        }
+        #pragma warning disable 1998
+        //TODO Remove when we async
+        public async Task<User> FindByExternalProviderAsync(string provider, string userId)
+        {
+            throw new NotImplementedException();
+        }
+        #pragma warning disable 1998
+        //TODO Remove when we async
+        public async Task<User> AutoProvisionUserAsync(string provider, string userId, List<Claim> claims)
+        {
+            throw new NotImplementedException();
         }
     }
 }

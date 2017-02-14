@@ -7,8 +7,9 @@ namespace TFN.Domain.Interfaces.Repositories
 {
     public interface IUserRepository : IAddableRepository<User, Guid>, IDeleteableRepository<User, Guid>, IUpdateableRepository<User,Guid>
     {
-        Task<User> GetAsync(string username);
-        Task<User> GetAsync(string username,string password);
+        Task<User> GetByUsernameAsync(string username);
+        Task<User> GetByEmailAsync(string email);
+        Task<User> GetAsync(string usernameOrEmail,string password);
         Task AddAsync(User entity, string password);
     }
 }

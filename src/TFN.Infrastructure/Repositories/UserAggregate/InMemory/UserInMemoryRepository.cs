@@ -31,14 +31,21 @@ namespace TFN.Infrastructure.Repositories.UserAggregate.InMemory
             return Task.FromResult(InMemoryUsers.Users.SingleOrDefault(x => x.Id == id));
         }
 
-        public Task<User> GetAsync(string username)
+        public Task<User> GetByUsernameAsync(string username)
         {
             return Task.FromResult(InMemoryUsers.Users.SingleOrDefault(x => x.Username == username));
         }
 
-        public Task<User> GetAsync(string username, string password)
+        public Task<User> GetAsync(string usernameOrEmail, string password)
         {
-            return GetAsync(username);
+            var user = GetByUsernameAsync(usernameOrEmail);
+
+            if (user == null)
+            {
+                user = GetByEmailAsync(usernameOrEmail);
+            }
+
+            return user;
         }
 
         public Task UpdateAsync(User entity)
@@ -46,6 +53,11 @@ namespace TFN.Infrastructure.Repositories.UserAggregate.InMemory
             DeleteAsync(entity.Id);
             AddAsync(entity);
             return Task.FromResult(0);
+        }
+
+        public Task<User> GetByEmailAsync(string email)
+        {
+            return Task.FromResult(InMemoryUsers.Users.SingleOrDefault(x => x.Email == email));
         }
     }
 }
