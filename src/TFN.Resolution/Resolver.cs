@@ -20,6 +20,7 @@ using TFN.Infrastructure.Repositories.ClientAggregate.InMemory;
 using TFN.Infrastructure.Repositories.PostAggregate.InMemory;
 using TFN.Infrastructure.Repositories.ResourceAggregate.InMemory;
 using TFN.Infrastructure.Repositories.TrackAggregate.InMemory;
+using TFN.Infrastructure.Repositories.TransientUserAggregate.InMemory;
 using TFN.Infrastructure.Repositories.UserAggregate.InMemory;
 using TFN.Mvc.Extensions;
 using TFN.Resolution.Extensions;
@@ -34,6 +35,7 @@ namespace TFN.Resolution
             services.AddTransient<IResourceRepository, ResourceInMemoryRepository>();
             services.AddTransient<IResourceStore, ResourceInMemoryRepository>();
             services.AddTransient<IUserRepository, UserInMemoryRepository>();
+            services.AddTransient<ITransientUserRepository, TransientUserInMemoryRepository>();
             services.AddTransient<IClientRepository, ClientInMemoryRepository>();
             services.AddTransient<IPostRepository, PostInMemoryRepository>();
             services.AddTransient<IClientStore, ClientInMemoryRepository>();
