@@ -6,8 +6,6 @@ namespace TFN.Mvc.Helpers
 {
     public static class MultipartRequestHelper
     {
-        // Content-Type: multipart/form-data; boundary="----WebKitFormBoundarymx2fSWqWSd0OxQqq"
-        // The spec says 70 characters is a reasonable limit.
         public static string GetBoundary(MediaTypeHeaderValue contentType, int lengthLimit)
         {
             var boundary = HeaderUtilities.RemoveQuotes(contentType.Boundary);
@@ -33,7 +31,6 @@ namespace TFN.Mvc.Helpers
 
         public static bool HasFormDataContentDisposition(ContentDispositionHeaderValue contentDisposition)
         {
-            // Content-Disposition: form-data; name="key";
             return contentDisposition != null
                 && contentDisposition.DispositionType.Equals("form-data")
                 && string.IsNullOrEmpty(contentDisposition.FileName)
@@ -42,7 +39,6 @@ namespace TFN.Mvc.Helpers
 
         public static bool HasFileContentDisposition(ContentDispositionHeaderValue contentDisposition)
         {
-            // Content-Disposition: form-data; name="myfile1"; filename="Misc 002.jpg"
             return contentDisposition != null
                 && contentDisposition.DispositionType.Equals("form-data")
                 && (!string.IsNullOrEmpty(contentDisposition.FileName)

@@ -2,7 +2,6 @@
 {
     public class Biography
     {
-
         public string Text { get; private set; }
         public string InstagramUrl { get; private set; }
         public string SoundCloudUrl { get; private set; }

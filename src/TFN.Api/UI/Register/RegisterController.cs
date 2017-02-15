@@ -54,6 +54,12 @@ namespace TFN.Api.UI.Register
                 return View(new RegisterViewModel(model));
             }
 
+            if (!await CanTrasientUserTakeUsername(model.RegisterEmail, model.RegisterUsername))
+            {
+                ModelState.AddModelError("username", "This username has already been used.");
+                return View(new RegisterViewModel(model));
+            }
+
             var key = KeyService.GenerateUrlSafeUniqueKey();
 
             var transientUser = new TransientUser(model.RegisterUsername,model.RegisterEmail,key);
@@ -63,6 +69,25 @@ namespace TFN.Api.UI.Register
             return View("RegisterConfirmed");
 
 
+        }
+
+        private async Task<bool> CanTrasientUserTakeUsername(string email, string username)
+        {
+            var transientUserByUsername = await TransientUserService.GetByUsernameAsync(username);
+
+            if (transientUserByUsername != null)
+            {
+                if (transientUserByUsername.Email.Equals(email))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

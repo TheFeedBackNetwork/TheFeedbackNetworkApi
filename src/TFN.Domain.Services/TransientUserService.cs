@@ -44,5 +44,15 @@ namespace TFN.Domain.Services
         {
             return await TransientUserRepository.GetByEmailVerificationKeyAsync(emailVerificationKey);
         }
+
+        public async Task<TransientUser> GetByEmailAsync(string email)
+        {
+            return await TransientUserRepository.GetByEmailAsync(email);
+        }
+
+        public async Task<TransientUser> GetByUsernameAsync(string username)
+        {
+            return await TransientUserRepository.GetByUsernameAsync(username);
+        }
     }
 }

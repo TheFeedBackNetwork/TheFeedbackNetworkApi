@@ -9,5 +9,7 @@ namespace TFN.Domain.Interfaces.Services
         Task<bool> EmailVerificationKeyExistsAsync(string emailVerificationKey);
         Task DeleteAsync(TransientUser transientUser);
         Task<TransientUser> GetByEmailVerificationKeyAsync(string emailVerificationKey);
+        Task<TransientUser> GetByEmailAsync(string email);
+        Task<TransientUser> GetByUsernameAsync(string username);
     }
 }

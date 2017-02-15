@@ -41,5 +41,10 @@ namespace TFN.Infrastructure.Repositories.TransientUserAggregate.InMemory
             AddAsync(entity);
             return Task.CompletedTask;
         }
+
+        public Task<TransientUser> GetByUsernameAsync(string username)
+        {
+            return Task.FromResult(InMemoryTransientUsers.TransientUsers.SingleOrDefault(x => x.Username == username));
+        }
     }
 }

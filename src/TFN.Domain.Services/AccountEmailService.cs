@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using TFN.Domain.Interfaces.Services;
 using TFN.Domain.Models.Options;
@@ -15,16 +14,15 @@ namespace TFN.Domain.Services
             EmailService = emailService;
             KeyBaseUrl = options.Value.KeyBaseUrl;
         }
-        public Task SendForgotPasswordEmailAsync(string toEmail, string token)
+        public async Task SendForgotPasswordEmailAsync(string toEmail, string token)
         {
-            EmailService.SendEmailAsync(toEmail, "Forgot Password", $"{KeyBaseUrl}/forgot/{token}");
-            return Task.CompletedTask;
+            await EmailService.SendEmailAsync(toEmail, "Forgot Password", $"{KeyBaseUrl}/forgot/{token}");
         }
 
-        public Task SendVerificationEmailAsync(string toEmail, string token)
+        public async Task SendVerificationEmailAsync(string toEmail, string token)
         {
-            EmailService.SendEmailAsync(toEmail, "Forgot Password", $"{KeyBaseUrl}/verify/{token}");
-            return Task.CompletedTask;
+            await EmailService.SendEmailAsync(toEmail, "Forgot Password", $"{KeyBaseUrl}/verify/{token}");
+
         }
     }
 }

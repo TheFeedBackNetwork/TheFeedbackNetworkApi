@@ -9,5 +9,6 @@ namespace TFN.Domain.Interfaces.Repositories
     {
         Task<TransientUser> GetByEmailAsync(string email);
         Task<TransientUser> GetByEmailVerificationKeyAsync(string emailVerificationKey);
+        Task<TransientUser> GetByUsernameAsync(string username);
     }
 }
