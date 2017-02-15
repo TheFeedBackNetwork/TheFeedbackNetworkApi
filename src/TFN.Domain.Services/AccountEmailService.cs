@@ -16,12 +16,12 @@ namespace TFN.Domain.Services
         }
         public async Task SendForgotPasswordEmailAsync(string toEmail, string token)
         {
-            await EmailService.SendEmailAsync(toEmail, "Forgot Password", $"{KeyBaseUrl}/forgot/{token}");
+            await EmailService.SendEmailAsync(toEmail, "Password Reset for The Feedback Network", $"Hi, click on the link to reset your password {KeyBaseUrl}/forgot/{token}");
         }
 
-        public async Task SendVerificationEmailAsync(string toEmail, string token)
+        public async Task SendVerificationEmailAsync(string toEmail,string username, string token)
         {
-            await EmailService.SendEmailAsync(toEmail, "Forgot Password", $"{KeyBaseUrl}/verify/{token}");
+            await EmailService.SendEmailAsync(toEmail, "Thanks for joining The Feedback Network", $"Hi {username} </br> click on the link to complete registration {KeyBaseUrl}/verify/{token}");
 
         }
     }

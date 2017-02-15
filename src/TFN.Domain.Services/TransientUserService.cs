@@ -24,7 +24,7 @@ namespace TFN.Domain.Services
             }
 
             await TransientUserRepository.AddAsync(transientUser);
-            await AccountEmailService.SendVerificationEmailAsync(transientUser.Email, transientUser.EmailVerificationKey);
+            await AccountEmailService.SendVerificationEmailAsync(transientUser.Email,transientUser.Username, transientUser.EmailVerificationKey);
 
         }
 

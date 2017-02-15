@@ -60,7 +60,8 @@ namespace TFN.Api.UI.Verify
             }
             else if (!PasswordService.ValidatePassword(model.VerifyPassword))
             {
-                var vm = new VerifyViewModel(new VerifyInputModel());
+                ModelState.AddModelError("VerifyPassword", "Password must contain at least one number and one letter.");
+                var vm = new VerifyViewModel(model);
                 return View(vm);
             }
 
@@ -71,7 +72,10 @@ namespace TFN.Api.UI.Verify
             await TransientUserService.DeleteAsync(transientUser);
 
             var claims = UserService.GetClaims(user);
+            
             var ci = new ClaimsIdentity(claims, "password", JwtClaimTypes.PreferredUserName,JwtClaimTypes.Role);
+            //needed for IDS UI
+            ci.AddClaim(new Claim(JwtClaimTypes.Name,user.Username));
             var cp = new ClaimsPrincipal(ci);
 
             await HttpContext.Authentication.SignInAsync(
@@ -79,7 +83,7 @@ namespace TFN.Api.UI.Verify
             
             Logger.LogInformation("User Verified and Logged in");
 
-            return View();
+            return View("VerifySuccess");
 
         }
     }

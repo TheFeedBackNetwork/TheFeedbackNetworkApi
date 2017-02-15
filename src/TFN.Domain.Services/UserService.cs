@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TFN.Domain.Interfaces.Repositories;
@@ -112,6 +113,24 @@ namespace TFN.Domain.Services
 
             return user;
         }
+
+        public bool ValidateUsernameCharacterSafety(string username)
+        {
+            const string invalidUrlCharacters = "!&$+,/.;=?@#'<>[]{}()|\\^%\"*";
+
+            if (username == null)
+            {
+                return false;
+            }
+
+            if (invalidUrlCharacters.Any(c => username.Contains(c.ToString())))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
         #pragma warning disable 1998
         //TODO Remove when we async
         public async Task<User> FindByExternalProviderAsync(string provider, string userId)

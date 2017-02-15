@@ -44,19 +44,19 @@ namespace TFN.Api.UI.Register
 
             if (await UserService.ExistsByEmail(model.RegisterEmail))
             {
-                ModelState.AddModelError("email","This email has already been used.");
+                ModelState.AddModelError("RegisterEmail","This email has already been used.");
                 return View(new RegisterViewModel(model));
             }
 
             if (await UserService.ExistsByUsername(model.RegisterUsername))
             {
-                ModelState.AddModelError("username", "This username has already been used.");
+                ModelState.AddModelError("RegisterUsername", "This username has already been used.");
                 return View(new RegisterViewModel(model));
             }
 
             if (!await CanTrasientUserTakeUsername(model.RegisterEmail, model.RegisterUsername))
             {
-                ModelState.AddModelError("username", "This username has already been used.");
+                ModelState.AddModelError("RegisterUsername", "This username has already been used.");
                 return View(new RegisterViewModel(model));
             }
 

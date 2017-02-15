@@ -9,12 +9,13 @@ using IdentityServer4;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using TFN.Api.UI.Base;
 using TFN.Domain.Interfaces.Services;
 using TFN.Mvc.Constants;
 
 namespace TFN.Api.UI.SignIn
 {
-    public class SignInController : Controller
+    public class SignInController : UIController
     {
         public IUserService UserService { get; private set; }
         public  IIdentityServerInteractionService Interaction { get; private set; }
@@ -31,6 +32,10 @@ namespace TFN.Api.UI.SignIn
         [Route(RoutePaths.SignInUrl, Name = "SignIn")]
         public async Task<IActionResult> SignIn(string returnUrl)
         {
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {              
+                return Redirect(AppUrl);
+            }
             var vm = new SignInViewModel(HttpContext);
 
             var context = await Interaction.GetAuthorizationContextAsync(returnUrl);
@@ -66,7 +71,7 @@ namespace TFN.Api.UI.SignIn
                     return Redirect("~/");
                 }
 
-                ModelState.AddModelError("", "Invalid username or password.");
+                ModelState.AddModelError("Password", "Invalid username or password combination.");
             }
 
             // something went wrong, show form with error

@@ -44,5 +44,16 @@ namespace TFN.Api.Extensions
                     "://",
                     request.Host.ToUriComponent());
         }
+
+        public static string GetAppUrl(this HttpContext context)
+        {
+            var http = "http://";
+            if (context.Request.IsHttps)
+            {
+                http = "https://";
+            }
+
+            return $"{http}{context.Request.Host.Value}";
+        }
     }
 }

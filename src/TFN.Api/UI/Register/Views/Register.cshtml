@@ -3,68 +3,82 @@
 <section class="valign-wrapper center-wrapper" show-if="!User.Identity.IsAuthenticated">
     <div class="col l3 m8 s12 valign">
 
-        <form asp-route="SignUp" id="signup-form" novalidate>
-            @Html.AntiForgeryToken()
-
-            <div class="row">
-                <h4 class="primary form-title">Sign up</h4>
-                <p class="form-info form-info-top">
-                    <div asp-validation-summary="ModelOnly" class="danger main-server-error"></div>
-                </p>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">TFN Registration</h3>
             </div>
-            
-            <div class="row">
-                <div class="input-field">
+            <div class="panel-body">
 
-                    <input asp-for="RegisterUsername" type="text" name="RegisterUsername" id="RegisterUsername" placeholder="Type your username" autofocus autocorrect="off" spellcheck="false" autocapitalize="off" autocomplete="off">
-                    <label asp-for="RegisterUsername" class="active">Username</label>
+                <form asp-route="SignUp" id="signup-form" novalidate>
+                    @Html.AntiForgeryToken()
 
-                    <div class="success register-success"><span class="icon-done"></span></div>
-                    <span asp-validation-for="RegisterUsername" class="danger inline-server-error"></span>
+                    <div class="row">
+                        <h4 class="primary form-title">Sign up</h4>
+                        <p class="form-info form-info-top">
+                            <div asp-validation-summary="ModelOnly" class="danger main-server-error"></div>
+                        </p>
+                    </div>
 
-                </div>
+                    <div class="row">
+                        <div class="input-field">
+
+                            <input asp-for="RegisterUsername" type="text" name="RegisterUsername" id="RegisterUsername" placeholder="Type your username" autofocus autocorrect="off" spellcheck="false" autocapitalize="off" autocomplete="off">
+                            <label asp-for="RegisterUsername" class="active">Username</label>
+
+                            <div class="success register-success">
+                                <span class="icon-done"></span>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="input-field">
+
+                            <input asp-for="RegisterEmail" type="email" name="RegisterEmail" id="RegisterEmail" placeholder="Type your email" autofocus autocorrect="off" spellcheck="false" autocapitalize="off" autocomplete="off">
+                            <label asp-for="RegisterEmail" class="active">Email</label>
+
+                            <div class="success register-success">
+                                <span class="icon-done"></span>
+                            </div>
+
+
+                        </div>
+                        <span asp-validation-for="RegisterUsername" class="danger inline-server-error"></span>
+                        <span asp-validation-for="RegisterEmail" class="danger inline-server-error"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-info">
+
+                            <h6 class="light-text">
+                                By clicking sign up, you state that you agree to our <a href="https://foo.bar/tc" target="_blank" class="text-blue semi-bold" tabindex="-1">Terms & Conditions</a>
+                                , and that you have read our
+                                <a href="https://foo.bar/privacy-policy" target="_blank" class="text-blue semi-bold" tabindex="-1">Privacy Policy</a>.
+                            </h6>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col m6 s12">
+                            <button class="btn btn-block bg-primary" type="submit" name="action" id="register-btn">
+
+                                <span class="submit-btn-text semi-bold">Register</span>
+
+                            </button>
+                        </div>
+
+                        <div class="col m6 right-align addtional-info">
+                            <span>Have an account? <a asp-route="SignIn" id="sign-in-a" class="semi-bold">Sign In</a></span>
+                        </div>
+
+                    </div>
+
+                </form>
+
             </div>
-
-            <div class="row">
-                <div class="input-field">
-
-                    <input asp-for="RegisterEmail" type="email" name="RegisterEmail" id="RegisterEmail" placeholder="Type your email" autofocus autocorrect="off" spellcheck="false" autocapitalize="off" autocomplete="off">
-                    <label asp-for="RegisterEmail" class="active">Email</label>
-
-                    <div class="success register-success"><span class="icon-done"></span></div>
-                    <span asp-validation-for="RegisterEmail" class="danger inline-server-error"></span>
-
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="form-info">
-
-                    <h6 class="light-text">
-                        By clicking sign up, you state that you agree to our <a href="https://foo.bar/tc" target="_blank" class="text-blue semi-bold" tabindex="-1">Terms & Conditions</a>
-                        , and that you have read our
-                        <a href="https://foo.bar/privacy-policy" target="_blank" class="text-blue semi-bold" tabindex="-1">Privacy Policy</a>.
-                    </h6>
-
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col m6 s12">
-                    <button class="btn btn-block bg-primary" type="submit" name="action" id="register-btn">
-
-                        <span class="submit-btn-text semi-bold">Register</span>
-
-                    </button>
-                </div>
-
-                <div class="col m6 right-align addtional-info">
-                    <span>Have an account? <a asp-route="SignIn" id="sign-in-a" class="semi-bold">Sign In</a></span>
-                </div>
-
-            </div>
-
-        </form>
-
+         </div>
     </div>
 </section>

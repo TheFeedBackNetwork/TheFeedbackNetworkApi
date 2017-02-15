@@ -29,12 +29,12 @@ namespace TFN.Api.UI.ChangePassword
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("viewmodel", "Invalid password details. Please try again.");
+                ModelState.AddModelError("ConfirmPassword", "Invalid password details. Please try again.");
                 return View(new ChangePasswordViewModel(model));
             }
             if (!model.Password.Equals(model.ConfirmPassword))
             {
-                ModelState.AddModelError("password", "Password and confirmation need to match. Please try again.");
+                ModelState.AddModelError("ConfirmPassword", "Password and confirmation need to match. Please try again.");
                 return View(new ChangePasswordViewModel(model));
             }
             else
