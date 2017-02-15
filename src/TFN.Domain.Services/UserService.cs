@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using IdentityModel;
 using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Interfaces.Services;
 using TFN.Domain.Models.Entities;
+using TFN.Domain.Services.Utilities;
 
 namespace TFN.Domain.Services
 {
@@ -34,6 +36,11 @@ namespace TFN.Domain.Services
             }
 
             await UserRepository.AddAsync(entity, password);
+        }
+
+        public async Task CreateAsync(User user, string password)
+        {
+            await AddAsync(user, password);
         }
 
         public async Task DeleteAsync(Guid id)
@@ -69,6 +76,14 @@ namespace TFN.Domain.Services
             }
 
             await UserRepository.UpdateAsync(entity);
+        }
+        
+
+        public IEnumerable<Claim> GetClaims(User user)
+        {
+            var claims = ClaimsUtility.GetClaims(user);
+
+            return claims;
         }
 
         public async Task<bool> ValidateCredentialsAsync(string username, string password)
@@ -110,5 +125,7 @@ namespace TFN.Domain.Services
         {
             throw new NotImplementedException();
         }
+
+        
     }
 }

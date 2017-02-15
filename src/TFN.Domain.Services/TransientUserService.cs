@@ -33,11 +33,16 @@ namespace TFN.Domain.Services
             await TransientUserRepository.DeleteAsync(transientUser.Id);
         }
 
-        public async Task<bool> VerificationKeyExistsAsync(string verificationKey)
+        public async Task<bool> EmailVerificationKeyExistsAsync(string emailVerificationKey)
         {
-            var transientUser = await TransientUserRepository.GetByEmailVerificationKeyAsync(verificationKey);
+            var transientUser = await TransientUserRepository.GetByEmailVerificationKeyAsync(emailVerificationKey);
 
             return transientUser != null;
+        }
+
+        public async Task<TransientUser> GetByEmailVerificationKeyAsync(string emailVerificationKey)
+        {
+            return await TransientUserRepository.GetByEmailVerificationKeyAsync(emailVerificationKey);
         }
     }
 }

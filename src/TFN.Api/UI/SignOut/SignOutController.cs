@@ -18,7 +18,7 @@ namespace TFN.Api.UI.SignOut
 
         [HttpGet]
         [Route(RoutePaths.SignOutUrl, Name = "SignOut")]
-        public IActionResult Logout(string logoutId)
+        public IActionResult SignOut(string logoutId)
         {
             var vm = new SignOutViewModel
             {
@@ -32,7 +32,7 @@ namespace TFN.Api.UI.SignOut
         [HttpPost]
         [Route(RoutePaths.SignOutUrl, Name = "SignOut")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout(SignOutViewModel model)
+        public async Task<IActionResult> SignOut(SignOutViewModel model)
         {
             // delete authentication cookie
             await HttpContext.Authentication.SignOutAsync();

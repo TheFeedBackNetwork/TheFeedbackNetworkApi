@@ -22,7 +22,7 @@ namespace TFN.UnitTest.Aggregates
 
         public User make_User(Guid id, string username,string profilePictureUrl, string email, string givenName, string familyName,int credits, Biography biography, Instant created)
         {
-            return User.Hydrate(id, username, profilePictureUrl, email, givenName, familyName,credits, biography, created, IsActiveDefault);
+            return User.Hydrate(id, username, profilePictureUrl, email, givenName,credits, biography, created, IsActiveDefault);
         }
 
         public User make_UserByUsername(string username)
@@ -78,15 +78,6 @@ namespace TFN.UnitTest.Aggregates
         public void Constructor_InvalidEmail_ArgumentExceptionThrown(string email)
         {
             this.Invoking(x => x.make_UserByEmail(email))
-                .ShouldThrow<ArgumentException>();
-        }
-
-        [Theory]
-        [InlineData("https://bar.com/foo.png")]
-        [InlineData("http://foo.bar.com/foobar.png")]
-        public void Constructor_InvalidProfilePictureUrl_ArgumentExceptionThrown(string profilePictureUrl)
-        {
-            this.Invoking(x => x.make_UserByProfilePictureUrl(profilePictureUrl))
                 .ShouldThrow<ArgumentException>();
         }
 

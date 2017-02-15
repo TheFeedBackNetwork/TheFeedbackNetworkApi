@@ -14,5 +14,7 @@ namespace TFN.Domain.Interfaces.Services
         Task<User> FindByExternalProviderAsync(string provider, string userId);
         Task<bool> ExistsByEmail(string email);
         Task<bool> ExistsByUsername(string username);
+        Task CreateAsync(User user, string password);
+        IEnumerable<Claim> GetClaims(User user);
     }
 }

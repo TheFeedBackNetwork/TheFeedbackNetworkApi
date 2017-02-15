@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using TFN.Mvc.Attributes;
 
-namespace TFN.Api.UI.VerifyAccount
+namespace TFN.Api.UI.Verify
 {
     public class VerifyInputModel
     {

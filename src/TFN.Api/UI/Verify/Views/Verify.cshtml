@@ -1,0 +1,40 @@
+﻿@model TFN.Api.UI.Verify.VerifyViewModel
+
+<section class="row narrow-width align-center align-middle center-page" show-if="!User.Identity.IsAuthenticated" id="page-verify">
+    <div class="column">
+        <div class="card">
+            <h1 class="text-center">Welcome</h1>
+
+            <div class="text-center light-text">
+                One last step, pick a password for your account. Use at least 6 characters
+                including at least one number.
+            </div>
+            <br />
+
+            <form novalidate id="verify-password-form" asp-route="Verify">
+                @Html.AntiForgeryToken()
+                <input asp-for="EmailVerificationKey" type="hidden" />
+
+                <div class="row">
+                    <div class="column">
+
+                        <label asp-for="VerifyPassword" class="active">Password</label>
+                        <input asp-for="VerifyPassword" type="password" name="VerifyPassword" id="VerifyPassword" placeholder="Type your password" autofocus>
+
+                        <small class="error"><span asp-validation-for="VerifyPassword" class="danger inline-server-error"></span></small>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="column">
+                        <button class="button expanded" type="submit" name="action" id="verify-password-btn">
+                            <span class="submit-btn-text">Create account</span>
+
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
