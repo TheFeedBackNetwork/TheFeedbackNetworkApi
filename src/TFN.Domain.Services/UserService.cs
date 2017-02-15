@@ -13,9 +13,13 @@ namespace TFN.Domain.Services
     public class UserService : IUserService
     {
         public IUserRepository UserRepository { get; private set; }
-        public UserService(IUserRepository userRepository)
+        public IKeyService KeyService { get; private set; }
+        public IAccountEmailService AccountEmailService { get; private set; }
+        public UserService(IUserRepository userRepository, IKeyService keyService, IAccountEmailService accountEmailService)
         {
             UserRepository = userRepository;
+            KeyService = keyService;
+            AccountEmailService = accountEmailService;
         }
         public async Task AddAsync(User entity)
         {
@@ -130,6 +134,16 @@ namespace TFN.Domain.Services
 
             return true;
         }
+        public async Task SendChangePasswordKeyAsync(User user)
+        {
+            var forgotPasswordKey = KeyService.GenerateUrlSafeUniqueKey();
+            await UserRepository.UpdateChangePasswordKeyAsync(user, forgotPasswordKey);
+            await AccountEmailService.SendChangePasswordEmailAsync(user.Email, forgotPasswordKey);
+        }
+        public async Task<bool> ChangePasswordKeyExistsAsync(string changePasswordKey)
+        {
+            return await UserRepository.ChangePasswordKeyExistsAsync(changePasswordKey);
+        }
 
         #pragma warning disable 1998
         //TODO Remove when we async
@@ -144,6 +158,10 @@ namespace TFN.Domain.Services
             throw new NotImplementedException();
         }
 
-        
+        public async Task UpdateUserPasswordAsync(string changePasswordKey, string password)
+        {
+            var user = await UserRepository.GetByChangePasswordKey(changePasswordKey);
+            await UserRepository.UpdateUserPasswordAsync(user, password);
+        }
     }
 }

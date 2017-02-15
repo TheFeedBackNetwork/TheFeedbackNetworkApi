@@ -14,9 +14,9 @@ namespace TFN.Domain.Services
             EmailService = emailService;
             KeyBaseUrl = options.Value.KeyBaseUrl;
         }
-        public async Task SendForgotPasswordEmailAsync(string toEmail, string token)
+        public async Task SendChangePasswordEmailAsync(string toEmail, string token)
         {
-            await EmailService.SendEmailAsync(toEmail, "Password Reset for The Feedback Network", $"Hi, click on the link to reset your password {KeyBaseUrl}/forgot/{token}");
+            await EmailService.SendEmailAsync(toEmail, "Password Reset for The Feedback Network", $"Hi, click on the link to reset your password {KeyBaseUrl}/changepassword/{token}");
         }
 
         public async Task SendVerificationEmailAsync(string toEmail,string username, string token)

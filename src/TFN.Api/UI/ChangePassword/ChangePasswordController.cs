@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using TFN.Api.UI.Base;
 using TFN.Domain.Interfaces.Services;
 
@@ -8,17 +9,25 @@ namespace TFN.Api.UI.ChangePassword
     {
 
         public IAccountEmailService AccountEmailService { get; private set; }
-        public ChangePasswordController(IAccountEmailService accountEmailService)
+        public IUserService UserService { get; private set; }
+        public IPasswordService PasswordService { get; private set; }
+        public ChangePasswordController(IUserService userService, IAccountEmailService accountEmailService, IPasswordService passwordService)
         {
             AccountEmailService = accountEmailService;
+            UserService = userService;
+            PasswordService = passwordService;
         }
 
         [HttpGet]
         [Route("changepassword/{changePasswordKey}", Name = "ChangePassword")]
-        public IActionResult ChangePassword(string changePasswordKey)
+        public async Task<IActionResult> ChangePassword(string changePasswordKey)
         {
-            var vm = new ChangePasswordViewModel(new ChangePasswordInputModel());
+            if (!await UserService.ChangePasswordKeyExistsAsync(changePasswordKey))
+            {
+                return View("NotFound");
+            }
 
+            var vm = new ChangePasswordViewModel(new ChangePasswordInputModel());
             return View(vm);
         }
 
@@ -37,9 +46,15 @@ namespace TFN.Api.UI.ChangePassword
                 ModelState.AddModelError("ConfirmPassword", "Password and confirmation need to match. Please try again.");
                 return View(new ChangePasswordViewModel(model));
             }
+            else if(!PasswordService.ValidatePassword(model.ConfirmPassword))
+            {
+                ModelState.AddModelError("ConfirmPassword", "Password needs to be 6 characters long with at least one number.");
+                return View(new ChangePasswordViewModel(model));
+            }
             else
             {
-                return RedirectToAction("ChangePasswordSuccess");
+                
+                return View("ChangePasswordSuccess");
             }
         }
 
@@ -49,10 +64,10 @@ namespace TFN.Api.UI.ChangePassword
         {
             if (!User.Identity.IsAuthenticated)
             {
-                return View();
+                return View(AppUrl);
             }
 
-            return View();
+            return View("ChangePasswordSuccess");
         }
     }
 }
