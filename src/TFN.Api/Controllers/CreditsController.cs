@@ -21,6 +21,29 @@ namespace TFN.Api.Controllers
             AuthorizationService = authorizationService;
         }
 
+        [HttpGet(Name = "GetCreditsForCaller")]
+        [Authorize("credits.read")]
+        public async Task<IActionResult> GetCredits()
+        {
+            var credit = await CreditService.GetByUserIdAsync(UserId);
+
+            if (credit == null)
+            {
+                return NotFound();
+            }
+
+            var authZModel = CreditsAuthorizationModel.From(credit);
+
+            if (!await AuthorizationService.AuthorizeAsync(User, authZModel, CreditsOperations.Read))
+            {
+                return new HttpForbiddenResult("An attempt to read credits was attempted, but the authorization policy challenged the request");
+            }
+
+            var model = CreditsResponseModel.From(credit, AbsoluteUri);
+
+            return Json(model);
+        }
+
         [HttpGet("{creditId:Guid}", Name = "GetCredits")]
         [Authorize("credits.read")]
         public async Task<IActionResult> GetCredits(Guid creditId)

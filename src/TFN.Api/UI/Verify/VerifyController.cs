@@ -28,7 +28,7 @@ namespace TFN.Api.UI.Verify
         [HttpGet("verify/{emailVerificationKey}", Name = "Verify")]
         public async Task<IActionResult> Verify(string emailVerificationKey)
         {
-            if (!string.IsNullOrEmpty(emailVerificationKey) && string.IsNullOrWhiteSpace(emailVerificationKey) &&
+            if (!string.IsNullOrEmpty(emailVerificationKey) && !string.IsNullOrWhiteSpace(emailVerificationKey) &&
                 await TransientUserService.EmailVerificationKeyExistsAsync(emailVerificationKey))
             {
                 if (User.Identity.IsAuthenticated)
