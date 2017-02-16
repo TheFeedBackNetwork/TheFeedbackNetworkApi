@@ -6,7 +6,9 @@
   "dependencies": {
     "Akka": "1.1.2",
     "Akka.Persistence": "1.1.2.30-beta",
-    "Akka.Serialization.Wire": "1.1.2.30-beta"
+    "Akka.Serialization.Wire": "1.1.2.30-beta",
+    "TFN.Domain.Interfaces": "1.0.0-*",
+    "TFN.Domain.Services": "1.0.0-*"
   },
 
   "frameworks": {

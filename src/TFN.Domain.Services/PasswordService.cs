@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 using NodaTime;
 using TFN.Domain.Interfaces.Services;
 using TFN.Domain.Services.Utilities;
@@ -14,6 +15,7 @@ namespace TFN.Domain.Services
         private const int MinPasswordLength = 6;
         private const int MaxPasswordLength = 256;
         private const int IterationCount = 10000;
+        private const string InvalidUrlCharacters = "&$+,/.;=?@#'<>[]{}|\\^%\"*";
         public string HashPassword(string password)
         {
             var count = IterationCount;
@@ -105,5 +107,7 @@ namespace TFN.Domain.Services
             }
             return -1;
         }
+
+        
     }
 }

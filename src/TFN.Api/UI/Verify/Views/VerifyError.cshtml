@@ -1,0 +1,26 @@
+﻿<section class="row narrow-width align-center align-middle center-wrapper" show-if="!User.Identity.IsAuthenticated" id="page-verify">
+    <div class="column">
+
+        <div class="text-center card">
+            <h3>Verification Error</h3>
+
+            <p class="row light-text">
+                There seems to be an issue with the verification process. This could be due to an out of date
+                verification key or an invalidate verification key. In order to keep your account secure, please
+                try signing up again. Thank you.
+            </p>
+
+            <div class="row">
+                <div class="column">
+                    <a class="button expand" asp-route="Register">
+
+                        <span class="submit-btn-text">Register</span>
+
+
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

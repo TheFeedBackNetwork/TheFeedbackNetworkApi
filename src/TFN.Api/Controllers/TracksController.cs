@@ -11,8 +11,6 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
-using TFN.Api.Models.ModelBinders;
-using TFN.Api.Models.QueryModels;
 using TFN.Api.Models.ResponseModels;
 using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Interfaces.Services;
@@ -66,7 +64,7 @@ namespace TFN.Api.Controllers
         }
 
         [HttpPost(Name = "PostTrack")]
-        [Authorize("tracks.write")]
+        //[Authorize("tracks.write")]
         public async Task<IActionResult> PostAsync()
         {
             if (!MultipartRequestHelper.IsMultipartContentType(Request.ContentType))
@@ -189,9 +187,6 @@ namespace TFN.Api.Controllers
                 // reads the headers for the next section.
                 section = await reader.ReadNextSectionAsync();
             }
-
-            
-
             
             return Json("ok");
         }

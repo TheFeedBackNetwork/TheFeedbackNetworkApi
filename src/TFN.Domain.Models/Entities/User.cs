@@ -11,19 +11,18 @@ namespace TFN.Domain.Models.Entities
         public string Username { get; private set; }
         public string ProfilePictureUrl { get; private set; } 
         public string Email { get; private set; }
-        public string GivenName { get; private set; }
-        public string FamilyName { get; private set; }
+        public string Name { get; private set; }
         public int Credits { get; private set; }
         public Biography Biography { get; private set; }
         public Instant Created { get; private set; }
         public bool IsActive { get; private set; }
 
-        public User(string username,string profilePictureUrl, string email, string givenName, string familyName, Biography biography)
-            : this(Guid.NewGuid(), username,profilePictureUrl, email, givenName, familyName,10, biography,SystemClock.Instance.Now, true)
+        public User(string username, string profilePictureUrl, string email, string name, Biography biography)
+            : this(Guid.NewGuid(), username,profilePictureUrl, email, name,10, biography,SystemClock.Instance.Now, true)
         {
 
         }
-        private User(Guid id, string username, string profilePictureUrl, string email, string givenName, string familyName,int credits, Biography biography, Instant created, bool isActive)
+        private User(Guid id, string username, string profilePictureUrl, string email, string name, int credits, Biography biography, Instant created, bool isActive)
             : base(id)
         {
             if(string.IsNullOrEmpty(username) || string.IsNullOrWhiteSpace(username))
@@ -42,10 +41,6 @@ namespace TFN.Domain.Models.Entities
             {
                 throw new ArgumentException($"The email [{nameof(email)}] is not a valid email.");
             }
-            if(profilePictureUrl.IsUrl())
-            {
-                throw new ArgumentException($"The profile picture url [{nameof(profilePictureUrl)}] is not a valid profile picture Url.");
-            }
             if (credits < 0)
             {
                 throw new ArgumentException($"The credit system does not allow for negative credits");
@@ -54,18 +49,16 @@ namespace TFN.Domain.Models.Entities
             Username = username;
             Email = email;
             ProfilePictureUrl = profilePictureUrl;
-            GivenName = givenName;
-            FamilyName = familyName;
+            Name = name;
             Biography = biography;
             Created = created;
             IsActive = isActive;
             Credits = credits;
         }
 
-        public static User Hydrate(Guid id, string username, string profilePictureUrl, string email, string givenName, string familyName, int credits, Biography biography,
-            Instant created, bool isActive)
+        public static User Hydrate(Guid id, string username, string profilePictureUrl, string email, string name, int credits, Biography biography, Instant created, bool isActive)
         {
-            return new User(id, username,profilePictureUrl, email, givenName, familyName,credits, biography, created, isActive);
+            return new User(id, username,profilePictureUrl, email, name,credits, biography, created, isActive);
         }
     }
 }

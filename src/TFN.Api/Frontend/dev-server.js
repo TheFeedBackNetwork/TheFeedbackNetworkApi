@@ -15,7 +15,7 @@ const compiler = webpack(config);
 compiler.apply(new DashboardPlugin());
 
 const host = process.env.HOST || 'localhost';
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5001;
 
 function log() {
   arguments[0] = '\nWebpack: ' + arguments[0];
@@ -32,6 +32,11 @@ app.use(webpackDevMiddleware(compiler, {
 }));
 
 app.use(webpackHotMiddleware(compiler));
+
+app.get('/silent_renew.html', (req, res) => {
+  res.sendFile(path.join(__dirname, './src/assets/silent_renew.html'));
+});
+
 
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, './src/assets/index.html'));

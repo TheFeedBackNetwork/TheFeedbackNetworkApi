@@ -6,10 +6,10 @@
     using System.IO;
     using System.Text.RegularExpressions;
 
-    using TFN.MediaLibrary.Model;
-    using TFN.MediaLibrary.Options;
-    using TFN.MediaLibrary.Properties;
-    using TFN.MediaLibrary.Util;
+    using Model;
+    using Options;
+    using Properties;
+    using Util;
 
     /// -------------------------------------------------------------------------------------------------
     /// <summary>   An engine. This class cannot be inherited. </summary>

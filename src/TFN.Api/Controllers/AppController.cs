@@ -7,9 +7,7 @@ namespace TFN.Api.Controllers
     public class AppController : Controller
     {
         protected Guid UserId => HttpContext.GetUserId().Value;
-
         protected string Username => HttpContext.GetUsername();
-
         protected string AbsoluteUri => HttpContext.GetAbsoluteUri();
     }
 }

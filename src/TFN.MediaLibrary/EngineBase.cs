@@ -1,15 +1,14 @@
 ﻿namespace TFN.MediaLibrary
 {
     using System;
-    using System.Configuration;
     using System.Diagnostics;
     using System.IO;
     using System.IO.Compression;
     using System.Reflection;
     using System.Threading;
 
-    using TFN.MediaLibrary.Properties;
-    using TFN.MediaLibrary.Util;
+    using Properties;
+    using Util;
 
     public class EngineBase : IDisposable
     {

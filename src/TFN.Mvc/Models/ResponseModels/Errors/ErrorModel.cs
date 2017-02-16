@@ -2,9 +2,6 @@
 
 namespace TFN.Mvc.Models.ResponseModels.Errors
 {
-    /// <summary>
-    /// The error response model.
-    /// </summary>
     public abstract class ErrorModel
     {
         public string Message { get; private set; }

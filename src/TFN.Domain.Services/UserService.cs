@@ -1,26 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Interfaces.Services;
 using TFN.Domain.Models.Entities;
+using TFN.Domain.Services.Utilities;
 
 namespace TFN.Domain.Services
 {
-    #pragma warning disable 1998
-    //TODO Remove when we async
     public class UserService : IUserService
     {
         public IUserRepository UserRepository { get; private set; }
-        public UserService(IUserRepository userRepository)
+        public IKeyService KeyService { get; private set; }
+        public IAccountEmailService AccountEmailService { get; private set; }
+        public UserService(IUserRepository userRepository, IKeyService keyService, IAccountEmailService accountEmailService)
         {
             UserRepository = userRepository;
-        }
-        public Task AddAsync(User entity)
-        {
-            //this one wont be needed for a bit
-            throw new NotImplementedException();
+            KeyService = keyService;
+            AccountEmailService = accountEmailService;
         }
 
         public async Task AddAsync(User entity, string password)
@@ -39,30 +38,26 @@ namespace TFN.Domain.Services
             await UserRepository.AddAsync(entity, password);
         }
 
-
-        public async Task<User> AutoProvisionUserAsync(string provider, string userId, List<Claim> claims)
+        public async Task CreateAsync(User user, string password)
         {
-            throw new NotImplementedException();
+            await AddAsync(user, password);
         }
 
         public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
-        }
-
-        public async Task<User> FindByExternalProviderAsync(string provider, string userId)
-        {
-            throw new NotImplementedException();
+            await UserRepository.DeleteAsync(id);
         }
 
         public async Task<User> GetAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var user = await UserRepository.GetAsync(id);
+
+            return user;
         }
 
-        public async Task<User> GetAsync(string username)
+        public async Task<User> GetByUsernameAsync(string username)
         {
-            var user = await UserRepository.GetAsync(username);
+            var user = await UserRepository.GetByUsernameAsync(username);
 
             return user;
         }
@@ -75,7 +70,20 @@ namespace TFN.Domain.Services
 
         public async Task UpdateAsync(User entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+            {
+                throw new ArgumentNullException($"{nameof(entity)}");
+            }
+
+            await UserRepository.UpdateAsync(entity);
+        }
+        
+
+        public IEnumerable<Claim> GetClaims(User user)
+        {
+            var claims = ClaimsUtility.GetClaims(user);
+
+            return claims;
         }
 
         public async Task<bool> ValidateCredentialsAsync(string username, string password)
@@ -83,6 +91,78 @@ namespace TFN.Domain.Services
             var user = await UserRepository.GetAsync(username, password);
 
             return user != null;
+        }
+
+        public async Task<bool> ExistsByEmail(string email)
+        {
+            var user = await UserRepository.GetByEmailAsync(email);
+
+            return user != null;
+        }
+
+        public async Task<bool> ExistsByUsername(string username)
+        {
+            var user = await UserRepository.GetByUsernameAsync(username);
+
+            return user != null;
+        }
+
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            var user = await UserRepository.GetByEmailAsync(email);
+
+            return user;
+        }
+
+        public bool ValidateUsernameCharacterSafety(string username)
+        {
+            const string invalidUrlCharacters = "!&$+,/.;=?@#'<>[]{}()|\\^%\"*";
+
+            if (username == null)
+            {
+                return false;
+            }
+
+            if (invalidUrlCharacters.Any(c => username.Contains(c.ToString())))
+            {
+                return false;
+            }
+
+            return true;
+        }
+        public async Task SendChangePasswordKeyAsync(User user)
+        {
+            var forgotPasswordKey = KeyService.GenerateUrlSafeUniqueKey();
+            await UserRepository.UpdateChangePasswordKeyAsync(user, forgotPasswordKey);
+            await AccountEmailService.SendChangePasswordEmailAsync(user.Email, forgotPasswordKey);
+        }
+        public async Task<bool> ChangePasswordKeyExistsAsync(string changePasswordKey)
+        {
+            return await UserRepository.ChangePasswordKeyExistsAsync(changePasswordKey);
+        }
+
+        #pragma warning disable 1998
+        //TODO Remove when we async
+        public async Task<User> FindByExternalProviderAsync(string provider, string userId)
+        {
+            throw new NotImplementedException();
+        }
+        #pragma warning disable 1998
+        //TODO Remove when we async
+        public async Task<User> AutoProvisionUserAsync(string provider, string userId, List<Claim> claims)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task UpdateUserPasswordAsync(string changePasswordKey, string password)
+        {
+            var user = await UserRepository.GetByChangePasswordKey(changePasswordKey);
+            await UserRepository.UpdateUserPasswordAsync(user, password);
+        }
+
+        public async Task<User> GetByChangePasswordKey(string changePasswordKey)
+        {
+            return await UserRepository.GetByChangePasswordKey(changePasswordKey);
         }
     }
 }

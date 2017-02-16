@@ -4,6 +4,7 @@
   "authors": [ "LutandoNgqakaza" ],
 
   "dependencies": {
+    "Microsoft.DotNet.InternalAbstractions": "1.0.0",
     "TFN.Domain.Models": "1.0.0-*",
     "TFN.Domain.Services": "1.0.0-*",
     "TFN.Infrastructure": "1.0.0-*",

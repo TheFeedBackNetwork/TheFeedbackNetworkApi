@@ -6,5 +6,6 @@ namespace TFN.ActorSystem
     {
         public static IActorRef UserSystemActor;
         public static IActorRef PostsSystemActor;
+        public static IActorRef SignalRBridgeActor;
     }
 }

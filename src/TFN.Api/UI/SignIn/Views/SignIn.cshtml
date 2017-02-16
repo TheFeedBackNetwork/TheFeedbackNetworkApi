@@ -1,0 +1,44 @@
+﻿@using TFN.Api.UI.SignIn
+@model TFN.Api.UI.SignIn.SignInViewModel
+
+<div class="login-page">
+    <div class="page-header">
+        <h1>Login</h1>
+    </div>
+
+    @Html.Partial("_ValidationSummary")
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">TFN Login</h3>
+                </div>
+                <div class="panel-body">
+
+                    <form asp-route="SignIn">
+                        <input type="hidden" asp-for="ReturnUrl" />
+
+                        <fieldset>
+                            <div class="form-group">
+                                <label asp-for="Username"></label>
+                                <input class="form-control" placeholder="Username" asp-for="Username" autofocus>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Password"></label>
+                                <input type="password" class="form-control" placeholder="Password" asp-for="Password" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary">Login</button>
+                            </div>
+                        </fieldset>
+                        <div class="col m6 right-align addtional-info">
+                            <span>Don't have an account? <a asp-route="Register" id="sign-in-a" class="semi-bold">Register</a></span>
+                            <span>Forgot your password? <a asp-route="ForgotPassword" id="forgot-password-a" class="semi-bold">Forgot Password</a></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
