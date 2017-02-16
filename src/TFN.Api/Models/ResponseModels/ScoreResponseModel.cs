@@ -24,15 +24,17 @@ namespace TFN.Api.Models.ResponseModels
             return new Uri($"{apiUrl}/comments/{commentId}/scores/{scoreId}");
         }
 
-        public static ScoreResponseModel From(Score score, string apiUrl)
+        public static ScoreResponseModel From(Score score, string apiUrl, Guid postId)
         {
+            string postApiurl = new Uri($"{apiUrl}/api/posts/{postId}").AbsoluteUri;
+
             return new ScoreResponseModel(
                 score.Id,
                 score.CommentId,
                 score.UserId,
                 score.Username,
                 score.Created.ToDateTimeUtc(),
-                apiUrl
+                postApiurl
                 );
         }
     }

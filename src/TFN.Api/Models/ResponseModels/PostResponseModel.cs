@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using TFN.Api.Filters.ActionFilters;
 using TFN.Api.Models.Base;
 using TFN.Domain.Models.Entities;
 
@@ -16,13 +14,10 @@ namespace TFN.Api.Models.ResponseModels
         public int Likes { get; private set; }
         public IReadOnlyList<string> Tags { get; private set; }
         public string Genre { get; private set; }
-        [Excludable]
-        public IReadOnlyList<CommentResponseModel> Comments { get; private set; }
         public DateTime Created { get; private set; }
         public DateTime Modified { get; private set; }
 
-        private PostResponseModel(Guid id,Guid userId,string username, string text, string trackUrl, int likes, IReadOnlyList<string> tags,
-            string genre,IReadOnlyList<CommentResponseModel> comments ,DateTime created, DateTime modified,string apiUrl)
+        private PostResponseModel(Guid id, Guid userId, string username, string text, string trackUrl, int likes, IReadOnlyList<string> tags, string genre, DateTime created, DateTime modified, string apiUrl)
             : base(GetHref(id, apiUrl), id)
         {
             Text = text;
@@ -32,7 +27,6 @@ namespace TFN.Api.Models.ResponseModels
             Likes = likes;
             Tags = tags;
             Genre = genre;
-            Comments = comments;
             Created = created;
             Modified = modified;
 
@@ -45,7 +39,7 @@ namespace TFN.Api.Models.ResponseModels
 
         internal static PostResponseModel From(Post post, string apiUrl)
         {
-            string commentApiurl = GetHref(post.Id, apiUrl).AbsoluteUri;
+            //string commentApiurl = GetHref(post.Id, apiUrl).AbsoluteUri;
 
             return new PostResponseModel(
                 post.Id,
@@ -56,7 +50,6 @@ namespace TFN.Api.Models.ResponseModels
                 post.Likes,
                 post.Tags,
                 post.Genre.ToString(),
-                post.Comments.Select(x => CommentResponseModel.From(x,commentApiurl)).ToList(),
                 post.Created.ToDateTimeUtc(),
                 post.Modified.ToDateTimeUtc(),
                 apiUrl

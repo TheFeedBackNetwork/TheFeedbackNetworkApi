@@ -107,7 +107,7 @@ namespace TFN.Api.Controllers
                 return NotFound();
             }
 
-            var model = ScoreResponseModel.From(score, AbsoluteUri);
+            var model = ScoreResponseModel.From(score, AbsoluteUri, postId);
 
             return Json(model);
         }
@@ -181,13 +181,14 @@ namespace TFN.Api.Controllers
                 return NotFound();
             }
 
-            if (comment.Scores.Any(x => x.UserId == UserId))
+            var scores = await PostRepository.GetAllScoresAsync(postId, commentId);
+
+            if(scores.Any(x => x.UserId == UserId))
             {
                 return BadRequest();
             }
 
             var entity = new Score(commentId, UserId, Username);
-
 
             var authZModel = ScoreAuthorizationModel.From(entity, comment.UserId);
 
@@ -198,7 +199,7 @@ namespace TFN.Api.Controllers
 
             await PostRepository.AddAsync(entity);
 
-            var model = ScoreResponseModel.From(entity, AbsoluteUri);
+            var model = ScoreResponseModel.From(entity, AbsoluteUri, postId);
 
             return CreatedAtAction("GetScore", new { postId = comment.PostId, commentId = model.CommentId, scoreId = model.Id }, model);
         }
