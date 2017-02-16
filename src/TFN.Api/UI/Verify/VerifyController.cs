@@ -3,13 +3,14 @@ using System.Threading.Tasks;
 using IdentityModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using TFN.Api.UI.Base;
 using TFN.Domain.Interfaces.Services;
 using TFN.Domain.Models.Entities;
 using TFN.Domain.Models.ValueObjects;
 
 namespace TFN.Api.UI.Verify
 {
-    public class VerifyController : Controller
+    public class VerifyController : UIController
     {
         public ITransientUserService TransientUserService { get; private set; }
         public IUserService UserService { get; private set; }
@@ -32,8 +33,7 @@ namespace TFN.Api.UI.Verify
             {
                 if (User.Identity.IsAuthenticated)
                 {
-                    //TODO return to client-app
-                    return View();
+                    return Redirect(AppUrl);
                 }
                 else
                 {
@@ -43,7 +43,7 @@ namespace TFN.Api.UI.Verify
                 }
             }
 
-            return View();
+            return NotFound();
         }
 
         [HttpPost("verify/{emailVerificationKey}", Name = "Verify")]
@@ -56,7 +56,8 @@ namespace TFN.Api.UI.Verify
             }
             else if (!await TransientUserService.EmailVerificationKeyExistsAsync(emailVerificationKey))
             {
-                return RedirectToAction("VerifyError");
+                return NotFound();
+                //return RedirectToAction("VerifyError");
             }
             else if (!PasswordService.ValidatePassword(model.VerifyPassword))
             {

@@ -4,10 +4,11 @@ using IdentityServer4.Services;
 using Microsoft.AspNetCore.Http.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using TFN.Mvc.Constants;
+using TFN.Api.UI.Base;
 
 namespace TFN.Api.UI.SignOut
 {
-    public class SignOutController : Controller
+    public class SignOutController : UIController
     {
         public  IIdentityServerInteractionService Interaction { get; private set; }
 
@@ -43,14 +44,21 @@ namespace TFN.Api.UI.SignOut
             // get context information (client name, post logout redirect URI and iframe for federated signout)
             var logout = await Interaction.GetLogoutContextAsync(model.SignOutId);
 
-            var vm = new SignedOutViewModel
+            //might need for app redirecturi
+            /*var vm = new SignedOutViewModel
             {
                 PostLogoutRedirectUri = logout?.PostLogoutRedirectUri,
                 ClientName = logout?.ClientId,
                 SignOutIframeUrl = logout?.SignOutIFrameUrl
             };
 
-            return View("SignedOut", vm);
+            if (vm.PostLogoutRedirectUri == null)
+            {
+                vm.PostLogoutRedirectUri = AppUrl;
+            }
+
+            return View("SignedOut", vm);*/
+            return RedirectToAction("SignIn", "SignIn");
         }
     }
 }

@@ -30,7 +30,7 @@ namespace TFN.Api.UI.Register
                 return View(vm);
             }
 
-            return View();
+            return Redirect(AppUrl);
         }
 
         [HttpPost("register", Name = "Register")]

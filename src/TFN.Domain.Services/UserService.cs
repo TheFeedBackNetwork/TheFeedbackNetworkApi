@@ -21,10 +21,6 @@ namespace TFN.Domain.Services
             KeyService = keyService;
             AccountEmailService = accountEmailService;
         }
-        public async Task AddAsync(User entity)
-        {
-            await UserRepository.AddAsync(entity);
-        }
 
         public async Task AddAsync(User entity, string password)
         {
@@ -162,6 +158,11 @@ namespace TFN.Domain.Services
         {
             var user = await UserRepository.GetByChangePasswordKey(changePasswordKey);
             await UserRepository.UpdateUserPasswordAsync(user, password);
+        }
+
+        public async Task<User> GetByChangePasswordKey(string changePasswordKey)
+        {
+            return await UserRepository.GetByChangePasswordKey(changePasswordKey);
         }
     }
 }

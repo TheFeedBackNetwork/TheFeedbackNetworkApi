@@ -24,7 +24,7 @@ namespace TFN.Api.UI.ChangePassword
         {
             if (!await UserService.ChangePasswordKeyExistsAsync(changePasswordKey))
             {
-                return View("NotFound");
+                return NotFound();
             }
 
             var vm = new ChangePasswordViewModel(new ChangePasswordInputModel());
@@ -34,7 +34,7 @@ namespace TFN.Api.UI.ChangePassword
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("changepassword/{changePasswordKey}", Name = "ChangePassword")]
-        public IActionResult ChangePassword(ChangePasswordViewModel model, string changePasswordKey)
+        public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model, string changePasswordKey)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +53,15 @@ namespace TFN.Api.UI.ChangePassword
             }
             else
             {
-                
+                var user = await UserService.GetByChangePasswordKey(changePasswordKey);
+                if (user == null)
+                {
+                    //TODO Correct error handling
+                    return NotFound();
+                }
+
+                await UserService.UpdateUserPasswordAsync(changePasswordKey, model.ConfirmPassword);
+
                 return View("ChangePasswordSuccess");
             }
         }

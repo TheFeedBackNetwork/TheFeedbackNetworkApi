@@ -19,6 +19,7 @@ namespace TFN.Domain.Interfaces.Services
         Task<User> GetByUsernameAsync(string username);
         Task<User> GetByEmailAsync(string email);
         Task<User> GetAsync(string usernameOrEmail, string password);
+        Task<User> GetByChangePasswordKey(string changePasswordKey);
         Task<bool> ChangePasswordKeyExistsAsync(string changePasswordKey);
         Task UpdateUserPasswordAsync(string changePasswordKey, string password);
     }

@@ -68,7 +68,7 @@ namespace TFN.Api.UI.SignIn
                         return Redirect(model.ReturnUrl);
                     }
 
-                    return Redirect("~/");
+                    return Redirect(AppUrl);
                 }
 
                 ModelState.AddModelError("Password", "Invalid username or password combination.");

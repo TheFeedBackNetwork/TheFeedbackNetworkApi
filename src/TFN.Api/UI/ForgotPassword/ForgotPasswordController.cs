@@ -16,12 +16,7 @@ namespace TFN.Api.UI.ForgotPassword
         [HttpGet("forgotpassword", Name = "ForgotPassword")]
         public IActionResult ForgotPassword()
         {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return View(new ForgotPasswordViewModel());
-            }
-
-            return Redirect(AppUrl);
+            return View(new ForgotPasswordViewModel());
         }
 
         [HttpPost("forgotpassword", Name = "ForgotPassword")]
