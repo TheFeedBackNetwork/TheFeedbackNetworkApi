@@ -12,6 +12,7 @@ using TFN.Api.Models.QueryModels;
 using TFN.Api.Models.ResponseModels;
 using TFN.Api.Extensions;
 using TFN.Domain.Interfaces.Repositories;
+using TFN.Domain.Interfaces.Services;
 using TFN.Domain.Models.Entities;
 using TFN.Domain.Models.Enums;
 using TFN.Mvc.HttpResults;
@@ -24,10 +25,12 @@ namespace TFN.Api.Controllers
     {
         public IPostRepository PostRepository { get; private set; }
         public IAuthorizationService AuthorizationService { get; private set; }
-        public PostController(IPostRepository postRepository, IAuthorizationService authorizationService)
+        public ICreditService CreditService { get; private set; }
+        public PostController(IPostRepository postRepository, IAuthorizationService authorizationService, ICreditService creditService)
         {
             PostRepository = postRepository;
             AuthorizationService = authorizationService;
+            CreditService = creditService;
         }
 
         [HttpGet(Name = "GetAllPosts")]
@@ -37,7 +40,7 @@ namespace TFN.Api.Controllers
             [ModelBinder(BinderType = typeof(OffsetQueryModelBinder))]short postOffset = 0,
             [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short postlimit = 7,
             [ModelBinder(BinderType = typeof(OffsetQueryModelBinder))]short commentOffset = 0,
-            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short commentLimit = 25)
+            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short commentLimit = 7)
         {
             var posts = await PostRepository.GetAllAsync(postOffset, postlimit, commentOffset, commentLimit);
             var model = posts.Select(x => PostResponseModel.From(x, AbsoluteUri));
@@ -54,7 +57,7 @@ namespace TFN.Api.Controllers
             Guid postId,
             [FromQuery]ExcludeQueryModel exclude,
             [ModelBinder(BinderType = typeof(OffsetQueryModelBinder))]short commentOffset = 0,
-            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short commentLimit = 25)
+            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short commentLimit = 7)
         {
             var post = await PostRepository.GetAsync(postId, commentOffset, commentLimit);
 
@@ -125,6 +128,20 @@ namespace TFN.Api.Controllers
             }
             var entity = new Post(UserId, Username, post.TrackUrl, post.Text,genre,post.Tags);
 
+            var credits = await CreditService.GetByUserIdAsync(UserId);
+            if (credits == null)
+            {
+                //something really wrong happened
+                return new HttpBadRequestResult("No credits resource for the account please contact support");
+            }
+
+            var creditAuthZModel = CreditsAuthorizationModel.From(credits);
+
+            if (!await AuthorizationService.AuthorizeAsync(User, creditAuthZModel, CreditsOperations.Delete))
+            {
+                return new HttpForbiddenResult("An attempt to use up credits was attempted, but the authorization policy challenged the request");
+            }
+
             var authZModel = PostAuthorizationModel.From(entity);
 
             if (!await AuthorizationService.AuthorizeAsync(User, authZModel, PostOperations.Write))
@@ -135,6 +152,8 @@ namespace TFN.Api.Controllers
             await PostRepository.AddAsync(entity);
 
             var model = PostResponseModel.From(entity, AbsoluteUri);
+
+            await CreditService.ReduceCreditsAsync(credits, 5);
 
             return CreatedAtAction("GetPost", new {postId = model.Id}, model);
         }
@@ -198,8 +217,10 @@ namespace TFN.Api.Controllers
             }
 
             await PostRepository.AddAsync(entity);
+            await CreditService.AwardCreditAsync(UserId, comment.UserId, 1);
 
             var model = ScoreResponseModel.From(entity, AbsoluteUri, postId);
+
 
             return CreatedAtAction("GetScore", new { postId = comment.PostId, commentId = model.CommentId, scoreId = model.Id }, model);
         }

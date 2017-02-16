@@ -29,12 +29,11 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
                 UserClaims =
                 {
                     JwtClaimTypes.Email,
+                    JwtClaimTypes.EmailVerified,
                     JwtClaimTypes.PreferredUserName,
                     JwtClaimTypes.Picture,
-                    JwtClaimTypes.GivenName,
-                    JwtClaimTypes.FamilyName,
+                    JwtClaimTypes.Name,
                     "biography",
-                    "profile_picure_url"
                 }
             },
             new ApiResource
@@ -56,12 +55,11 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
                 UserClaims =
                 {
                     JwtClaimTypes.Email,
+                    JwtClaimTypes.EmailVerified,
                     JwtClaimTypes.PreferredUserName,
                     JwtClaimTypes.Picture,
-                    JwtClaimTypes.GivenName,
-                    JwtClaimTypes.FamilyName,
+                    JwtClaimTypes.Name,
                     "biography",
-                    "profile_picure_url"
                 }
             },
             new ApiResource
@@ -83,12 +81,11 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
                 UserClaims =
                 {
                     JwtClaimTypes.Email,
+                    JwtClaimTypes.EmailVerified,
                     JwtClaimTypes.PreferredUserName,
                     JwtClaimTypes.Picture,
-                    JwtClaimTypes.GivenName,
-                    JwtClaimTypes.FamilyName,
+                    JwtClaimTypes.Name,
                     "biography",
-                    "profile_picure_url"
                 }
             },
             new ApiResource
@@ -110,12 +107,11 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
                 UserClaims =
                 {
                     JwtClaimTypes.Email,
+                    JwtClaimTypes.EmailVerified,
                     JwtClaimTypes.PreferredUserName,
                     JwtClaimTypes.Picture,
-                    JwtClaimTypes.GivenName,
-                    JwtClaimTypes.FamilyName,
+                    JwtClaimTypes.Name,
                     "biography",
-                    "profile_picure_url"
                 }
             },
             new ApiResource
@@ -137,12 +133,11 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
                 UserClaims =
                 {
                     JwtClaimTypes.Email,
+                    JwtClaimTypes.EmailVerified,
                     JwtClaimTypes.PreferredUserName,
                     JwtClaimTypes.Picture,
-                    JwtClaimTypes.GivenName,
-                    JwtClaimTypes.FamilyName,
+                    JwtClaimTypes.Name,
                     "biography",
-                    "profile_picure_url"
                 }
             },
             new ApiResource
@@ -164,12 +159,11 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
                 UserClaims =
                 {
                     JwtClaimTypes.Email,
+                    JwtClaimTypes.EmailVerified,
                     JwtClaimTypes.PreferredUserName,
                     JwtClaimTypes.Picture,
-                    JwtClaimTypes.GivenName,
-                    JwtClaimTypes.FamilyName,
+                    JwtClaimTypes.Name,
                     "biography",
-                    "profile_picure_url"
                 }
             },
             new ApiResource
@@ -191,12 +185,89 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
                 UserClaims =
                 {
                     JwtClaimTypes.Email,
+                    JwtClaimTypes.EmailVerified,
                     JwtClaimTypes.PreferredUserName,
                     JwtClaimTypes.Picture,
-                    JwtClaimTypes.GivenName,
-                    JwtClaimTypes.FamilyName,
+                    JwtClaimTypes.Name,
                     "biography",
-                    "profile_picure_url"
+                }
+            },
+            new ApiResource
+            {
+                Name = "credits.write",
+                DisplayName = "Credits Write",
+                Description = "Scope for writing the credits resource",
+                Scopes = new List<Scope>
+                {
+                    new Scope
+                    {
+                        Name = "credits.write",
+                        ShowInDiscoveryDocument = true,
+                        Description = "Scope for writing credits",
+                        DisplayName = "Credits.Write"
+                    }
+
+                },
+                UserClaims =
+                {
+                    JwtClaimTypes.Email,
+                    JwtClaimTypes.EmailVerified,
+                    JwtClaimTypes.PreferredUserName,
+                    JwtClaimTypes.Picture,
+                    JwtClaimTypes.Name,
+                    "biography",
+                }
+            },
+            new ApiResource
+            {
+                Name = "credits.delete",
+                DisplayName = "Credits Delete",
+                Description = "Scope for Deleting from the credits resource",
+                Scopes = new List<Scope>
+                {
+                    new Scope
+                    {
+                        Name = "credits.delete",
+                        ShowInDiscoveryDocument = true,
+                        Description = "Scope for deleting from credits",
+                        DisplayName = "Credits.Delete"
+                    }
+
+                },
+                UserClaims =
+                {
+                    JwtClaimTypes.Email,
+                    JwtClaimTypes.EmailVerified,
+                    JwtClaimTypes.PreferredUserName,
+                    JwtClaimTypes.Picture,
+                    JwtClaimTypes.Name,
+                    "biography",
+                }
+            },
+            new ApiResource
+            {
+                Name = "credits.read",
+                DisplayName = "Credits Read",
+                Description = "Scope for reading from the credits resource",
+                Scopes = new List<Scope>
+                {
+                    new Scope
+                    {
+                        Name = "credits.read",
+                        ShowInDiscoveryDocument = true,
+                        Description = "Scope for reading credits",
+                        DisplayName = "Credits.Read"
+                    }
+
+                },
+                UserClaims =
+                {
+                    JwtClaimTypes.Email,
+                    JwtClaimTypes.EmailVerified,
+                    JwtClaimTypes.PreferredUserName,
+                    JwtClaimTypes.Picture,
+                    JwtClaimTypes.Name,
+                    "biography",
                 }
             },
 
