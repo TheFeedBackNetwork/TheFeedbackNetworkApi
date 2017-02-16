@@ -13,5 +13,6 @@ namespace TFN.Domain.Interfaces.Services
         Task<Credits> GetAsync(Guid id);
         Task<Credits> GetByUserIdAsync(Guid userId);
         Task<Credits> GetByUsernameAsync(string username);
+        Task AddAsync(Credits credits);
     }
 }
