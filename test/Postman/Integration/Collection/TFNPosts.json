@@ -1,17 +1,21 @@
 {
 	"id": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a",
-	"owner": "26314",
 	"name": "TFNPosts",
 	"description": "",
 	"order": [
 		"7a29c782-a88f-cf50-ac78-0db0e6cbbacf",
 		"a4042c91-74b5-d7a3-5df4-56066ac36d3e",
 		"4f64232d-3c09-788e-57e5-e4872a095478",
+		"45765f2c-3e52-e74f-abc4-b07fc6bf2e0d",
+		"9805dea6-4a31-3831-52ba-52ce9bde8f70",
 		"7c69be7d-b68a-52a2-3583-b5093cf55ee6",
+		"01d1f316-1ed5-cdd1-cd49-d799ac2e0fd7",
 		"cfaf4ddc-4267-1c29-3c80-0fb75a9417bc",
+		"d413f2d9-5d97-ba7e-1289-813eef3acf53",
 		"7fa1d1b5-8dd4-9089-a18c-128913cf5385",
 		"c264a23a-9227-8159-c7c1-1e301ca29b79",
 		"f9812aea-470c-4f30-aac6-fd404679a644",
+		"3bcc2da8-922c-c35c-2158-6d904134b046",
 		"e26d7bc1-f853-0a36-2774-82b06967f257",
 		"e960ff33-275a-b066-ab48-e39efbe40fb1",
 		"16da2e54-4f71-3085-8b18-5e08ef0674b3",
@@ -20,16 +24,30 @@
 		"5fb4708e-a996-2969-62b8-05cd63971f7f",
 		"127a267b-eae5-15bc-8f66-8c1f29e5a337",
 		"7ea6caf1-2b8f-db3e-6c66-5f042535e662",
-		"84d6080a-8928-9415-7e4c-66638482779f",
-		"45765f2c-3e52-e74f-abc4-b07fc6bf2e0d"
+		"84d6080a-8928-9415-7e4c-66638482779f"
 	],
 	"folders": [],
 	"timestamp": 0,
+	"owner": "26314",
 	"public": false,
-	"lastUpdatedBy": "26314",
-	"lastRevision": 605446361,
-	"team": null,
 	"requests": [
+		{
+			"id": "01d1f316-1ed5-cdd1-cd49-d799ac2e0fd7",
+			"headers": "Authorization: {{BobBearerToken}}\nContent-Type: application/json\nAccept: application/json\n",
+			"url": "{{TFNApiUrl}}/credits/users/{{BobId}}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var schema = {\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"id\": { type: \"string\" },\n        \"userId\": { type: \"string\" },\n        \"username\": { type: \"string\" },\n        \"totalCredits\": { type: \"integer\" }\n    },\n    \"additionalProperties\": true,\n    \"required\": [\"totalCredits\",\"userId\",\"id\",\"username\"]\n};\n\n\n\ntests[\"Is 200\"] = responseCode.code === 200;\nvar data = JSON.parse(responseBody);\nvar result = tv4.validateResult(data, schema);\ntests[\"Valid schema\"] = result.valid;\nbobsCredits = postman.getEnvironmentVariable(\"BobsCredits\"); \ntests[\"Credit Drop\"] = data.totalCredits < bobsCredits;\npostman.setEnvironmentVariable(\"BobsCredits\", data.totalCredits);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1487275124688,
+			"name": "Credits [200] - Get Bobs Credit Drop",
+			"description": "",
+			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a"
+		},
 		{
 			"id": "127a267b-eae5-15bc-8f66-8c1f29e5a337",
 			"headers": "Authorization: {{BobBearerToken}}\nContent-Type: application/json\nAccept: application/json\n",
@@ -69,19 +87,36 @@
 			"rawModeData": ""
 		},
 		{
-			"id": "45765f2c-3e52-e74f-abc4-b07fc6bf2e0d",
-			"headers": "Authorization: {{BearerToken}}\nContent-Type: application/json\nAccept: application/json\n",
-			"url": "{{TFNApiUrl}}/posts/",
+			"id": "3bcc2da8-922c-c35c-2158-6d904134b046",
+			"headers": "Authorization: {{BobBearerToken}}\nContent-Type: application/json\nAccept: application/json\n",
+			"url": "{{TFNApiUrl}}/credits/users/{{BobId}}",
 			"preRequestScript": null,
 			"pathVariables": {},
 			"method": "GET",
 			"data": null,
 			"dataMode": "params",
-			"tests": "tests[\"Is 200\"] = responseCode.code === 200;",
+			"tests": "var schema = {\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"id\": { type: \"string\" },\n        \"userId\": { type: \"string\" },\n        \"username\": { type: \"string\" },\n        \"totalCredits\": { type: \"integer\" }\n    },\n    \"additionalProperties\": true,\n    \"required\": [\"totalCredits\",\"userId\",\"id\",\"username\"]\n};\n\n\n\ntests[\"Is 200\"] = responseCode.code === 200;\nvar data = JSON.parse(responseBody);\nvar result = tv4.validateResult(data, schema);\ntests[\"Valid schema\"] = result.valid;\nbobsCredits = postman.getEnvironmentVariable(\"BobsCredits\"); \ntests[\"Credit Drop\"] = data.totalCredits > bobsCredits;",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1487259354226,
-			"name": "Posts [200] - Get Bobs",
+			"time": 1487275131528,
+			"name": "Credits [200] - Get Bobs Credit Rise",
+			"description": "",
+			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a"
+		},
+		{
+			"id": "45765f2c-3e52-e74f-abc4-b07fc6bf2e0d",
+			"headers": "Authorization: {{BobBearerToken}}\nContent-Type: application/json\nAccept: application/json\n",
+			"url": "{{TFNApiUrl}}/credits/users/{{BobId}}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var schema = {\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"id\": { type: \"string\" },\n        \"userId\": { type: \"string\" },\n        \"username\": { type: \"string\" },\n        \"totalCredits\": { type: \"integer\" }\n    },\n    \"additionalProperties\": true,\n    \"required\": [\"totalCredits\",\"userId\",\"id\",\"username\"]\n};\n\n\n\ntests[\"Is 200\"] = responseCode.code === 200;\nvar data = JSON.parse(responseBody);\nvar result = tv4.validateResult(data, schema);\ntests[\"Valid schema\"] = result.valid;\n\npostman.setEnvironmentVariable(\"BobsCredits\", data.totalCredits);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1487275197495,
+			"name": "Credits [200] - Get Bobs Credits",
 			"description": "",
 			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a"
 		},
@@ -107,7 +142,7 @@
 				},
 				{
 					"key": "scope",
-					"value": "posts.read posts.write posts.edit posts.delete profile openid",
+					"value": "posts.read posts.write posts.edit posts.delete credits.read profile openid",
 					"type": "text",
 					"enabled": true
 				},
@@ -125,10 +160,10 @@
 				}
 			],
 			"dataMode": "urlencoded",
-			"tests": "var schema = {\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"nbf\": { type: \"integer\" },\n        \"exp\": { type: \"integer\" },\n        \"iss\": { type: \"string\" },\n        \"aud\": { type: \"array\" },\n        \"client_id\": { type: \"string\" },\n        \"scope\": { type: \"string\" },\n        \"sub\": { type: \"string\" },\n        \"auth_time\": { type: \"integer\" },\n        \"idp\": { type: \"string\" },\n        \"email\": { type: \"string\" },\n        \"amr\": { type: \"array\" },\n        \"jti\": { type: \"string\" },\n    },\n    \"additionalProperties\": false,\n    \"required\": [\"nbf\",\"exp\",\"iss\",\"aud\",\"client_id\",\"scope\",\"sub\",\"auth_time\",\"idp\",\"email\",\"amr\", \"jti\"]\n};\n\ntests[\"Is 200\"] = responseCode.code === 200;\n\nif (tests[\"Is 200\"])\n{\n    var data = JSON.parse(responseBody);\n    \n    var token = \"Bearer \" + data.access_token;\n    tests[\"Has Bearer Token\"] = token !== null && token !== \"\";\n    postman.setEnvironmentVariable(\"BearerToken\", token);\n    postman.setEnvironmentVariable(\"AliceBearerToken\", token);\n    // Decode the token\n    var token = data.access_token;\n    var decodedToken = atob(token.split(\".\")[1]);\n    tests[\"Decoded Token: \" + decodedToken] = true;\n    \n    // Validate the decoded token\n    var decodedTokenJson = JSON.parse(decodedToken);\n    var result = tv4.validateResult(decodedTokenJson, schema);\n    console.log(tv4.error);\n    postman.setEnvironmentVariable(\"BobId\", decodedTokenJson.sub);\n    // Check each field in the token\n    tests[\"Has 'iss'\"] = decodedTokenJson.iss === postman.getEnvironmentVariable(\"TFNStsUrl\"); \n    tests[\"Has 'aud'\"] = decodedTokenJson.aud.indexOf(postman.getEnvironmentVariable(\"TFNStsUrl\") + \"/resources\") > -1 ;\n    tests[\"Has 'client_id'\"] = decodedTokenJson.client_id === postman.getEnvironmentVariable(\"TFNPostmanClient\");\n    tests[\"Has 'scope'\"] = decodedTokenJson.scope = postman.getEnvironmentVariable(\"scope\");\n    tests[\"Has 'idp'\"] = decodedTokenJson.idp = \"idsrv\";\n}",
+			"tests": "var schema = {\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"nbf\": { type: \"integer\" },\n        \"exp\": { type: \"integer\" },\n        \"iss\": { type: \"string\" },\n        \"aud\": { type: \"array\" },\n        \"client_id\": { type: \"string\" },\n        \"scope\": { type: \"string\" },\n        \"sub\": { type: \"string\" },\n        \"auth_time\": { type: \"integer\" },\n        \"idp\": { type: \"string\" },\n        \"email\": { type: \"string\" },\n        \"amr\": { type: \"array\" },\n        \"jti\": { type: \"string\" },\n    },\n    \"additionalProperties\": false,\n    \"required\": [\"nbf\",\"exp\",\"iss\",\"aud\",\"client_id\",\"scope\",\"sub\",\"auth_time\",\"idp\",\"email\",\"amr\", \"jti\"]\n};\n\ntests[\"Is 200\"] = responseCode.code === 200;\n\nif (tests[\"Is 200\"])\n{\n    var data = JSON.parse(responseBody);\n    \n    var token = \"Bearer \" + data.access_token;\n    tests[\"Has Bearer Token\"] = token !== null && token !== \"\";\n    postman.setEnvironmentVariable(\"BearerToken\", token);\n    postman.setEnvironmentVariable(\"AliceBearerToken\", token);\n    // Decode the token\n    var token = data.access_token;\n    var decodedToken = atob(token.split(\".\")[1]);\n    tests[\"Decoded Token: \" + decodedToken] = true;\n    \n    // Validate the decoded token\n    var decodedTokenJson = JSON.parse(decodedToken);\n    var result = tv4.validateResult(decodedTokenJson, schema);\n    console.log(tv4.error);\n    postman.setEnvironmentVariable(\"AliceId\", decodedTokenJson.sub);\n    // Check each field in the token\n    tests[\"Has 'iss'\"] = decodedTokenJson.iss === postman.getEnvironmentVariable(\"TFNStsUrl\"); \n    tests[\"Has 'aud'\"] = decodedTokenJson.aud.indexOf(postman.getEnvironmentVariable(\"TFNStsUrl\") + \"/resources\") > -1 ;\n    tests[\"Has 'client_id'\"] = decodedTokenJson.client_id === postman.getEnvironmentVariable(\"TFNPostmanClient\");\n    tests[\"Has 'scope'\"] = decodedTokenJson.scope = postman.getEnvironmentVariable(\"scope\");\n    tests[\"Has 'idp'\"] = decodedTokenJson.idp = \"idsrv\";\n}",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1487253700918,
+			"time": 1487273618508,
 			"name": "Token [200] - Token for Alice",
 			"description": "",
 			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a"
@@ -262,6 +297,23 @@
 			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a"
 		},
 		{
+			"id": "9805dea6-4a31-3831-52ba-52ce9bde8f70",
+			"headers": "Authorization: {{AliceBearerToken}}\nContent-Type: application/json\nAccept: application/json\n",
+			"url": "{{TFNApiUrl}}/credits/users/{{AliceId}}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var schema = {\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"id\": { type: \"string\" },\n        \"userId\": { type: \"string\" },\n        \"username\": { type: \"string\" },\n        \"totalCredits\": { type: \"integer\" }\n    },\n    \"additionalProperties\": true,\n    \"required\": [\"totalCredits\",\"userId\",\"id\",\"username\"]\n};\n\n\n\ntests[\"Is 200\"] = responseCode.code === 200;\nvar data = JSON.parse(responseBody);\nvar result = tv4.validateResult(data, schema);\ntests[\"Valid schema\"] = result.valid;\n\npostman.setEnvironmentVariable(\"AlicesCredits\", data.totalCredits);\n",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1487275190624,
+			"name": "Credits [200] - Get Alices Credits",
+			"description": "",
+			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a"
+		},
+		{
 			"id": "a4042c91-74b5-d7a3-5df4-56066ac36d3e",
 			"headers": "",
 			"url": "{{TFNStsUrl}}/connect/token",
@@ -283,7 +335,7 @@
 				},
 				{
 					"key": "scope",
-					"value": "posts.read posts.write posts.edit posts.delete profile openid",
+					"value": "posts.read posts.write posts.edit posts.delete credits.read profile openid",
 					"type": "text",
 					"enabled": true
 				},
@@ -301,10 +353,10 @@
 				}
 			],
 			"dataMode": "urlencoded",
-			"tests": "var schema = {\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"nbf\": { type: \"integer\" },\n        \"exp\": { type: \"integer\" },\n        \"iss\": { type: \"string\" },\n        \"aud\": { type: \"array\" },\n        \"client_id\": { type: \"string\" },\n        \"scope\": { type: \"string\" },\n        \"sub\": { type: \"string\" },\n        \"auth_time\": { type: \"integer\" },\n        \"idp\": { type: \"string\" },\n        \"email\": { type: \"string\" },\n        \"amr\": { type: \"array\" },\n        \"jti\": { type: \"string\" },\n    },\n    \"additionalProperties\": false,\n    \"required\": [\"nbf\",\"exp\",\"iss\",\"aud\",\"client_id\",\"scope\",\"sub\",\"auth_time\",\"idp\",\"email\",\"amr\", \"jti\"]\n};\n\ntests[\"Is 200\"] = responseCode.code === 200;\n\nif (tests[\"Is 200\"])\n{\n    var data = JSON.parse(responseBody);\n    \n    var token = \"Bearer \" + data.access_token;\n    tests[\"Has Bearer Token\"] = token !== null && token !== \"\";\n    postman.setEnvironmentVariable(\"BearerToken\", token);\n    postman.setEnvironmentVariable(\"BobBearerToken\", token);\n    // Decode the token\n    var token = data.access_token;\n    var decodedToken = atob(token.split(\".\")[1]);\n    tests[\"Decoded Token: \" + decodedToken] = true;\n    \n    // Validate the decoded token\n    var decodedTokenJson = JSON.parse(decodedToken);\n    var result = tv4.validateResult(decodedTokenJson, schema);\n    console.log(tv4.error);\n    postman.setEnvironmentVariable(\"AliceId\", decodedTokenJson.sub);\n    // Check each field in the token\n    tests[\"Has 'iss'\"] = decodedTokenJson.iss === postman.getEnvironmentVariable(\"TFNStsUrl\"); \n    tests[\"Has 'aud'\"] = decodedTokenJson.aud.indexOf(postman.getEnvironmentVariable(\"TFNStsUrl\") + \"/resources\") > -1 ;\n    tests[\"Has 'client_id'\"] = decodedTokenJson.client_id === postman.getEnvironmentVariable(\"TFNPostmanClient\");\n    tests[\"Has 'scope'\"] = decodedTokenJson.scope = postman.getEnvironmentVariable(\"scope\");\n    tests[\"Has 'idp'\"] = decodedTokenJson.idp = \"idsrv\";\n}",
+			"tests": "var schema = {\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"nbf\": { type: \"integer\" },\n        \"exp\": { type: \"integer\" },\n        \"iss\": { type: \"string\" },\n        \"aud\": { type: \"array\" },\n        \"client_id\": { type: \"string\" },\n        \"scope\": { type: \"string\" },\n        \"sub\": { type: \"string\" },\n        \"auth_time\": { type: \"integer\" },\n        \"idp\": { type: \"string\" },\n        \"email\": { type: \"string\" },\n        \"amr\": { type: \"array\" },\n        \"jti\": { type: \"string\" },\n    },\n    \"additionalProperties\": false,\n    \"required\": [\"nbf\",\"exp\",\"iss\",\"aud\",\"client_id\",\"scope\",\"sub\",\"auth_time\",\"idp\",\"email\",\"amr\", \"jti\"]\n};\n\ntests[\"Is 200\"] = responseCode.code === 200;\n\nif (tests[\"Is 200\"])\n{\n    var data = JSON.parse(responseBody);\n    \n    var token = \"Bearer \" + data.access_token;\n    tests[\"Has Bearer Token\"] = token !== null && token !== \"\";\n    postman.setEnvironmentVariable(\"BearerToken\", token);\n    postman.setEnvironmentVariable(\"BobBearerToken\", token);\n    // Decode the token\n    var token = data.access_token;\n    var decodedToken = atob(token.split(\".\")[1]);\n    tests[\"Decoded Token: \" + decodedToken] = true;\n    \n    // Validate the decoded token\n    var decodedTokenJson = JSON.parse(decodedToken);\n    var result = tv4.validateResult(decodedTokenJson, schema);\n    console.log(tv4.error);\n    postman.setEnvironmentVariable(\"BobId\", decodedTokenJson.sub);\n    // Check each field in the token\n    tests[\"Has 'iss'\"] = decodedTokenJson.iss === postman.getEnvironmentVariable(\"TFNStsUrl\"); \n    tests[\"Has 'aud'\"] = decodedTokenJson.aud.indexOf(postman.getEnvironmentVariable(\"TFNStsUrl\") + \"/resources\") > -1 ;\n    tests[\"Has 'client_id'\"] = decodedTokenJson.client_id === postman.getEnvironmentVariable(\"TFNPostmanClient\");\n    tests[\"Has 'scope'\"] = decodedTokenJson.scope = postman.getEnvironmentVariable(\"scope\");\n    tests[\"Has 'idp'\"] = decodedTokenJson.idp = \"idsrv\";\n}",
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1487257379617,
+			"time": 1487273625052,
 			"name": "Token [200] - Token for Bob",
 			"description": "",
 			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a"
@@ -383,6 +435,23 @@
 			"description": "",
 			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a",
 			"rawModeData": ""
+		},
+		{
+			"id": "d413f2d9-5d97-ba7e-1289-813eef3acf53",
+			"headers": "Authorization: {{AliceBearerToken}}\nContent-Type: application/json\nAccept: application/json\n",
+			"url": "{{TFNApiUrl}}/credits/users/{{AliceId}}",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": "var schema = {\n    \"$schema\": \"http://json-schema.org/draft-04/schema#\",\n    \"type\": \"object\",\n    \"properties\": {\n        \"id\": { type: \"string\" },\n        \"userId\": { type: \"string\" },\n        \"username\": { type: \"string\" },\n        \"totalCredits\": { type: \"integer\" }\n    },\n    \"additionalProperties\": true,\n    \"required\": [\"totalCredits\",\"userId\",\"id\",\"username\"]\n};\n\n\ntests[\"Is 200\"] = responseCode.code === 200;\nvar data = JSON.parse(responseBody);\nvar result = tv4.validateResult(data, schema);\ntests[\"Valid schema\"] = result.valid;\nalicesCredits = postman.getEnvironmentVariable(\"AlicesCredits\"); \ntests[\"Credit Drop\"] = data.totalCredits < alicesCredits;\npostman.setEnvironmentVariable(\"AlicesCredits\", data.totalCredits);",
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1487275368640,
+			"name": "Credits [200] - Get Alices Credit Drop",
+			"description": "",
+			"collectionId": "1ddd9df8-4bdf-10fb-6df3-e23aae62173a"
 		},
 		{
 			"id": "e26d7bc1-f853-0a36-2774-82b06967f257",

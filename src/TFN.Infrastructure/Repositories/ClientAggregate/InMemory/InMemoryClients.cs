@@ -31,6 +31,9 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
                     "tracks.read",
                     "tracks.write",
                     "tracks.delete",
+                    "credits.read",
+                    "credits.write",
+                    "credits.delete",
                     "offline_access"
                 }
             },
@@ -62,7 +65,9 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
                     "tracks.read",
                     "tracks.write",
                     "tracks.delete",
-                    "offline_access"
+                    "credits.read",
+                    "credits.write",
+                    "credits.delete",
                 }
             },
             new Client
@@ -95,6 +100,9 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
                     "tracks.read",
                     "tracks.write",
                     "tracks.delete",
+                    "credits.read",
+                    "credits.write",
+                    "credits.delete",
                 }
             }
         };

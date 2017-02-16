@@ -29,7 +29,7 @@ namespace TFN.Domain.Services
 
         public async Task ReduceCreditsAsync(Credits credits, int amount)
         {
-            var newCredits = credits.ChangeTotalCredits(amount);
+            var newCredits = credits.ChangeTotalCredits(-amount);
             await CreditRepository.UpdateAsync(newCredits);
         }
 
