@@ -28,6 +28,7 @@ namespace TFN.Domain.Models.Entities
             {
                 throw new ArgumentException($"The text [{nameof(text)}] must be longer than 5 characters.");
             }
+
             Text = text;
             UserId = userId;
             Username = username;

@@ -16,6 +16,7 @@ namespace TFN.Api.Authorization.Models.Resource
         {
             return new PostAuthorizationModel(resource.UserId,resource.Id);
         }
+
     }
     public class PostAuthorizationModel<TKey> : OwnedResource<TKey, TKey>
         where TKey : IEquatable<TKey>

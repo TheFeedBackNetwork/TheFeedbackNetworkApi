@@ -17,6 +17,7 @@ using TFN.Domain.Services.Providers;
 using TFN.Domain.Services.Validators;
 using TFN.Infrastructure.Components.Storage;
 using TFN.Infrastructure.Repositories.ClientAggregate.InMemory;
+using TFN.Infrastructure.Repositories.CreditAggregate.InMemory;
 using TFN.Infrastructure.Repositories.PostAggregate.InMemory;
 using TFN.Infrastructure.Repositories.ResourceAggregate.InMemory;
 using TFN.Infrastructure.Repositories.TrackAggregate.InMemory;
@@ -40,6 +41,7 @@ namespace TFN.Resolution
             services.AddTransient<IPostRepository, PostInMemoryRepository>();
             services.AddTransient<IClientStore, ClientInMemoryRepository>();
             services.AddTransient<ITrackRepository, TrackInMemoryRepository>();
+            services.AddTransient<ICreditRepository, CreditInMemoryRepository>();
             //services
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICorsPolicyService, CorsPolicyService>();
@@ -49,6 +51,7 @@ namespace TFN.Resolution
             services.AddTransient<ITrackStorageService, TrackStorageService>();
             services.AddTransient<IKeyService, KeyService>();
             services.AddTransient<ITransientUserService, TransientUserService>();
+            services.AddTransient<ICreditService, CreditService>();
 
             services.AddTransient<IUsersEventsService, UsersEventsService>();
             services.AddTransient<IUserIdProvider, UserIdProvider>();
@@ -84,12 +87,17 @@ namespace TFN.Resolution
                     .AddScopePolicy("posts.delete")
                     .AddScopePolicy("tracks.read")
                     .AddScopePolicy("tracks.write")
-                    .AddScopePolicy("tracks.delete");
+                    .AddScopePolicy("tracks.delete")
+                    .AddScopePolicy("credits.write")
+                    .AddScopePolicy("credits.delete")
+                    .AddScopePolicy("credits.read");
             });
 
             services.AddTransient<IAuthorizationHandler, PostAuthorizationHandler>();
             services.AddTransient<IAuthorizationHandler, CommentAuthorizationHandler>();
             services.AddTransient<IAuthorizationHandler, ScoreAuthorizationHandler>();
+            services.AddTransient<IAuthorizationHandler, CreditsAuthorizationHandler>();
+            services.AddTransient<IAuthorizationHandler, TrackAuthorizationHandler>();
         }
     }
 }

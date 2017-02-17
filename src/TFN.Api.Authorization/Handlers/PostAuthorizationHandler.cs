@@ -15,6 +15,7 @@ namespace TFN.Api.Authorization.Handlers
             {
                 if (context.User.HasClaim("sub", resource.OwnerId.ToString()))
                 {
+                    
                     context.Succeed(requirement);
                     return noOp;
                 }

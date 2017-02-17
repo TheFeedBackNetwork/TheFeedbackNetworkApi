@@ -15,19 +15,20 @@ namespace TFN.Domain.Services
         public IUserRepository UserRepository { get; private set; }
         public IKeyService KeyService { get; private set; }
         public IAccountEmailService AccountEmailService { get; private set; }
-        public UserService(IUserRepository userRepository, IKeyService keyService, IAccountEmailService accountEmailService)
+        public ICreditService CreditService { get; private set; }
+        public UserService(IUserRepository userRepository, IKeyService keyService, IAccountEmailService accountEmailService, ICreditService creditService)
         {
             UserRepository = userRepository;
             KeyService = keyService;
             AccountEmailService = accountEmailService;
+            CreditService = creditService;
         }
 
-        public async Task AddAsync(User entity, string password)
+        public async Task CreateAsync(User user, string password)
         {
-
-            if (entity == null)
+            if (user == null)
             {
-                throw new ArgumentNullException($"{nameof(entity)}");
+                throw new ArgumentNullException($"{nameof(user)}");
             }
 
             if (string.IsNullOrWhiteSpace(password))
@@ -35,12 +36,9 @@ namespace TFN.Domain.Services
                 throw new ArgumentNullException($"{nameof(password)}");
             }
 
-            await UserRepository.AddAsync(entity, password);
-        }
-
-        public async Task CreateAsync(User user, string password)
-        {
-            await AddAsync(user, password);
+            var credit = new Credits(user.Id,user.Username);
+            await CreditService.AddAsync(credit);
+            await UserRepository.AddAsync(user, password);
         }
 
         public async Task DeleteAsync(Guid id)

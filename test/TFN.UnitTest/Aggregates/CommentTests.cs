@@ -21,7 +21,7 @@ namespace TFN.UnitTest.Aggregates
 
         public Comment make_Comment(Guid id, Guid userId, Guid postId,string username, string text, IReadOnlyList<Score> scores,bool isActive, Instant created, Instant modified)
         {
-            return Comment.Hydrate(id, userId, postId,username, text, scores,isActive, created, modified);
+            return Comment.Hydrate(id, userId, postId,username, text,isActive, created, modified);
         }
 
         public Comment make_Comment(string text)
