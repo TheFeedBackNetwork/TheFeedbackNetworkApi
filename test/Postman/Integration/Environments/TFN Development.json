@@ -1,17 +1,17 @@
 {
-  "id": "f176dfa6-ff95-7958-0292-fcda98d42fa8",
-  "name": "TFN: Local",
+  "id": "7e3239b3-bf3c-a861-861b-324b0ee07508",
+  "name": "TFN: Development",
   "values": [
     {
       "enabled": true,
       "key": "TFNStsUrl",
-      "value": "http://localhost:5000/account",
+      "value": "https://tfn-dev-webapp.azurewebsites.net/identity",
       "type": "text"
     },
     {
       "enabled": true,
       "key": "TFNApiUrl",
-      "value": "http://localhost:5000/api",
+      "value": "https://tfn-dev-webapp.azurewebsites.net/api",
       "type": "text"
     },
     {
@@ -27,8 +27,8 @@
       "type": "text"
     }
   ],
-  "timestamp": 1487345233374,
+  "timestamp": 1487345279837,
   "_postman_variable_scope": "environment",
-  "_postman_exported_at": "2017-02-17T15:27:17.949Z",
+  "_postman_exported_at": "2017-02-17T15:28:16.109Z",
   "_postman_exported_using": "Postman/4.10.2"
 }

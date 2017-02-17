@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using TFN.Api.Extensions;
+using TFN.Mvc.Constants;
 
 namespace TFN.Api.UI.Base
 {
@@ -12,7 +13,7 @@ namespace TFN.Api.UI.Base
         {
             base.OnActionExecuting(context);
 
-            if(!context.HttpContext.Request.PathBase.Equals("/identity"))
+            if(!context.HttpContext.Request.PathBase.Equals($"/{RoutePaths.IdentityRootBase}"))
             {
                 context.Result = NotFound();
             }
