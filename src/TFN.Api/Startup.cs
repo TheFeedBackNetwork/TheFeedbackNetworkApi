@@ -22,6 +22,7 @@ using TFN.ActorSystem.Actors.PostsSystem;
 using TFN.ActorSystem.Actors.SignalRBridge;
 using TFN.ActorSystem.Actors.UsersSystem;
 using TFN.Api.Extensions;
+using TFN.Api.Filters.ActionFilters;
 using TFN.Api.UI;
 using TFN.Domain.Services;
 using TFN.Infrastructure.Modules;
@@ -75,6 +76,10 @@ namespace TFN.Api
             services.AddApplicationInsightsTelemetry(Configuration);
 
             services.AddMvc()
+                .AddMvcOptions(options =>
+                {
+                    options.Filters.Add(typeof(ValidateModelFilterAttribute));
+                })
                 .AddJsonOptions(options =>
                 {
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
