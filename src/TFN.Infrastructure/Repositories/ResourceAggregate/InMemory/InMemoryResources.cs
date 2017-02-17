@@ -270,6 +270,32 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
                     "biography",
                 }
             },
+            new ApiResource
+            {
+                Name = "users.read",
+                DisplayName = "Users Read",
+                Description = "Scope for reading from the users resource",
+                Scopes = new List<Scope>
+                {
+                    new Scope
+                    {
+                        Name = "users.read",
+                        ShowInDiscoveryDocument = true,
+                        Description = "Scope for reading users",
+                        DisplayName = "Users.Read"
+                    }
+
+                },
+                UserClaims =
+                {
+                    JwtClaimTypes.Email,
+                    JwtClaimTypes.EmailVerified,
+                    JwtClaimTypes.PreferredUserName,
+                    JwtClaimTypes.Picture,
+                    JwtClaimTypes.Name,
+                    "biography",
+                }
+            },
 
         };
 
