@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Mail;
 
 namespace TFN.Domain.Models.Extensions
@@ -45,6 +46,25 @@ namespace TFN.Domain.Models.Extensions
             {
                 return false;
             }
+        }
+
+        public static bool IsValidUsername(this string value)
+        {
+            const string invalidUrlCharacters = "!&$+,/.;=?@#'<>[]{}()|\\^%\"*";
+
+            var username = value;
+
+            if (username == null)
+            {
+                return false;
+            }
+
+            if (invalidUrlCharacters.Any(c => username.Contains(c.ToString())))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public static string GetOrigin(this string url)

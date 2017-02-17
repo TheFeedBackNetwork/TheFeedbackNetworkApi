@@ -57,7 +57,7 @@ namespace TFN.Api.UI.SignIn
             {
                 if (await UserService.ValidateCredentialsAsync(model.Username, model.Password))
                 {
-                    var user = await UserService.GetByUsernameAsync(model.Username);
+                    var user = await UserService.GetAsync(model.Username, model.Password);
                     await HttpContext.Authentication.SignInAsync(user.Id.ToString(), user.Username);
 
                     if (Interaction.IsValidReturnUrl(model.ReturnUrl))

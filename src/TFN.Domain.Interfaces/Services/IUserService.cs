@@ -8,7 +8,7 @@ namespace TFN.Domain.Interfaces.Services
     public interface IUserService
     {  
         Task<User> AutoProvisionUserAsync(string provider, string userId, List<Claim> claims);
-        Task<bool> ValidateCredentialsAsync(string username, string password);
+        Task<bool> ValidateCredentialsAsync(string usernameOrEmail, string password);
         bool ValidateUsernameCharacterSafety(string password);
         Task<User> FindByExternalProviderAsync(string provider, string userId);
         Task<bool> ExistsByEmail(string email);

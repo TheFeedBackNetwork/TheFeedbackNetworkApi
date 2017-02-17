@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Interfaces.Services;
 using TFN.Domain.Models.Entities;
+using TFN.Domain.Models.Extensions;
 using TFN.Domain.Services.Utilities;
 
 namespace TFN.Domain.Services
@@ -60,9 +61,19 @@ namespace TFN.Domain.Services
             return user;
         }
 
-        public async Task<User> GetAsync(string username, string password)
+        public async Task<User> GetAsync(string usernameOrEmail, string password)
         {
-            var user = await UserRepository.GetAsync(username, password);
+            User user = null;
+
+            if (usernameOrEmail.IsEmail())
+            {
+                user = await UserRepository.GetByEmailAsync(usernameOrEmail, password);
+            }
+            else if(usernameOrEmail.IsValidUsername())
+            {
+                user = await UserRepository.GetByUsernameAsync(usernameOrEmail, password);
+            }
+
             return user;
         }
 
@@ -84,9 +95,10 @@ namespace TFN.Domain.Services
             return claims;
         }
 
-        public async Task<bool> ValidateCredentialsAsync(string username, string password)
+        public async Task<bool> ValidateCredentialsAsync(string usernameOrEmail, string password)
         {
-            var user = await UserRepository.GetAsync(username, password);
+            
+            var user = await GetAsync(usernameOrEmail, password);
 
             return user != null;
         }

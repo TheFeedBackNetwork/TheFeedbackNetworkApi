@@ -64,9 +64,29 @@ namespace TFN.Infrastructure.Repositories.UserAggregate.InMemory
             return Task.FromResult(InMemoryUsers.Users.SingleOrDefault(x => x.Username == username));
         }
 
-        public async Task<User> GetAsync(string usernameOrEmail, string password)
+        public async Task<User> GetByUsernameAsync(string username, string password)
         {
-            var user = await GetByUsernameAsync(usernameOrEmail) ?? await GetByEmailAsync(usernameOrEmail);
+
+            var user = await GetByUsernameAsync(username);
+
+            if (user != null)
+            {
+                var hashedPass = Passwords[user.Id.ToString()];
+
+                var verified = PasswordService.VerifyHashedPassword(hashedPass, password);
+                if (verified)
+                {
+                    return user;
+                }
+            }
+
+            return null;
+        }
+
+        public async Task<User> GetByEmailAsync(string username, string password)
+        {
+
+            var user = await GetByEmailAsync(username);
 
             if (user != null)
             {
