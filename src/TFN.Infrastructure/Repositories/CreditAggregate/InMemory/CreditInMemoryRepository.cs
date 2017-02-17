@@ -12,7 +12,7 @@ namespace TFN.Infrastructure.Repositories.CreditAggregate.InMemory
         public Task AddAsync(Credits entity)
         {
             InMemoryCredits.Credits.Add(entity);
-            return Task.CompletedTask;
+            return Task.CompletedTask; 
         }
 
         public Task<Credits> GetAsync(Guid id)
@@ -41,7 +41,7 @@ namespace TFN.Infrastructure.Repositories.CreditAggregate.InMemory
         {
             IReadOnlyList<Credits> leaders =
                 InMemoryCredits.Credits.OrderBy(x => x.TotalCredits).Skip(offset).Take(limit).ToList();
-
+            
             return Task.FromResult(leaders);
         }
     }

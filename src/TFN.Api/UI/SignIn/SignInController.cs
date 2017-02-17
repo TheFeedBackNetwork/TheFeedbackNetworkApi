@@ -55,14 +55,11 @@ namespace TFN.Api.UI.SignIn
         {
             if (ModelState.IsValid)
             {
-                // validate username/password against in-memory store
                 if (await UserService.ValidateCredentialsAsync(model.Username, model.Password))
                 {
-                    // issue authentication cookie with subject ID and username
                     var user = await UserService.GetByUsernameAsync(model.Username);
                     await HttpContext.Authentication.SignInAsync(user.Id.ToString(), user.Username);
 
-                    // make sure the returnUrl is still valid, and if yes - redirect back to authorize endpoint
                     if (Interaction.IsValidReturnUrl(model.ReturnUrl))
                     {
                         return Redirect(model.ReturnUrl);
