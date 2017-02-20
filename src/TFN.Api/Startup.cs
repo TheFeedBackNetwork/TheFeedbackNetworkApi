@@ -36,7 +36,7 @@ namespace TFN.Api
     {
         private IConfigurationRoot Configuration { get; }
         private Akka.Actor.ActorSystem ActorSystem { get; }
-        public Startup(IHostingEnvironment env)
+        public Startup(IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
                         
             var builder = new ConfigurationBuilder()
@@ -47,6 +47,8 @@ namespace TFN.Api
             if (env.IsLocal())
             {
                 builder.AddUserSecrets();
+
+
             }
 
             if (env.IsDevelopment() || env.IsLocal())
@@ -56,6 +58,29 @@ namespace TFN.Api
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            if (!env.IsLocal())
+            {
+                loggerFactory.AddAppendBlob(
+                    Configuration["Logging:StorageAccountConnectionString"],
+                    LogLevel.Information);
+
+                loggerFactory.AddEmail(
+                    Configuration["Logging:Email:SupportEmail"],
+                    Configuration["Logging:Email:Username"],
+                    Configuration["Logging:Email:Username"],
+                    Configuration["Configuration:Email:Password"],
+                    Configuration["Logging:Email:Host"],
+                    Convert.ToInt32(Configuration["Logging:Email:Port"]),
+                     env.EnvironmentName,
+                     LogLevel.Error);
+            }
+
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+            loggerFactory.AddDebug();
+
+            var logger = loggerFactory.CreateLogger<Startup>();
+            logger.LogInformation("The Feedback Network API application configuration is starting.");
 
             ActorSystem = Akka.Actor.ActorSystem.Create("tfn-system", File.ReadAllText($"Config.{env.EnvironmentName}.hocon"));
         }
@@ -132,28 +157,8 @@ namespace TFN.Api
                 ActorSystem.ActorOf(
                     Props.Create(() => new SignalRBridgeActor(userEventsService)));
 
-            if (!env.IsLocal())
-            {
-                loggerFactory.AddAppendBlob(
-                    Configuration["Logging:StorageAccountConnectionString"],
-                    LogLevel.Information);
 
-                loggerFactory.AddEmail(
-                    Configuration["Logging:Email:SupportEmail"],
-                    Configuration["Logging:Email:Username"],
-                    Configuration["Logging:Email:Username"],
-                    Configuration["Configuration:Email:Password"],
-                    Configuration["Logging:Email:Host"],
-                    Convert.ToInt32(Configuration["Logging:Email:Port"]),
-                     env.EnvironmentName,
-                     LogLevel.Error);
-            }
-
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-
-            var logger = loggerFactory.CreateLogger<Startup>();
-            logger.LogInformation("The Feedback Network API application configuration is starting.");
+            
 
             app.UseApplicationInsightsRequestTelemetry();
 
@@ -219,6 +224,7 @@ namespace TFN.Api
 
             app.UseApplicationInsightsExceptionTelemetry();
 
+            var logger = loggerFactory.CreateLogger<Startup>();
             logger.LogInformation("The Feedback Network API application configuration complete.");
         }
 

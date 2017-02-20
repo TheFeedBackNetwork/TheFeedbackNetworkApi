@@ -26,6 +26,7 @@
   "bugs": "https://github.com/https://github.com/TheFeedBackNetwork/TheFeedbackNetworkApi/issues",
   "scripts": {
     "clean:build": "rimraf build",
+    "clean:packages": "rimraf node_modules",
     "build:html": "node ./bin/buildHtml.js",
     "prestart": "npm run clean:build",
     "start": "webpack-dashboard -c cyan -- node dev-server.js",

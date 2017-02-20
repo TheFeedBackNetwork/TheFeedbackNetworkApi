@@ -55,7 +55,7 @@
   "publishOptions": {
     "include": [
       "wwwroot",
-      "Views",
+      "UI",
       "ffmpeg.exe",
       "appsettings.json",
       "appsettings.development.json",
