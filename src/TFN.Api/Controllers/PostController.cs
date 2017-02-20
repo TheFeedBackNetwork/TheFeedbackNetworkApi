@@ -37,12 +37,10 @@ namespace TFN.Api.Controllers
         [Authorize("posts.read")]
         public async Task<IActionResult> GetAllAsync(
             [FromQuery]ExcludeQueryModel exclude,
-            [ModelBinder(BinderType = typeof(OffsetQueryModelBinder))]short postOffset = 0,
-            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short postlimit = 7,
-            [ModelBinder(BinderType = typeof(OffsetQueryModelBinder))]short commentOffset = 0,
-            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short commentLimit = 7)
+            [ModelBinder(BinderType = typeof(OffsetQueryModelBinder))]int offset = 0,
+            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]int limit = 7)
         {
-            var posts = await PostRepository.GetAllAsync(postOffset, postlimit, commentOffset, commentLimit);
+            var posts = await PostRepository.GetAllAsync(offset, limit);
             var model = posts.Select(x => PostResponseModel.From(x, AbsoluteUri));
             if (exclude != null)
             {
@@ -55,11 +53,9 @@ namespace TFN.Api.Controllers
         [Authorize("posts.read")]
         public async Task<IActionResult> GetAsync(
             Guid postId,
-            [FromQuery]ExcludeQueryModel exclude,
-            [ModelBinder(BinderType = typeof(OffsetQueryModelBinder))]short commentOffset = 0,
-            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]short commentLimit = 7)
+            [FromQuery]ExcludeQueryModel exclude)
         {
-            var post = await PostRepository.GetAsync(postId, commentOffset, commentLimit);
+            var post = await PostRepository.GetAsync(postId);
 
             if (post == null)
             {
@@ -90,6 +86,32 @@ namespace TFN.Api.Controllers
             }
 
             var model = CommentResponseModel.From(comment, AbsoluteUri);
+
+            if (exclude != null)
+            {
+                return this.Json(model, exclude.Attributes);
+            }
+
+            return Json(model);
+        }
+
+        [HttpGet("{postId:Guid}/comments", Name = "GetComments")]
+        [Authorize("posts.read")]
+        public async Task<IActionResult> GetCommentsAsync(
+            Guid postId,
+            [FromQuery]ExcludeQueryModel exclude,
+            [ModelBinder(BinderType = typeof(OffsetQueryModelBinder))]int offset = 0,
+            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]int limit = 7)
+        {
+            var comments = await PostRepository.GetCommentsAsync(postId, offset, limit);
+
+            if (comments == null)
+            {
+                return NotFound();
+            }
+
+
+            var model = comments.Select(x => CommentResponseModel.From(x, AbsoluteUri));
 
             if (exclude != null)
             {

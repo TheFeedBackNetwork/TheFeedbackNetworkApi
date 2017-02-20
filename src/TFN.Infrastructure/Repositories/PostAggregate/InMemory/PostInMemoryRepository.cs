@@ -36,7 +36,7 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
             return Task.CompletedTask;
         }
 
-        public Task<IReadOnlyList<Post>> GetAllAsync(int postOffset, int postLimit, int commentOffset, int commentLimit)
+        public Task<IReadOnlyList<Post>> GetAllAsync(int postOffset, int postLimit)
         {
             IReadOnlyList<Post> posts = InMemoryPosts.Posts.Skip(postOffset).Take(postLimit).Where(x => x.IsActive).ToList();
 
@@ -48,9 +48,16 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
             return Task.FromResult(InMemoryPosts.Posts.SingleOrDefault(x => x.Id == postId && x.IsActive));
         }
 
-        public Task<Post> GetAsync(Guid postId, int commentOffset, int commentLimit)
+        public Task<IReadOnlyList<Comment>> GetCommentsAsync(Guid postId, int commentOffset, int commentLimit)
         {
-            return Task.FromResult(InMemoryPosts.Posts.SingleOrDefault(x => x.Id == postId));
+            IReadOnlyList<Comment> comments =
+                InMemoryComments.Comments.FindAll(x => x.PostId == postId)
+                    .OrderBy(x => x.Created)
+                    .Skip(commentOffset)
+                    .Take(commentLimit)
+                    .ToList();
+
+            return Task.FromResult(comments);
         }
 
         public Task<Comment> GetAsync(Guid postId, Guid commentId)

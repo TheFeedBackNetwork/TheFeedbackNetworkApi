@@ -44,5 +44,11 @@ namespace TFN.Infrastructure.Repositories.CreditAggregate.InMemory
             
             return Task.FromResult(leaders);
         }
+        public Task<IReadOnlyList<Credits>> SearchUsers(string searchToken, int offset, int limit)
+        {
+            IReadOnlyList<Credits> credits =
+                InMemoryCredits.Credits.Where(x => x.Username.StartsWith(searchToken)).Skip(offset).Take(limit).ToList();
+            return Task.FromResult(credits);
+        }
     }
 }

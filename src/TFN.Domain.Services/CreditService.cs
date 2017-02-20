@@ -33,7 +33,7 @@ namespace TFN.Domain.Services
             await CreditRepository.UpdateAsync(newCredits);
         }
 
-        public async Task<IReadOnlyList<Credits>> GetLeaderBoardAsync(int offset, int limit)
+        public async Task<IReadOnlyList<Credits>> GetLeaderBoardAsync(short offset, short limit)
         {
             return await CreditRepository.GetHighestCredits(offset, limit);
         }
@@ -56,6 +56,11 @@ namespace TFN.Domain.Services
         public async Task AddAsync(Credits credits)
         {
             await CreditRepository.AddAsync(credits);
+        }
+
+        public async Task<IReadOnlyList<Credits>> SearchUsers(string searchToken, int offset, int limit)
+        {
+            return await CreditRepository.SearchUsers(searchToken, offset, limit);
         }
     }
 }

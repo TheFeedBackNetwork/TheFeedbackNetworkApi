@@ -14,7 +14,7 @@ namespace TFN.Domain.Interfaces.Services
         Task<bool> ExistsByEmail(string email);
         Task<bool> ExistsByUsername(string username);
         Task CreateAsync(User user, string password);
-        IEnumerable<Claim> GetClaims(User user);
+        IReadOnlyList<Claim> GetClaims(User user);
         Task SendChangePasswordKeyAsync(User user);
         Task<User> GetByUsernameAsync(string username);
         Task<User> GetByEmailAsync(string email);
@@ -22,5 +22,6 @@ namespace TFN.Domain.Interfaces.Services
         Task<User> GetByChangePasswordKey(string changePasswordKey);
         Task<bool> ChangePasswordKeyExistsAsync(string changePasswordKey);
         Task UpdateUserPasswordAsync(string changePasswordKey, string password);
+        Task<IReadOnlyList<Credits>> SearchUsers(string searchToken,int offset,int limit);
     }
 }

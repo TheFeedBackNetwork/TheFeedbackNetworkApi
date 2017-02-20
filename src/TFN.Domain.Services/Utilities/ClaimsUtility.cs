@@ -7,7 +7,7 @@ namespace TFN.Domain.Services.Utilities
 {
     public static class ClaimsUtility
     {
-        public static IEnumerable<Claim> GetClaims(User user)
+        public static IReadOnlyList<Claim> GetClaims(User user)
         {
             var claims = new List<Claim>
             {

@@ -23,7 +23,7 @@ namespace TFN.Api.Controllers
 
         [HttpGet(Name = "GetCreditsForCaller")]
         [Authorize("credits.read")]
-        public async Task<IActionResult> GetCredits()
+        public async Task<IActionResult> GetCreditsAsync()
         {
             var credit = await CreditService.GetByUserIdAsync(UserId);
 
@@ -69,7 +69,7 @@ namespace TFN.Api.Controllers
 
         [HttpGet("users/{userId:Guid}", Name = "GetCreditsByUserId")]
         [Authorize("credits.read")]
-        public async Task<IActionResult> GetCreditsByUserId(Guid userId)
+        public async Task<IActionResult> GetCreditsByUserIdAsync(Guid userId)
         {
             var credit = await CreditService.GetByUserIdAsync(userId);
 

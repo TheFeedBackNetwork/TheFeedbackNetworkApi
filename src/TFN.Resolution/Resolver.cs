@@ -90,7 +90,8 @@ namespace TFN.Resolution
                     .AddScopePolicy("tracks.delete")
                     .AddScopePolicy("credits.write")
                     .AddScopePolicy("credits.delete")
-                    .AddScopePolicy("credits.read");
+                    .AddScopePolicy("credits.read")
+                    .AddScopePolicy("users.read");
             });
 
             services.AddTransient<IAuthorizationHandler, PostAuthorizationHandler>();

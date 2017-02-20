@@ -88,7 +88,7 @@ namespace TFN.Domain.Services
         }
         
 
-        public IEnumerable<Claim> GetClaims(User user)
+        public IReadOnlyList<Claim> GetClaims(User user)
         {
             var claims = ClaimsUtility.GetClaims(user);
 
@@ -173,6 +173,13 @@ namespace TFN.Domain.Services
         public async Task<User> GetByChangePasswordKey(string changePasswordKey)
         {
             return await UserRepository.GetByChangePasswordKey(changePasswordKey);
+        }
+
+        public async Task<IReadOnlyList<Credits>> SearchUsers(string searchToken, int offset, int limit)
+        {
+            var credits = await CreditService.SearchUsers(searchToken, offset, limit);
+
+            return credits;
         }
     }
 }

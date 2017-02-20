@@ -8,16 +8,18 @@ namespace TFN.Api.Models.ModelBinders
     {
         private const string parameterName = "limit";
 
-        private const int maximumLimit = 25;
+        private const int minimumValue = 0;
+
+        private const int maximumValue = 25;
 
         public Task BindModelAsync(ModelBindingContext bindingContext)
         {
             if (!String.IsNullOrWhiteSpace(bindingContext.ModelName) &&
                 bindingContext.ModelName.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase) &&
-                bindingContext.ModelType == typeof(short) &&
+                bindingContext.ModelType == typeof(int) &&
                 bindingContext.ValueProvider.GetValue(bindingContext.ModelName) != null)
             {
-                short value;
+                int value;
                 var val = bindingContext.ValueProvider.GetValue(bindingContext.ModelName).FirstValue as string;
 
                 if (String.IsNullOrWhiteSpace(val))
@@ -25,21 +27,14 @@ namespace TFN.Api.Models.ModelBinders
                     bindingContext.Result = ModelBindingResult.Failed();
                     return Task.FromResult(0);
                 }
-                else if (Int16.TryParse(val, out value))
+                else if (int.TryParse(val, out value) && value > 0 && value <= maximumValue)
                 {
-                    if (value > 0 && value <= maximumLimit)
-                    {
-                        bindingContext.Result = ModelBindingResult.Success(value);
-                        return Task.FromResult(0);
-                    }
-                    else
-                    {
-                        bindingContext.ModelState.AddModelError(bindingContext.ModelName, $"Value '{value}' is invalid. Maximum allowed limit is {maximumLimit}.");
-                    }
+                    bindingContext.Result = ModelBindingResult.Success(value);
+                    return Task.FromResult(0);
                 }
                 else
                 {
-                    bindingContext.ModelState.AddModelError(bindingContext.ModelName, "Value is invalid. Limit must be a valid integer.");
+                    bindingContext.ModelState.AddModelError(bindingContext.ModelName, $"Value is invalid. Limit must be a valid integer between {minimumValue} and {maximumValue}.");
                 }
             }
 
