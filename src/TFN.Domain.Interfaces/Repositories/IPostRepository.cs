@@ -2,22 +2,17 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TFN.Domain.Models.Entities;
+using TFN.Domain.Models.ValueObjects;
 using TFN.DomainDrivenArchitecture.Domain.Repositories;
 
 namespace TFN.Domain.Interfaces.Repositories
 {
     public interface IPostRepository : IAddableRepository<Post,Guid> , IUpdateableRepository<Post,Guid>, IDeleteableRepository<Post,Guid>
     {
-        Task<IReadOnlyList<Post>> GetAllAsync(int postOffset, int postLimit);
-        Task<IReadOnlyList<Comment>> GetCommentsAsync(Guid postId, int commentOffset, int commentLimit);
-        Task<Comment> GetAsync(Guid postId, Guid commentId);
-        Task<IReadOnlyList<Comment>> GetAllCommentsAsync(Guid postId);
-        Task<IReadOnlyList<Score>> GetAllScoresAsync(Guid postId, Guid commentId);
-        Task<Score> GetAsync(Guid postId, Guid commentId,Guid scoreId);
-        Task UpdateAsync(Comment entity);
-        Task AddAsync(Comment entity);
-        Task AddAsync(Score entity);
-        Task DeleteAsync(Guid postId, Guid commentId);
-        Task DeleteAsync(Guid postId, Guid commentId, Guid scoreId);
+        Task<IReadOnlyList<Post>> GetAllAsync(int offset, int limit);
+        Task<PostSummary> GetPostLikeSummaryAsync(Guid postId, int limit, string username);
+        Task<IReadOnlyList<Like>> GetAllLikes(Guid postId, int offset, int limit);
+        Task DeleteLike(Guid postId, Guid likeId);
+        Task<Like> GetLikeAsync(Guid postId, Guid likeId);
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Models.Entities;
+using TFN.Domain.Models.ValueObjects;
 
 namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
 {
@@ -16,29 +17,14 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
             return Task.CompletedTask;
         }
 
-        public Task AddAsync(Comment entity)
+        public Task<IReadOnlyList<Post>> GetAllAsync(int offset, int limit)
         {
-            if(InMemoryPosts.Posts.Any(x => x.Id == entity.PostId))
-            {
-                InMemoryComments.Comments.Add(entity);
-            }
-
-            return Task.CompletedTask;
-        }
-
-        public Task AddAsync(Score entity)
-        {
-            if(InMemoryComments.Comments.Any(x => x.Id == entity.CommentId))
-            {
-                InMemoryScores.Scores.Add(entity);
-            }
-
-            return Task.CompletedTask;
-        }
-
-        public Task<IReadOnlyList<Post>> GetAllAsync(int postOffset, int postLimit)
-        {
-            IReadOnlyList<Post> posts = InMemoryPosts.Posts.Skip(postOffset).Take(postLimit).Where(x => x.IsActive).ToList();
+            IReadOnlyList<Post> posts = InMemoryPosts.Posts
+                .Where(x => x.IsActive)
+                .OrderBy(x => x.Created)
+                .Skip(offset)
+                .Take(limit)
+                .ToList();
 
             return Task.FromResult(posts);
         }
@@ -48,43 +34,6 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
             return Task.FromResult(InMemoryPosts.Posts.SingleOrDefault(x => x.Id == postId && x.IsActive));
         }
 
-        public Task<IReadOnlyList<Comment>> GetCommentsAsync(Guid postId, int commentOffset, int commentLimit)
-        {
-            IReadOnlyList<Comment> comments =
-                InMemoryComments.Comments.FindAll(x => x.PostId == postId)
-                    .OrderBy(x => x.Created)
-                    .Skip(commentOffset)
-                    .Take(commentLimit)
-                    .ToList();
-
-            return Task.FromResult(comments);
-        }
-
-        public Task<Comment> GetAsync(Guid postId, Guid commentId)
-        {
-            var comment = InMemoryComments.Comments.SingleOrDefault(x => x.PostId == postId && x.Id == commentId);
-
-            return Task.FromResult(comment);
-        }
-
-        public Task<Score> GetAsync(Guid postId, Guid commentId, Guid scoreId)
-        {
-            if(InMemoryPosts.Posts.Any(x => x.Id == postId))
-            {
-                var score = InMemoryScores.Scores.SingleOrDefault(x => x.CommentId == commentId && x.Id == scoreId);
-                return Task.FromResult(score);
-            }
-
-            return Task.FromResult<Score>(null);
-        }
-
-        public Task UpdateAsync(Comment entity)
-        {
-            InMemoryComments.Comments.RemoveAll(x => x.Id == entity.Id);
-            InMemoryComments.Comments.Add(entity);
-
-            return Task.CompletedTask;
-        }
         public Task UpdateAsync(Post entity)
         {
             DeleteAsync(entity.Id);
@@ -100,39 +49,40 @@ namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
             return Task.CompletedTask;
         }
 
-
-        public Task DeleteAsync(Guid postId, Guid commentId)
+        public Task<PostSummary> GetPostLikeSummaryAsync(Guid postId, int limit, string username)
         {
-            InMemoryComments.Comments.RemoveAll(x => x.PostId == postId && x.Id == commentId);
+            var hasLiked = InMemoryLikes.Likes.Any(x => x.Username == username && x.PostId == postId);
+            var count = InMemoryLikes.Likes.FindAll(x => x.PostId == postId).Count;
+            IReadOnlyList<Like> someLikes = InMemoryLikes.Likes.FindAll(x => x.PostId == postId).Take(limit).ToList();
+
+            var summary = PostSummary.From(postId,someLikes, count, hasLiked);
+
+            return Task.FromResult(summary);
+        }
+
+        public Task<IReadOnlyList<Like>> GetAllLikes(Guid postId, int offset, int limit)
+        {
+            IReadOnlyList<Like> likes = InMemoryLikes.Likes.FindAll(x => x.PostId == postId)
+                    .OrderBy(x => x.Created)
+                    .Skip(offset)
+                    .Take(limit)
+                    .ToList();
+
+            return Task.FromResult(likes);
+        }
+
+        public Task DeleteLike(Guid postId, Guid likeId)
+        {
+            InMemoryLikes.Likes.RemoveAll(x => x.PostId == postId && x.Id == likeId);
 
             return Task.CompletedTask;
         }
 
-        public Task DeleteAsync(Guid postId, Guid commentId, Guid scoreId)
+        public Task<Like> GetLikeAsync(Guid postId, Guid likeId)
         {
-            if (InMemoryPosts.Posts.Any(x => x.Id == postId))
-            {
-                InMemoryScores.Scores.RemoveAll(x => x.CommentId == commentId && scoreId == x.Id);
-            }
+            var like = InMemoryLikes.Likes.SingleOrDefault(x => x.PostId == postId && x.Id == likeId);
 
-            return Task.CompletedTask;
-        }
-
-        public Task<IReadOnlyList<Comment>> GetAllCommentsAsync(Guid postId)
-        {
-            IReadOnlyList<Comment> comments = InMemoryComments.Comments.Where(x => x.PostId == postId).ToList();
-            return Task.FromResult(comments);
-        }
-
-        public Task<IReadOnlyList<Score>> GetAllScoresAsync(Guid postId, Guid commentId)
-        {
-            if(InMemoryPosts.Posts.Any(x => x.Id == postId))
-            {
-                IReadOnlyList<Score> scores = InMemoryScores.Scores.Where(x => x.CommentId == commentId).ToList();
-                return Task.FromResult(scores);
-            }
-
-            return Task.FromResult<IReadOnlyList<Score>>(null);
+            return Task.FromResult(like);
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿using System;
 using NodaTime;
+using TFN.DomainDrivenArchitecture.Domain.Models;
 
 namespace TFN.Domain.Models.Entities
 {
-    public class Comment : MessageDomainEntity
+    public class Comment : MessageDomainEntity, IAggregateRoot
     {
         public Guid PostId { get; private set; }
        

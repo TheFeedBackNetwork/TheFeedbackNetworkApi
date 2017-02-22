@@ -3,8 +3,8 @@ using TFN.Domain.Models.Entities;
 
 namespace TFN.Infrastructure.Repositories.PostAggregate.InMemory
 {
-    public static class InMemoryScores
+    public static class InMemoryLikes
     {
-        public static List<Score> Scores = new List<Score>();
+        public static List<Like> Likes = new List<Like>();
     }
 }

@@ -23,7 +23,9 @@ window.Raven && Raven.config(SENTRY_URL).install();
 const Root = ({ store }) => {
   let ComponentEl = (
     <Provider store={store}>
-      <App />
+      <Router>
+        <App />
+      </Router>
     </Provider>
   );
 

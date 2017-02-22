@@ -17,6 +17,7 @@ using TFN.Domain.Services.Providers;
 using TFN.Domain.Services.Validators;
 using TFN.Infrastructure.Components.Storage;
 using TFN.Infrastructure.Repositories.ClientAggregate.InMemory;
+using TFN.Infrastructure.Repositories.CommentAggregate.InMemory;
 using TFN.Infrastructure.Repositories.CreditAggregate.InMemory;
 using TFN.Infrastructure.Repositories.PostAggregate.InMemory;
 using TFN.Infrastructure.Repositories.ResourceAggregate.InMemory;
@@ -39,6 +40,7 @@ namespace TFN.Resolution
             services.AddTransient<ITransientUserRepository, TransientUserInMemoryRepository>();
             services.AddTransient<IClientRepository, ClientInMemoryRepository>();
             services.AddTransient<IPostRepository, PostInMemoryRepository>();
+            services.AddTransient<ICommentRepository, CommentInMemoryRepository>();
             services.AddTransient<IClientStore, ClientInMemoryRepository>();
             services.AddTransient<ITrackRepository, TrackInMemoryRepository>();
             services.AddTransient<ICreditRepository, CreditInMemoryRepository>();
@@ -52,7 +54,7 @@ namespace TFN.Resolution
             services.AddTransient<IKeyService, KeyService>();
             services.AddTransient<ITransientUserService, TransientUserService>();
             services.AddTransient<ICreditService, CreditService>();
-
+            services.AddTransient<IPostService, PostService>();
             services.AddTransient<IUsersEventsService, UsersEventsService>();
             services.AddTransient<IUserIdProvider, UserIdProvider>();
             //validators

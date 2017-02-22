@@ -14,7 +14,6 @@ namespace TFN.UnitTest.Aggregates
         private static string PostUserNameDefault { get { return "FooBar"; } }
         private static string CommentUserNameDefault { get { return "BarBaz"; } }
         private static string TrackUrlDefault { get { return "www.soundcloud.com/foo/bar";} }
-        private static int LikesDefault { get { return 1; } }
         private static IReadOnlyList<string> TagsDefault { get { return new List<string> { "foo", "bar" }; } }
         private static Genre GenreDefault { get { return Genre.Ambient; } }
         private static Guid UserIdDefault { get { return new Guid("799dca00-ef0f-4f8e-9bd3-5a4cff9ee07e"); } }
@@ -26,27 +25,27 @@ namespace TFN.UnitTest.Aggregates
 
         public Post make_Post(Guid id, Guid userId,string username, string trackUrl, string text, int likes, Genre genre, IReadOnlyList<string> tags,IReadOnlyList<Comment> comments,bool isActive,Instant created, Instant modified)
         {
-            return Post.Hydrate(id, userId,username, trackUrl, text, likes, genre, tags,isActive, created, modified);
+            return Post.Hydrate(id, userId,username, trackUrl, text, genre, tags,isActive, created, modified);
         }
 
         public Post make_PostByTrackUrl(string trackUrl)
         {
-            return Post.Hydrate(PostIdDefault, UserIdDefault,PostUserNameDefault, trackUrl, TextDefault, LikesDefault, GenreDefault, TagsDefault,IsActiveDefault, CreatedDefault, ModifiedDefault);
+            return Post.Hydrate(PostIdDefault, UserIdDefault,PostUserNameDefault, trackUrl, TextDefault, GenreDefault, TagsDefault,IsActiveDefault, CreatedDefault, ModifiedDefault);
         }
 
         public Post make_PostByText(string text)
         {
-            return Post.Hydrate(PostIdDefault, UserIdDefault, PostUserNameDefault, TrackUrlDefault, text, LikesDefault, GenreDefault, TagsDefault, IsActiveDefault, CreatedDefault, ModifiedDefault);
+            return Post.Hydrate(PostIdDefault, UserIdDefault, PostUserNameDefault, TrackUrlDefault, text, GenreDefault, TagsDefault, IsActiveDefault, CreatedDefault, ModifiedDefault);
         }
 
         public Post make_Post(int likes)
         {
-            return Post.Hydrate(PostIdDefault, UserIdDefault, PostUserNameDefault, TrackUrlDefault, TextDefault, likes, GenreDefault, TagsDefault, IsActiveDefault, CreatedDefault, ModifiedDefault);
+            return Post.Hydrate(PostIdDefault, UserIdDefault, PostUserNameDefault, TrackUrlDefault, TextDefault, GenreDefault, TagsDefault, IsActiveDefault, CreatedDefault, ModifiedDefault);
         }
 
         public Post make_Post(Instant created)
         {
-            return Post.Hydrate(PostIdDefault, UserIdDefault, PostUserNameDefault, TrackUrlDefault, TextDefault, LikesDefault, GenreDefault, TagsDefault, IsActiveDefault, created, ModifiedDefault);
+            return Post.Hydrate(PostIdDefault, UserIdDefault, PostUserNameDefault, TrackUrlDefault, TextDefault, GenreDefault, TagsDefault, IsActiveDefault, created, ModifiedDefault);
         }
 
         [Theory]
