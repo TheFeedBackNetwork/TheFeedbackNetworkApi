@@ -18,9 +18,11 @@ namespace TFN.Api.Models.ResponseModels
         public DateTime Created { get; private set; }
         public DateTime Modified { get; private set; }
         [Excludable]
-        public PostSummary PostSummary { get; private set; }
+        public PostSummaryResponseModel PostSummary { get; private set; }
+        [Excludable]
+        public CreditsResponseModel UserSummary { get; private set; }
 
-        private PostResponseModel(Guid id, Guid userId, string username, string text, string trackUrl, IReadOnlyList<string> tags, string genre, DateTime created, DateTime modified, PostSummary summary, string apiUrl)
+        private PostResponseModel(Guid id, Guid userId, string username, string text, string trackUrl, IReadOnlyList<string> tags, string genre, DateTime created, DateTime modified, PostSummaryResponseModel summary, string apiUrl)
             : base(GetHref(id, apiUrl), id)
         {
             Text = text;
@@ -54,7 +56,7 @@ namespace TFN.Api.Models.ResponseModels
                 post.Genre.ToString(),
                 post.Created.ToDateTimeUtc(),
                 post.Modified.ToDateTimeUtc(),
-                summary,
+                PostSummaryResponseModel.From(summary,apiUrl),
                 apiUrl
                 );
         }

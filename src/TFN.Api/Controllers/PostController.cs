@@ -12,7 +12,6 @@ using TFN.Api.Models.ModelBinders;
 using TFN.Api.Models.QueryModels;
 using TFN.Api.Models.ResponseModels;
 using TFN.Api.Extensions;
-using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Interfaces.Services;
 using TFN.Domain.Models.Entities;
 using TFN.Domain.Models.Enums;
@@ -59,7 +58,6 @@ namespace TFN.Api.Controllers
                 model.Add(PostResponseModel.From(post,summary,AbsoluteUri));
             }
 
-            //var model = posts.Select(x => PostResponseModel.From(x, AbsoluteUri));
             if (exclude != null)
             {
                 return this.Json(model,exclude.Attributes);
@@ -106,10 +104,7 @@ namespace TFN.Api.Controllers
             }
 
             var summary = await PostService.GetCommentScoreSummaryAsync(commentId, 5, Username);
-
-            var summaryModel = CommentSummaryResponseModel.From(summary, AbsoluteUri, postId);
-
-            var model = CommentResponseModel.From(comment,summaryModel,AbsoluteUri);
+            var model = CommentResponseModel.From(comment,summary,AbsoluteUri);
 
 
             if (exclude != null)
@@ -146,8 +141,7 @@ namespace TFN.Api.Controllers
             foreach (var comment in comments)
             {
                 var summary = summaries.SingleOrDefault(x => x.CommentId == comment.Id);
-                var summaryModel = CommentSummaryResponseModel.From(summary, AbsoluteUri, postId);
-                model.Add(CommentResponseModel.From(comment,summaryModel,AbsoluteUri));
+                model.Add(CommentResponseModel.From(comment,summary,AbsoluteUri));
             }
 
 
@@ -244,9 +238,9 @@ namespace TFN.Api.Controllers
 
             var summary = await PostService.GetCommentScoreSummaryAsync(entity.Id, 5, Username);
 
-            var summaryModel = CommentSummaryResponseModel.From(summary,AbsoluteUri,postId);
+            //var summaryModel = CommentSummaryResponseModel.From(summary,AbsoluteUri,postId);
 
-            var model = CommentResponseModel.From(entity, summaryModel ,AbsoluteUri);
+            var model = CommentResponseModel.From(entity, summary ,AbsoluteUri);
 
             return CreatedAtAction("GetComment", new {postId = model.PostId, commentId = model.Id}, model);
         }

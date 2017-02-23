@@ -22,7 +22,12 @@ namespace TFN.Api.Extensions
 
         public static string GetUsername(this HttpContext context)
         {
-            var userName = context.User.Identity.Name;
+            var userName = context.User.Identity?.Name;
+
+            if (userName == null)
+            {
+                userName = "na";
+            }
 
             return userName;
         }
