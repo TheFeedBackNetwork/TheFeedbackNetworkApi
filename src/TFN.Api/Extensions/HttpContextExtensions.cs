@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using TFN.Mvc.Models;
 
 namespace TFN.Api.Extensions
 {
@@ -30,6 +31,16 @@ namespace TFN.Api.Extensions
             }
 
             return userName;
+        }
+
+        public static PrincipleType GetCaller(this HttpContext context)
+        {
+            if (context.User.Identity?.Name == null)
+            {
+                return PrincipleType.Anonymous;
+            }
+
+            return PrincipleType.User;
         }
 
         public static string GetAbsoluteUri(this HttpContext context)
