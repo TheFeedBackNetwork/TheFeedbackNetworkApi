@@ -23,6 +23,7 @@ class PostRoll extends React.Component {
 
 PostRoll.PropTypes = {
     dispatch: PropTypes.func.isRequired,
+    postRoll: PropTypes.array
 
 }
 
@@ -33,6 +34,10 @@ function mapStateToProps(state) {
 
     return {
         postRoll,
+        postRollFetchFailed,
+        postRollFetchingInProgress,
+        postRollFetched,
+        errorMessage,
         token,
         user
     }

@@ -4,7 +4,7 @@ export default function reducer(state = {
     postRollFetchFailed: false,
     postRollFetchInProgress: true,
     postRollFetched: false,
-    postRoll: null,
+    postRoll: [],
     errorMessage: null,
 }, action) {
     switch(action.type) {
