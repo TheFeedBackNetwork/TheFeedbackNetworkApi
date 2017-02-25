@@ -58,7 +58,8 @@ namespace TFN.Api.UI.SignOut
             }
 
             return View("SignedOut", vm);*/
-            return RedirectToAction("SignIn", "SignIn");
+            return Redirect(AppUrl);
+            //return RedirectToAction("SignIn", "SignIn");
         }
     }
 }

@@ -1,10 +1,4 @@
 module.exports = {
-    auth: {
-        url: "http://localhost:5000/account/authorize",
-        client: "some_client_id",
-        redirect: "http://localhost.com:5001/callback.html",
-        scope: "posts.write posts.read posts edit posts.delete tracks.read tracks.write tracks.delete"
-    },
     userManager : {
         client_id: "tfn_frontend",
         redirect_uri: `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}/oidc-callback`,
@@ -15,5 +9,10 @@ module.exports = {
         automaticSilentRenew: true,
         filterProtocolClaims: false,
         loadUserInfo: true,
+    },
+    basicClient : {
+        client_id: "tfn_frontend",
+        scope: "posts.read tracks.read credits.read users.read",
+        authority: "http://localhost:5000/account",
     }
 }

@@ -1,36 +1,52 @@
-import React from 'react';
+import React, { PropTypes } from 'react';
+import { connect } from 'react-redux';
 import userManager from '../utils/userManager';
 import { createUserManager } from 'redux-oidc';
 import config from '../config/config'
 
-class LoginPage extends React.Component {
+class Login extends React.Component {
+  
   onLoginButtonClick = (event) => {
     event.preventDefault();
     userManager.signinRedirect();
   };
 
+  onLogoutButtonClick = (event) => {
+    event.preventDefault();
+    userManager.signoutRedirect();
+  };
+
   componentDidMount() {
-          userManager.signinSilent();
+    userManager.signinSilent()
+       .catch(e => {
+         console.log('could not log in user')
+       })
   }
 
   render() {
+    var button = <button onClick={this.onLoginButtonClick}>Login</button>
+    if(this.props.user != null)
+    {
+      button = <button onClick={this.onLogoutButtonClick}>Logout</button>  
+    }
     return (
-      <div style={styles.root}>
-        
-        <button onClick={this.onLoginButtonClick}>Login with OIDC</button>
+      <div>
+        {button}             
       </div>
     );
   }
 }
 
-const styles = {
-  root: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    flexShrink: 1,
+Login.PropTypes = {
+  user: PropTypes.object.isRequired
+}
+
+function mapStateToProps(state) {
+  const { user } = state.auth;
+
+  return {
+    user
   }
 }
 
-export default LoginPage;
+export default connect(mapStateToProps)(Login);
