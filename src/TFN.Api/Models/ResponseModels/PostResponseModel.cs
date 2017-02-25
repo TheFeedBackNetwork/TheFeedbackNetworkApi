@@ -42,7 +42,7 @@ namespace TFN.Api.Models.ResponseModels
             return new Uri($"{apiUrl}/api/posts/{id}");
         } 
 
-        internal static PostResponseModel From(Post post, PostSummary summary, string apiUrl)
+        internal static PostResponseModel From(Post post, PostSummary summary,Credits credits, string apiUrl)
         {
             //string commentApiurl = GetHref(post.Id, apiUrl).AbsoluteUri;
 
@@ -56,7 +56,7 @@ namespace TFN.Api.Models.ResponseModels
                 post.Genre.ToString(),
                 post.Created.ToDateTimeUtc(),
                 post.Modified.ToDateTimeUtc(),
-                PostSummaryResponseModel.From(summary,apiUrl),
+                PostSummaryResponseModel.From(summary,credits,apiUrl),
                 apiUrl
                 );
         }

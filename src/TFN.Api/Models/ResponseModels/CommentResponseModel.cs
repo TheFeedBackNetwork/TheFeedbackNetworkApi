@@ -34,7 +34,7 @@ namespace TFN.Api.Models.ResponseModels
             return new Uri($"{apiUrl}/comments/{commentId}");
         }
 
-        internal static CommentResponseModel From(Comment comment,CommentSummary summary, string apiUrl)
+        internal static CommentResponseModel From(Comment comment,CommentSummary summary,Credits credits, string apiUrl)
         {
             string postApiurl = new Uri($"{apiUrl}/api/posts/{comment.PostId}").AbsoluteUri;
             return new CommentResponseModel(
@@ -45,7 +45,7 @@ namespace TFN.Api.Models.ResponseModels
                 comment.Username,
                 comment.Created.ToDateTimeUtc(),
                 comment.Modified.ToDateTimeUtc(),
-                CommentSummaryResponseModel.From(summary,apiUrl,comment.PostId), 
+                CommentSummaryResponseModel.From(summary,credits,apiUrl,comment.PostId), 
                 postApiurl
                 );
         }

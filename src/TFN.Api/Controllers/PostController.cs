@@ -55,7 +55,8 @@ namespace TFN.Api.Controllers
             foreach (var post in posts)
             {
                 var summary = summaries.SingleOrDefault(x => x.PostId == post.Id);
-                model.Add(PostResponseModel.From(post,summary,AbsoluteUri));
+                var credits = await CreditService.GetByUserIdAsync(post.UserId);
+                model.Add(PostResponseModel.From(post,summary,credits,AbsoluteUri));
             }
 
             if (exclude != null)
@@ -79,13 +80,38 @@ namespace TFN.Api.Controllers
             }
 
             var summary = await PostService.GetPostLikeSummaryAsync(postId, 5, Username);
-            var model = PostResponseModel.From(post, summary, AbsoluteUri);
+            var credits = await CreditService.GetByUserIdAsync(post.UserId);
+            var model = PostResponseModel.From(post, summary, credits, AbsoluteUri);
 
 
             if (exclude != null)
             {
                 return this.Json(model, exclude.Attributes);
             }
+            return Json(model);
+        }
+
+        [HttpGet("{postId:Guid}/likes", Name = "GetPostSummary")]
+        [Authorize("posts.read")]
+        public async Task<IActionResult> GetPostLikesSummaryAsync(
+            Guid postId,
+            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]int limit = 7)
+        {
+            var post = await PostService.GetPostAsync(postId);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            var postSummary = await PostService.GetPostLikeSummaryAsync(postId, limit, Username);
+            if (postSummary == null)
+            {
+                return NotFound();
+            }
+
+            var credits = await CreditService.GetByUserIdAsync(post.UserId);
+            var model = PostSummaryResponseModel.From(postSummary, credits, AbsoluteUri);
+
             return Json(model);
         }
 
@@ -104,7 +130,8 @@ namespace TFN.Api.Controllers
             }
 
             var summary = await PostService.GetCommentScoreSummaryAsync(commentId, 5, Username);
-            var model = CommentResponseModel.From(comment,summary,AbsoluteUri);
+            var credits = await CreditService.GetByUserIdAsync(comment.UserId);
+            var model = CommentResponseModel.From(comment,summary,credits,AbsoluteUri);
 
 
             if (exclude != null)
@@ -141,7 +168,8 @@ namespace TFN.Api.Controllers
             foreach (var comment in comments)
             {
                 var summary = summaries.SingleOrDefault(x => x.CommentId == comment.Id);
-                model.Add(CommentResponseModel.From(comment,summary,AbsoluteUri));
+                var credits = await CreditService.GetByUserIdAsync(comment.UserId);
+                model.Add(CommentResponseModel.From(comment,summary,credits,AbsoluteUri));
             }
 
 
@@ -149,6 +177,30 @@ namespace TFN.Api.Controllers
             {
                 return this.Json(model, exclude.Attributes);
             }
+
+            return Json(model);
+        }
+
+        [HttpGet("{postId:Guid}/comments/{commentId:Guid}/scores", Name = "GetCommentSummary")]
+        [Authorize("posts.read")]
+        public async Task<IActionResult> GetCommentScoreSummaryAsync(
+            Guid postId,
+            Guid commentId,
+            [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]int limit = 7)
+        {
+            var comment = await PostService.GetCommentAsync(postId,commentId);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            var commentSummary = await PostService.GetCommentScoreSummaryAsync(commentId, limit, Username);
+            if (commentSummary == null)
+            {
+                return NotFound();
+            }
+            var credits = await CreditService.GetByUserIdAsync(comment.UserId);
+            var model = CommentSummaryResponseModel.From(commentSummary,credits, AbsoluteUri, postId);
 
             return Json(model);
         }
@@ -205,9 +257,11 @@ namespace TFN.Api.Controllers
 
             await PostService.AddAsync(entity);
             var summary = await PostService.GetPostLikeSummaryAsync(entity.Id, 5, Username);
-            var model = PostResponseModel.From(entity,summary, AbsoluteUri);
-
             await CreditService.ReduceCreditsAsync(credits, 5);
+            credits = await CreditService.GetByUserIdAsync(entity.UserId);
+            var model = PostResponseModel.From(entity,summary,credits, AbsoluteUri);
+
+            
 
             return CreatedAtAction("GetPost", new {postId = model.Id}, model);
         }
@@ -238,9 +292,9 @@ namespace TFN.Api.Controllers
 
             var summary = await PostService.GetCommentScoreSummaryAsync(entity.Id, 5, Username);
 
-            //var summaryModel = CommentSummaryResponseModel.From(summary,AbsoluteUri,postId);
+            var credits = await CreditService.GetByUserIdAsync(entity.UserId);
 
-            var model = CommentResponseModel.From(entity, summary ,AbsoluteUri);
+            var model = CommentResponseModel.From(entity, summary,credits ,AbsoluteUri);
 
             return CreatedAtAction("GetComment", new {postId = model.PostId, commentId = model.Id}, model);
         }
