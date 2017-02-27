@@ -2,6 +2,7 @@ import * as types from '../constants/ActionTypes';
 
 export default function reducer(state ={
     token: "",
+    principleType: "UNAUTHORIZED",
     fetchingToken: false,
     fetchedToken: false,
     errorToken: null,
@@ -18,6 +19,7 @@ export default function reducer(state ={
                 ...state,
                 fetchingToken:false,
                 fetchedToken:true,
+                principleType: "BASIC",
                 token: action.payload
             }
         }
@@ -28,6 +30,13 @@ export default function reducer(state ={
                 fetchedToken:false,
             }            
         }
+        case 'redux-oidc/USER_FOUND': {
+            return {
+                ...state,
+                principleType: "STANDARD_USER"
+            }
+        }
+
     }
 
     return state;

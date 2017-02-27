@@ -14,5 +14,8 @@ module.exports = {
         client_id: "tfn_frontend",
         scope: "posts.read tracks.read credits.read users.read",
         authority: "http://localhost:5000/account",
+    },
+    server : {
+        url: 'http://localhost:5000/api'
     }
 }

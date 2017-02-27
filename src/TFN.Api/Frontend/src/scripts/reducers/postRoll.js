@@ -8,22 +8,22 @@ export default function reducer(state = {
     errorMessage: null,
 }, action) {
     switch(action.type) {
-        case types.FETCH_POST: {
+        case types.FETCH_POSTROLL: {
             return {
                 ...state,
                 postRollFetchInProgress: true
             }
         }
-        case types.FETCH_POST_FULFILLED: {
+        case types.FETCH_POSTROLL_FULFILLED: {
             return {
                 ...state,
-                post: action.payload,
+                postRoll: action.payload,
                 postRollFetched: true,
                 postRollFetchInProgress: false,
                 postRollFetchFailed: false,
             }
         }
-        case types.FETCH_POST_REJECTED: {
+        case types.FETCH_POSTROLL_REJECTED: {
             return {
                 ...state,
                 postRollFetchFailed: true,

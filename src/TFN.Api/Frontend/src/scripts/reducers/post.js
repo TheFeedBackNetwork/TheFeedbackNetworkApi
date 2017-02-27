@@ -3,7 +3,9 @@ import * as types from '../constants/ActionTypes';
 export default function reducer(state = {
     postFetchFailed: false,
     postFetchInProgress: true,
-    post: null,
+    postFetched: false,
+    postNotFound: false,
+    post: {},
     errorMessage: null,
 }, action) {
     switch(action.type) {
@@ -17,6 +19,7 @@ export default function reducer(state = {
             return {
                 ...state,
                 post: action.payload,
+                postFetched: true,
                 postFetchInProgress: false,
                 postFetchFailed: false,
             }
@@ -24,10 +27,12 @@ export default function reducer(state = {
         case types.FETCH_POST_REJECTED: {
             return {
                 ...state,
+                postFetched:false,
                 postFetchFailed: true,
                 postFetchInProgress: false,
             }
         }
+
     }
 
     return state;

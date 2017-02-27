@@ -3,7 +3,6 @@
 import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
 import { OidcProvider } from 'redux-oidc';
-import { BrowserRouter as Router } from 'react-router-dom';
 
 import userManager from '../utils/userManager';
 import  App  from './App';
@@ -23,9 +22,7 @@ window.Raven && Raven.config(SENTRY_URL).install();
 const Root = ({ store }) => {
   let ComponentEl = (
     <Provider store={store}>
-      <Router>
         <App />
-      </Router>
     </Provider>
   );
 
@@ -35,12 +32,10 @@ const Root = ({ store }) => {
     ComponentEl = (
       <Provider store={store}>
         <OidcProvider store={store} userManager={userManager}>
-         <Router>
           <div>
             <App />
             {!window.devToolsExtension ? <DevTools /> : null}
             </div>
-          </Router>
         </OidcProvider>
       </Provider>
     );
