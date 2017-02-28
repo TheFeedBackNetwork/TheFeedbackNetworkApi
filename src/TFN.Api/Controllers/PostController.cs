@@ -56,7 +56,8 @@ namespace TFN.Api.Controllers
             {
                 var summary = summaries.SingleOrDefault(x => x.PostId == post.Id);
                 var credits = await CreditService.GetByUserIdAsync(post.UserId);
-                model.Add(PostResponseModel.From(post,summary,credits,AbsoluteUri));
+                var authZ = ResourceAuthorizationResponseModel.From(post, HttpContext, Caller);
+                model.Add(PostResponseModel.From(post,summary,credits,authZ,AbsoluteUri));
             }
 
             if (exclude != null)
@@ -81,7 +82,8 @@ namespace TFN.Api.Controllers
 
             var summary = await PostService.GetPostLikeSummaryAsync(postId, 5, Username);
             var credits = await CreditService.GetByUserIdAsync(post.UserId);
-            var model = PostResponseModel.From(post, summary, credits, AbsoluteUri);
+            var authZ = ResourceAuthorizationResponseModel.From(post, HttpContext, Caller);
+            var model = PostResponseModel.From(post, summary, credits,authZ, AbsoluteUri);
 
 
             if (exclude != null)
@@ -131,7 +133,8 @@ namespace TFN.Api.Controllers
 
             var summary = await PostService.GetCommentScoreSummaryAsync(commentId, 5, Username);
             var credits = await CreditService.GetByUserIdAsync(comment.UserId);
-            var model = CommentResponseModel.From(comment,summary,credits,AbsoluteUri);
+            var authZ = ResourceAuthorizationResponseModel.From(comment, HttpContext, Caller);
+            var model = CommentResponseModel.From(comment,summary,credits,authZ,AbsoluteUri);
 
 
             if (exclude != null)
@@ -169,7 +172,8 @@ namespace TFN.Api.Controllers
             {
                 var summary = summaries.SingleOrDefault(x => x.CommentId == comment.Id);
                 var credits = await CreditService.GetByUserIdAsync(comment.UserId);
-                model.Add(CommentResponseModel.From(comment,summary,credits,AbsoluteUri));
+                var authZ = ResourceAuthorizationResponseModel.From(comment, HttpContext, Caller);
+                model.Add(CommentResponseModel.From(comment,summary,credits,authZ,AbsoluteUri));
             }
 
 
@@ -259,7 +263,8 @@ namespace TFN.Api.Controllers
             var summary = await PostService.GetPostLikeSummaryAsync(entity.Id, 5, Username);
             await CreditService.ReduceCreditsAsync(credits, 5);
             credits = await CreditService.GetByUserIdAsync(entity.UserId);
-            var model = PostResponseModel.From(entity,summary,credits, AbsoluteUri);
+            var authZ = ResourceAuthorizationResponseModel.From(entity, HttpContext, Caller);
+            var model = PostResponseModel.From(entity,summary,credits,authZ, AbsoluteUri);
 
             
 
@@ -293,8 +298,8 @@ namespace TFN.Api.Controllers
             var summary = await PostService.GetCommentScoreSummaryAsync(entity.Id, 5, Username);
 
             var credits = await CreditService.GetByUserIdAsync(entity.UserId);
-
-            var model = CommentResponseModel.From(entity, summary,credits ,AbsoluteUri);
+            var authZ = ResourceAuthorizationResponseModel.From(entity, HttpContext, Caller);
+            var model = CommentResponseModel.From(entity, summary,credits, authZ ,AbsoluteUri);
 
             return CreatedAtAction("GetComment", new {postId = model.PostId, commentId = model.Id}, model);
         }

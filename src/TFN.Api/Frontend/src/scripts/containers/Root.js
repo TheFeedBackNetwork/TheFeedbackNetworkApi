@@ -2,6 +2,7 @@
 
 import React, { PropTypes } from 'react';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { OidcProvider } from 'redux-oidc';
 
 import userManager from '../utils/userManager';
@@ -33,7 +34,9 @@ const Root = ({ store }) => {
       <Provider store={store}>
         <OidcProvider store={store} userManager={userManager}>
           <div>
-            <App />
+            <Router>
+              <App />
+            </Router>
             {!window.devToolsExtension ? <DevTools /> : null}
             </div>
         </OidcProvider>

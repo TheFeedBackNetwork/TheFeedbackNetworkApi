@@ -21,8 +21,10 @@ namespace TFN.Api.Models.ResponseModels
         public PostSummaryResponseModel PostSummary { get; private set; }
         [Excludable]
         public CreditsResponseModel UserSummary { get; private set; }
+        [Excludable]
+        public ResourceAuthorizationResponseModel ResourceAuthorization { get; private set; }
 
-        private PostResponseModel(Guid id, Guid userId, string username, string text, string trackUrl, IReadOnlyList<string> tags, string genre, DateTime created, DateTime modified, PostSummaryResponseModel summary, string apiUrl)
+        private PostResponseModel(Guid id, Guid userId, string username, string text, string trackUrl, IReadOnlyList<string> tags, string genre, DateTime created, DateTime modified, PostSummaryResponseModel summary,ResourceAuthorizationResponseModel authZ, string apiUrl)
             : base(GetHref(id, apiUrl), id)
         {
             Text = text;
@@ -34,6 +36,7 @@ namespace TFN.Api.Models.ResponseModels
             Created = created;
             Modified = modified;
             PostSummary = summary;
+            ResourceAuthorization = authZ;
 
         }
 
@@ -42,7 +45,7 @@ namespace TFN.Api.Models.ResponseModels
             return new Uri($"{apiUrl}/api/posts/{id}");
         } 
 
-        internal static PostResponseModel From(Post post, PostSummary summary,Credits credits, string apiUrl)
+        internal static PostResponseModel From(Post post, PostSummary summary,Credits credits, ResourceAuthorizationResponseModel authZmodel, string apiUrl)
         {
             //string commentApiurl = GetHref(post.Id, apiUrl).AbsoluteUri;
 
@@ -57,6 +60,7 @@ namespace TFN.Api.Models.ResponseModels
                 post.Created.ToDateTimeUtc(),
                 post.Modified.ToDateTimeUtc(),
                 PostSummaryResponseModel.From(summary,credits,apiUrl),
+                authZmodel,
                 apiUrl
                 );
         }

@@ -1,10 +1,10 @@
 import * as types from '../constants/ActionTypes';
 
-export function changeLocations(location) {
+export function changeLocation(location) {
     
     return function(dispatch) {
         console.log(location)
-        dispatch({type: types.changeLocations, payload: location})
+        dispatch({type: types.LOCATION_CHANGE, payload: location})
     }
 
 }

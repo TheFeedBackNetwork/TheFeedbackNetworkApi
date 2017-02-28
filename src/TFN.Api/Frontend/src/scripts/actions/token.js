@@ -22,7 +22,8 @@ export function fetchToken() {
             })
             .catch((error) => {
                 console.log('error getting token')
-                dispatch({type: types.FETCH_TOKEN_REJECTED, payload: err})
+                console.log(error);
+                dispatch({type: types.FETCH_TOKEN_REJECTED, payload: error})
             })
     }
 

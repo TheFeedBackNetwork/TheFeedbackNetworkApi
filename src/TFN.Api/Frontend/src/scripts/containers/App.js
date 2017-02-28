@@ -6,6 +6,7 @@ import Login from '../components/Login';
 import Profile from '../components/Profile';
 import PostRoll from '../components/PostRoll';
 import Post from '../components/Post';
+import TFNEditor from '../components/TFNEditor';
 import { changeLocation } from '../actions/location'
 
 import { Route, withRouter } from 'react-router-dom';
@@ -14,37 +15,29 @@ import silentrenew from '../components/silentrenew'
 
 class App extends React.Component {
 
-  onLocationChange(location) {
-    const { dispatch } = this.props;
-    console.log(location)
-    dispatch(changeLocation(location))
+  componentWillReceiveProps() {
+
   }
 
   render() {
-    var router = <Router> </Router>
-    console.log(router)
     return (
-      <Router
-      location={this.props.location}
-      onUpdate={this.onLocationChange}
-      >
         <div className="page-container">
-          <h1> HIII </h1>
+          <h1> TFN TESTBED </h1>
           <Login />
           <Route exact path='/:userId/:postId' component={Post} />
+          <Route exact path='/' component={TFNEditor} />
           <Route exact path='/' component={PostRoll} />
           <Route exact path='/profile' component={Profile} />
           <Route exact path='/userId' component={Profile} />
           <Route exact path='/oidc-callback' component={withRouter(Callback)} />
         </div>
-      </Router>
     )
   }
 }
 
 App.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  location: PropTypes.string.isRequired
+  location: PropTypes.object.isRequired
 };
 
 function mapStateToProps(state) {
@@ -54,4 +47,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(withRouter(App));

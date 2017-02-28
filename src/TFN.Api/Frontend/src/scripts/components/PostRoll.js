@@ -6,10 +6,9 @@ import { Link } from 'react-router-dom';
 
 class PostRoll extends React.Component {
 
-    componentWillMount() {
-    }
-
-    componentWillUpdate() {
+    getPosts() {
+        console.log('get-posts')
+        console.log(this.props.principleType)
         const { dispatch, user, token } = this.props;
 
         if(!this.props.postRollFetched) {
@@ -17,18 +16,43 @@ class PostRoll extends React.Component {
             //no token display something 
             }
             if(this.props.principleType == types.STANDARD_USER) {
+
                 dispatch(fetchPostRoll(0,5,null,user.access_token))
             }
             if(this.props.principleType == types.BASIC) { 
                 dispatch(fetchPostRoll(0,5,null, token))
             }
         }
-        
+    }
+
+    componentWillMount() {
+        console.log('will mount')
+        this.getPosts()
+    }
+
+    componentWillUpdate() {
+        console.log('will update')
+        console.log(this.props.principleType)
+        //this.getPosts()
+    }
+
+    
+
+    componentWillReceiveProps() {
+        console.log('will receive props')
+        console.log(this.props.principleType)
+        //this.getPosts()
         
     }
 
+    componentDidUpdate() {
+        console.log('did update')
+        console.log(this.props.principleType)
+        this.getPosts()
+    }
+
     render() {
-        
+        //console.log(this.props)
         var component = <div> Loading </div>
 
         if(!this.props.postRollFetched)
@@ -47,7 +71,7 @@ class PostRoll extends React.Component {
         if(this.props.postRollFetched)
         {
             component = <div> {JSON.stringify(this.props.postRoll)} 
-                <Link to='bob/fdc7eadc-1450-41ef-b886-107ccb90759d'> bob </Link>
+                <Link to='bob/f5be2bf6-c43e-4ce0-ae8f-37f7224d56d9'> bob </Link>
             </div>
         }
 

@@ -5,8 +5,12 @@ import * as types from '../constants/PrincipleTypes';
 
 class Post extends React.Component {
 
-    componentWillUpdate() {
+    getPost(postId) {
 
+    }
+
+    componentWillMount() {
+        console.log(this.props)
         const { dispatch, user, token } = this.props;
         const {userId, postId } = this.props.match.params;
         if(!this.props.postFetched) {
