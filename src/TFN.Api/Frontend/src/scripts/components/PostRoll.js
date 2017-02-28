@@ -7,8 +7,6 @@ import { Link } from 'react-router-dom';
 class PostRoll extends React.Component {
 
     getPosts() {
-        console.log('get-posts')
-        console.log(this.props.principleType)
         const { dispatch, user, token } = this.props;
 
         if(!this.props.postRollFetched) {
@@ -26,28 +24,10 @@ class PostRoll extends React.Component {
     }
 
     componentWillMount() {
-        console.log('will mount')
         this.getPosts()
     }
 
-    componentWillUpdate() {
-        console.log('will update')
-        console.log(this.props.principleType)
-        //this.getPosts()
-    }
-
-    
-
-    componentWillReceiveProps() {
-        console.log('will receive props')
-        console.log(this.props.principleType)
-        //this.getPosts()
-        
-    }
-
     componentDidUpdate() {
-        console.log('did update')
-        console.log(this.props.principleType)
         this.getPosts()
     }
 

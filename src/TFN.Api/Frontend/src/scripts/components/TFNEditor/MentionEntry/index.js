@@ -8,25 +8,23 @@ const MentionEntry = (props) => {
     searchValue, // eslint-disable-line no-unused-vars
     ...parentProps
   } = props;
-  console.log('theme')
-  console.log(props.theme)
   return (
     <div {...parentProps}>
-      <div className={theme.mentionSuggestionsEntryContainer}>
-        <div className={theme.mentionSuggestionsEntryContainerLeft}>
+      <div className='mentionSuggestionsEntryContainer'>
+        <div className='theme.mentionSuggestionsEntryContainerLeft'>
           <img
             src={mention.get('avatar')}
-            className={theme.mentionSuggestionsEntryAvatar}
+            className='mentionSuggestionsEntryAvatar'
             role="presentation"
           />
         </div>
 
-        <div className={theme.mentionSuggestionsEntryContainerRight}>
-          <div className={theme.mentionSuggestionsEntryText}>
+        <div className='mentionSuggestionsEntryContainerRight'>
+          <div className='mentionSuggestionsEntryText'>
             {mention.get('name')}
           </div>
 
-          <div className={theme.mentionSuggestionsEntryTitle}>
+          <div className='mentionSuggestionsEntryTitl'>
             {mention.get('title')}
           </div>
         </div>

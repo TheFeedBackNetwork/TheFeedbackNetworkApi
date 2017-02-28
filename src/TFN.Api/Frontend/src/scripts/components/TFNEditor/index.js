@@ -3,7 +3,7 @@ import Editor from 'draft-js-plugins-editor';
 import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import createMentionPlugin from 'draft-js-mention-plugin'
-import { EditorState } from 'draft-js';
+import { EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import { searchUser, getSearchQuery } from '../../actions/search'
 import { fromJS } from 'immutable';
 import { connect } from 'react-redux';
@@ -13,8 +13,9 @@ import axios from 'axios';
 import mentionsStyles from './MentionEntry/styles.css'
 import editorStyles from './styles.css'
 import styles from '../../../assets/styles/styles.scss'
-//import 'draft-js-emoji-plugin/lib/plugin.css';
-console.log(styles);
+import 'draft-js-emoji-plugin/lib/plugin.css';
+
+
 const positionSuggestions = ({ state, props }) => {
   let transform;
   let transition;
@@ -42,10 +43,17 @@ const linkifyPlugin = createLinkifyPlugin({
     target: '_blank'
 });
 
+const theme = {
+    mention: 'mention',
+    mentionSuggestions: 'mentionSuggestions',
+    mentionSuggestionsEntryFocused: 'mentionSuggestionsEntryFocused',
+    mentionSuggestionEntryText: 'mentionSuggestionEntryText',
+    mentionSuggestionsEntryAvatar: 'mentionSuggestionEntryAvatar'
+}
 
 const mentionPlugin = createMentionPlugin({
     entityMutability: 'IMMUTABLE',
-    theme: mentionsStyles,
+    theme: theme,
     positionSuggestions,
     mentionPrefix: '@',
 })
@@ -66,9 +74,11 @@ class TFNEditor extends React.Component {
     }
 
     onChange = (editorState) => {
-    this.setState({
-        editorState,
+        this.setState({
+            editorState,
         });
+        
+        console.log(convertToRaw(editorState.getCurrentContent()))
     };
 
     onSearchChange = ({value}) => {
