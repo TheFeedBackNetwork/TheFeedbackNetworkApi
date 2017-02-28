@@ -9,7 +9,7 @@ export function searchUser(query, token)
 
     var headers = formatHeader(token);
     axios.defaults.headers = headers;
-    console.log(axios.get(`${configuration.server.url}/users?username=${query}`))
+    //console.log(axios.get(`${configuration.server.url}/users?username=${query}`))
     return axios.get(`${configuration.server.url}/users?username=${query}`)
         
 }

@@ -4,12 +4,34 @@ import createLinkifyPlugin from 'draft-js-linkify-plugin';
 import createEmojiPlugin from 'draft-js-emoji-plugin';
 import createMentionPlugin from 'draft-js-mention-plugin'
 import { EditorState } from 'draft-js';
-import { searchUser, getSearchQuery } from '../actions/search'
+import { searchUser, getSearchQuery } from '../../actions/search'
 import { fromJS } from 'immutable';
 import { connect } from 'react-redux';
+import MentionEntry from './MentionEntry';
 import axios from 'axios';
 
-import 'draft-js-emoji-plugin/lib/plugin.css';
+import mentionsStyles from './MentionEntry/styles.css'
+import editorStyles from './styles.css'
+import styles from '../../../assets/styles/styles.scss'
+//import 'draft-js-emoji-plugin/lib/plugin.css';
+console.log(styles);
+const positionSuggestions = ({ state, props }) => {
+  let transform;
+  let transition;
+
+  if (state.isActive && props.suggestions.size > 0) {
+    transform = 'scaleY(1)';
+    transition = 'all 0.25s cubic-bezier(.3,1.2,.2,1)';
+  } else if (state.isActive) {
+    transform = 'scaleY(0)';
+    transition = 'all 0.25s cubic-bezier(.3,1,.2,1)';
+  }
+
+  return {
+    transform,
+    transition,
+  };
+};
 
 const emojiPlugin = createEmojiPlugin();
 const { EmojiSuggestions } = emojiPlugin;
@@ -21,7 +43,12 @@ const linkifyPlugin = createLinkifyPlugin({
 });
 
 
-const mentionPlugin = createMentionPlugin()
+const mentionPlugin = createMentionPlugin({
+    entityMutability: 'IMMUTABLE',
+    theme: mentionsStyles,
+    positionSuggestions,
+    mentionPrefix: '@',
+})
 
 const { MentionSuggestions } = mentionPlugin;
 
@@ -45,12 +72,21 @@ class TFNEditor extends React.Component {
     };
 
     onSearchChange = ({value}) => {
+        //console.log(this.props.token)
         if(value.length > 1)
         {
             var promise = searchUser(value, this.props.token);
-            console.log(promise);
+            //console.log(promise);
                 promise.then((result) => {
-                    console.log(result.data)
+                    const data = result.data.map((user) => {
+                        var a = {name: user.username, 
+                            title: user.totalCredits, 
+                            avatar: `https://pbs.twimg.com/profile_images/517863945/mattsailing_400x400.jpg`}
+                        return a;
+                    })
+                    this.setState({
+                        suggestions: fromJS(data)
+                    });
                 })
                 .catch((error) => {
                     console.log(error)
@@ -60,18 +96,19 @@ class TFNEditor extends React.Component {
 
     render() {
         return (
-            <div onClick={this.focus}>
+            <div className='editor' onClick={this.focus}>
                 <Editor
-                editorState={this.state.editorState}
-                onChange={this.onChange}
-                plugins={plugins}
-                ref={(element) => { this.editor = element; }}
+                    editorState={this.state.editorState}
+                    onChange={this.onChange}
+                    plugins={plugins}
+                    ref={(element) => { this.editor = element; }}
                 />
-                <EmojiSuggestions />
                 <MentionSuggestions
                     onSearchChange={this.onSearchChange}
                     suggestions={this.state.suggestions}
+                    entryComponent={MentionEntry}
                 />
+                <EmojiSuggestions />
             </div>
         )
     }

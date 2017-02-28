@@ -33,7 +33,8 @@ export default function reducer(state ={
         case 'redux-oidc/USER_FOUND': {
             return {
                 ...state,
-                principleType: "STANDARD_USER"
+                principleType: "STANDARD_USER",
+                token: action.payload.access_token
             }
         }
 

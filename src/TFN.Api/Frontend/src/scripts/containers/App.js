@@ -28,7 +28,7 @@ class App extends React.Component {
           <Route exact path='/' component={TFNEditor} />
           <Route exact path='/' component={PostRoll} />
           <Route exact path='/profile' component={Profile} />
-          <Route exact path='/userId' component={Profile} />
+          <Route exact path='/:userId' component={Profile} />
           <Route exact path='/oidc-callback' component={withRouter(Callback)} />
         </div>
     )
