@@ -7,6 +7,7 @@ import Profile from '../components/Profile';
 import PostRoll from '../components/PostRoll';
 import Post from '../components/Post';
 import TFNEditor from '../components/TFNEditor';
+import WaveformContainer from './WaveformContainer';
 import { changeLocation } from '../actions/location'
 
 import { Route, withRouter } from 'react-router-dom';
@@ -22,10 +23,12 @@ class App extends React.Component {
   render() {
     return (
         <div className="page-container">
-          <h1> TFN TESTBED </h1>
+          <h1>  </h1>
           <Login />
           <Route exact path='/:userId/:postId' component={Post} />
           <Route exact path='/' component={TFNEditor} />
+          <Route exact path='/' component={WaveformContainer} />
+          <Route exact path='/' component={WaveformContainer} />
           <Route exact path='/' component={PostRoll} />
           <Route exact path='/profile' component={Profile} />
           <Route exact path='/:userId' component={Profile} />

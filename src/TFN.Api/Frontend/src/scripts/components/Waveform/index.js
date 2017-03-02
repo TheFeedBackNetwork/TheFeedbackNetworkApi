@@ -1,82 +1,79 @@
 import React, { Component, PropTypes } from 'react';
 import * as d3 from "d3";
+import { hex2rgba, rgb2Hex } from '../../utils/utilities';
 
-const waveformData = [
-    45,
-    60,
-    77,
-    66,
-    75,
-    60,
-    66,
-    66,
-    98,
-    119,
-    70,
-    133,
-    147,
-    133,
-    149,
-    133,
-    82,
-    97,
-    87,
-    81,
-    114,
-    81,
-    118,
-    145,
-    132,
-    124,
-    100,
-    158,
-    196,
-    152,
-    124,
-    108,
-]
 
-const margin = {top: 20, right: 20, bottom: 30, left: 40};
-const width = 960 - margin.left - margin.right;
-const height = 500 - margin.top - margin.bottom;
-
-//const x =  d3.scale.ordinal().rangeRoundBands([0, width], .05);
-
-//const y = d3.scale.linear().range([height, 0]);
-
-class Waveform extends Component {
-
+class Waveform extends React.Component {
 
     componentDidMount() {
+        this.setInitialState()        
         this.drawWaveform()
-        console.log(this.props.progress)
+    }
+
+    componentDidUpdate() {
+        this.redrawWaveform()
+        
+    }
+
+    componentWillUpdate() {
+
+    }
+    
+    setInitialState() {
+        const calculatedWidth = this.props.containerWidth - this.props.margin.left - this.props.margin.right
+        const calculatedHeight = this.props.containerHeight - this.props.margin.top - this.props.margin.bottom;
+
+        this.state = {width: calculatedWidth,
+                        height: calculatedHeight}
+    }
+
+    setDimensions() {
+        const calculatedWidth = this.props.containerWidth - this.props.margin.left - this.props.margin.right
+        const calculatedHeight = this.props.containerHeight - this.props.margin.top - this.props.margin.bottom
+
+        console.log(`${calculatedHeight} : ${calculatedWidth}`)
+
+        this.setState({width: calculatedWidth,
+                        height: calculatedHeight})
+    }
+
+    redrawWaveform() {
+        console.log
+        const context = d3.select(`#${this.props.id}`)
+
+        context.remove()
+
+        this.drawWaveform()
+        this.animate(this.props.progress)
     }
 
     drawWaveform() {
+        const { id, waveformData, seekedColour, unseekedColour, progress } = this.props
+        const { width, height } = this.state
+
         const svg = this.setContext();
+
             svg.append('defs')
-                .attr('id', 0)
+                .attr('id', -1)
         svg.selectAll("rect")
             .data(waveformData)
             
             .enter()
             .append("rect")
-            .attr('id', (d, i) => i+1)
+            .attr('id', (d, i) => `${id}-${i}`)
             .attr('rx',2)
             .attr('ry',2)
             .attr("x", (d, i) => (i*(width/waveformData.length)))
             .attr("y", (d) => height-d)
-            .attr('fill', (d,i) => (i/waveformData.length*100 < this.props.progress ? '#000' : '#d1d6da'))
-            //.attr('fill', '#d1d6da')
+            .attr('fill', (d,i) => (i/waveformData.length*100 < progress ? seekedColour  : unseekedColour))
             .attr("width", width/waveformData.length - 1)
             .attr("height", (d) => d);
-        //this.setBackGround(context);
-        //this.setForeground(context);
     }
 
     setContext() {
-        //const { width, height, id} = this.props
-        const id = 'lol'
+        const { id } = this.props
+        const { width, height } = this.state
+
         return d3.select(this.refs.bar)
                     .append('svg')
                     .attr('width', width)
@@ -86,27 +83,23 @@ class Waveform extends Component {
 
     }
 
-    componentDidUpdate() {
-        console.log(this.props.progress)
-        this.redrawWaveform()
-    }
+    animate(progress) {
+        
+        const { waveformData, seekedColour, unseekedColour } = this.props
 
-    redrawWaveform() {
-        const context = d3.select(`#lol`)
-        context.remove()
-        this.drawWaveform()
-    }
+        const normalizedProgress = progress/100 * waveformData.length
 
-    setBackground(context) {
-
-    }
-
-    setForeground(context) {
-
-    }
-
-    waveform() {
-
+        if(normalizedProgress > 0 && normalizedProgress)
+        {
+            const from = hex2rgba(seekedColour, false)
+            const to = hex2rgba(unseekedColour, false)
+            const is = d3.interpolateRgb(from,to)(progress/100)
+            const hexed = rgb2Hex(is)
+            const floor = Math.floor(normalizedProgress)
+            const context = d3.select(`[id="${floor+1}"]`)
+                                .transition()
+                                .attr('fill', hexed)
+        }
     }
 
     render() {
@@ -114,11 +107,17 @@ class Waveform extends Component {
             <div ref="bar"> </div>
         )
     }
-
 }
 
 Waveform.propTypes = {
- progress: PropTypes.number
+    id: PropTypes.string.isRequired,
+    waveformData: PropTypes.array.isRequired,
+    progress: PropTypes.number,
+    margin: PropTypes.object,
+    unseekedColour: PropTypes.string,
+    seekedColour: PropTypes.string,
+    containerWidth: PropTypes.number,
+    containerHeight: PropTypes.number
 }
 
 export default Waveform;

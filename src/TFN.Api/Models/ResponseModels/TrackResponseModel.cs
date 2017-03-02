@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TFN.Api.Extensions;
 using TFN.Api.Filters.ActionFilters;
 using TFN.Api.Models.Base;
 using TFN.Domain.Models.Entities;
@@ -11,7 +12,11 @@ namespace TFN.Api.Models.ResponseModels
         public Guid UserId { get; private set; }
         public Uri Location { get; private set; }
         [Excludable]
-        public IReadOnlyList<int> SoundWave { get; private set; }
+        public IReadOnlyList<int> SoundWave100 { get; private set; }
+        [Excludable]
+        public IReadOnlyList<int> SoundWave300 { get; private set; }
+        [Excludable]
+        public IReadOnlyList<int> SoundWave4000 { get; private set; }
         public DateTime Created { get; private set; }
 
         private TrackResponseModel(Guid id, Guid userId, Uri location, IReadOnlyList<int> soundWave, DateTime created, string apiUrl)
@@ -19,7 +24,9 @@ namespace TFN.Api.Models.ResponseModels
         {
             UserId = userId;
             Location = location;
-            SoundWave = soundWave;
+            SoundWave4000 = soundWave;
+            SoundWave300 = soundWave.DownSampleTo(300);
+            SoundWave100 = soundWave.DownSampleTo(100);
             Created = created;
         }
 

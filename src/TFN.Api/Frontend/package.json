@@ -125,6 +125,7 @@
     "redux-promise": "0.5.3",
     "redux-thunk": "2.2.0",
     "reselect": "2.5.3",
+    "shortid": "2.2.6",
     "signalr": "2.2.1"
   }
 }
