@@ -50,7 +50,8 @@ class Waveform extends React.Component {
     drawWaveform() {
         const { id, waveformData, seekedColour, unseekedColour, progress } = this.props
         const { width, height } = this.state
-
+        //console.log('height')
+        //console.log(height)
         const svg = this.setContext();
 
             svg.append('defs')
@@ -64,10 +65,10 @@ class Waveform extends React.Component {
             .attr('rx',2)
             .attr('ry',2)
             .attr("x", (d, i) => (i*(width/waveformData.length)))
-            .attr("y", (d) => height-d)
+            .attr("y", (d) => height-((d/500)*height))
             .attr('fill', (d,i) => (i/waveformData.length*100 < progress ? seekedColour  : unseekedColour))
             .attr("width", width/waveformData.length - 1)
-            .attr("height", (d) => d);
+            .attr("height", (d) => {const a = height-((d/500)*height); return (height - d/500 -a+2 )});
     }
 
     setContext() {
@@ -76,6 +77,7 @@ class Waveform extends React.Component {
 
         return d3.select(this.refs.bar)
                     .append('svg')
+                    //.on('click', this.props.onClick(e))
                     .attr('width', width)
                     .attr('height', height)
                     .attr('class', 'waveform')
@@ -85,7 +87,7 @@ class Waveform extends React.Component {
 
     animate(progress) {
         
-        const { waveformData, seekedColour, unseekedColour } = this.props
+        const { waveformData, seekedColour, unseekedColour, id } = this.props
 
         const normalizedProgress = progress/100 * waveformData.length
 
@@ -96,7 +98,7 @@ class Waveform extends React.Component {
             const is = d3.interpolateRgb(from,to)(progress/100)
             const hexed = rgb2Hex(is)
             const floor = Math.floor(normalizedProgress)
-            const context = d3.select(`[id="${floor+1}"]`)
+            const context = d3.select(`[id="${id}-${floor}"]`)
                                 .transition()
                                 .attr('fill', hexed)
         }
@@ -104,7 +106,7 @@ class Waveform extends React.Component {
 
     render() {
         return (
-            <div ref="bar"> </div>
+            <div ref="bar" onClick={this.props.onClick}> </div>
         )
     }
 }
@@ -117,7 +119,8 @@ Waveform.propTypes = {
     unseekedColour: PropTypes.string,
     seekedColour: PropTypes.string,
     containerWidth: PropTypes.number,
-    containerHeight: PropTypes.number
+    containerHeight: PropTypes.number,
+    onClick: PropTypes.func
 }
 
 export default Waveform;
