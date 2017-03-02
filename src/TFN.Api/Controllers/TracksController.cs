@@ -15,6 +15,7 @@ using TFN.Api.Models.ResponseModels;
 using TFN.Domain.Interfaces.Repositories;
 using TFN.Domain.Interfaces.Services;
 using TFN.Domain.Models.Entities;
+using TFN.Domain.Models.ValueObjects;
 using TFN.Mvc.Helpers;
 
 namespace TFN.Api.Controllers
@@ -118,6 +119,8 @@ namespace TFN.Api.Controllers
                             Logger.LogInformation($"track with name [{fileName}] uploaded to path [{unprocessedFilePath}]");
                         }
 
+                        
+
                         Logger.LogInformation($"track with name [{fileName}] to be processed with format [{format}] as [{unprocessedFileName}]");
 
 
@@ -125,6 +128,8 @@ namespace TFN.Api.Controllers
 
 
                         await TrackProcessingService.TranscodeAudioAsync(unprocessedFilePath, processedFilePath);
+
+                        var metaData = TagLib.File.Create(unprocessedFilePath);
 
                         var waveFormData = await TrackProcessingService.GetWaveformAsync(processedFilePath,waveformFilePath);
 
@@ -142,7 +147,12 @@ namespace TFN.Api.Controllers
                         await TrackStorageService.DeleteLocalAsync(processedFilePath);
                         await TrackStorageService.DeleteLocalAsync(waveformFilePath);
 
-                        var track = new Track(resourceId,UserId,processedUri,waveFormData, DateTime.UtcNow);
+                        var trackMetaData = TrackMetaData.From(metaData.Properties.Duration.Hours,
+                            metaData.Properties.Duration.Minutes, metaData.Properties.Duration.Seconds,
+                            metaData.Properties.Duration.TotalHours, metaData.Properties.Duration.TotalMinutes,
+                            metaData.Properties.Duration.TotalMilliseconds, metaData.Properties.Duration.Ticks);
+
+                        var track = new Track(resourceId,UserId,processedUri,waveFormData,trackMetaData, DateTime.UtcNow);
 
                         await TrackRepository.AddAsync(track);
 
