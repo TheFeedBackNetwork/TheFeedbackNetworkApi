@@ -296,6 +296,32 @@ namespace TFN.Infrastructure.Repositories.ResourceAggregate.InMemory
                     "biography",
                 }
             },
+            new ApiResource
+            {
+                Name = "ip.read",
+                DisplayName = "IP Read",
+                Description = "Scope for sending back the clients IP",
+                Scopes = new List<Scope>
+                {
+                    new Scope
+                    {
+                        Name = "ip.read",
+                        ShowInDiscoveryDocument = true,
+                        Description = "Scope for reading caller IP Address",
+                        DisplayName = "IP.Read"
+                    }
+
+                },
+                UserClaims =
+                {
+                    JwtClaimTypes.Email,
+                    JwtClaimTypes.EmailVerified,
+                    JwtClaimTypes.PreferredUserName,
+                    JwtClaimTypes.Picture,
+                    JwtClaimTypes.Name,
+                    "biography",
+                }
+            },
 
         };
 

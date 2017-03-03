@@ -3,6 +3,7 @@ import querystring from 'querystring'
 import config from '../config/config';
 import * as types from '../constants/ActionTypes';
 
+
 export function fetchToken() {
     
     return function(dispatch) {

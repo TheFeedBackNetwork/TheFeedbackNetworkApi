@@ -17,6 +17,7 @@ using TFN.Domain.Interfaces.Services;
 using TFN.Domain.Models.Entities;
 using TFN.Domain.Models.ValueObjects;
 using TFN.Mvc.Helpers;
+using TFN.Mvc.HttpResults;
 
 namespace TFN.Api.Controllers
 {
@@ -82,6 +83,7 @@ namespace TFN.Api.Controllers
             var reader = new MultipartReader(boundary, HttpContext.Request.Body);
 
             var section = await reader.ReadNextSectionAsync();
+
             while (section != null)
             {
                 ContentDispositionHeaderValue contentDisposition;
@@ -198,7 +200,7 @@ namespace TFN.Api.Controllers
                 section = await reader.ReadNextSectionAsync();
             }
             
-            return Json("ok");
+            return new HttpBadRequestResult("You did not specify a track to upload");
         }
 
         private static Encoding FilterEncoding(Encoding encoding)

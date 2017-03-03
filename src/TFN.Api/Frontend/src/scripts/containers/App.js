@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import Login from '../components/Login';
+import UserAgentContainer from './UserAgentContainer'
 import Profile from '../components/Profile';
 import PostRoll from '../components/PostRoll';
 import Post from '../components/Post';
@@ -16,14 +17,11 @@ import silentrenew from '../components/silentrenew'
 
 class App extends React.Component {
 
-  componentWillReceiveProps() {
-
-  }
-
   render() {
     return (
         <div className="page-container">
           <h1>  </h1>
+          <UserAgentContainer />
           <Login />
           <Route exact path='/:userId/:postId' component={Post} />
           <Route exact path='/' component={TFNEditor} />
