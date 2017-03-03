@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,12 +36,14 @@ namespace TFN.Api.Controllers
         }
 
         [HttpGet(Name = "GetAllPosts")]
-        [Authorize("posts.read")]
+        //[Authorize("posts.read")]
         public async Task<IActionResult> GetAllAsync(
             [FromQuery]ExcludeQueryModel exclude,
             [ModelBinder(BinderType = typeof(OffsetQueryModelBinder))]int offset = 0,
             [ModelBinder(BinderType = typeof(LimitQueryModelBinder))]int limit = 7)
         {
+            var c = Thread.CurrentThread.CurrentCulture;
+
             var posts = await PostService.GetAllPostsAsync(offset, limit);
 
             var summaries = new List<PostSummary>();

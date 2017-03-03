@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using TFN.Api.Extensions;
+using TFN.Domain.Models.ValueObjects;
 using TFN.Mvc.Models;
 
 namespace TFN.Api.Controllers
@@ -11,5 +12,6 @@ namespace TFN.Api.Controllers
         protected string Username => HttpContext.GetUsername();
         protected string AbsoluteUri => HttpContext.GetAbsoluteUri();
         protected PrincipleType Caller => HttpContext.GetCaller();
+        protected UserAgent UserAgent => HttpContext.GetUserAgent();
     }
 }

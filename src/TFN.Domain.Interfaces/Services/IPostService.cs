@@ -8,7 +8,6 @@ namespace TFN.Domain.Interfaces.Services
 {
     public interface IPostService
     {
-        //<Sample, count, isLikedByMe>
         Task<CommentSummary>  GetCommentScoreSummaryAsync(Guid commentId, int limit, string username);
         Task<PostSummary> GetPostLikeSummaryAsync(Guid postId, int limit, string username);
         Task<IReadOnlyList<Post>> GetAllPostsAsync(int offset, int limit);

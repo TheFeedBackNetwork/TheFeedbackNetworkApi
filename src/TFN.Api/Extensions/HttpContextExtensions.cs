@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Microsoft.AspNetCore.Http;
+using TFN.Domain.Models.ValueObjects;
 using TFN.Mvc.Models;
 
 namespace TFN.Api.Extensions
@@ -70,6 +72,13 @@ namespace TFN.Api.Extensions
             }
             return $"{http}localhost:5001";
             //return $"{http}{context.Request.Host.Value}";
+        }
+
+        public static UserAgent GetUserAgent(this HttpContext context)
+        {
+            UserAgent agent = null;
+            var culture = Thread.CurrentThread.CurrentCulture;
+            return agent;
         }
     }
 }
