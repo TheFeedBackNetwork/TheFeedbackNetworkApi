@@ -53,3 +53,7 @@ export const PROFILE_EDIT_REJECTED = 'PROFILE_EDIT_REJECTED';
 export const PLAY_TRACK = 'PLAY_TRACK';
 export const PAUSE_TRACK = 'PAUSE_TRACK';
 export const SEEK_TRACK = 'SEEK_TRACK';
+//IP
+export const FETCH_IP = 'FETCH_IP';
+export const FETCH_IP_FULFILLED = 'FETCH_IP_FULFILLED';
+export const FETCH_IP_REJECTED = 'FETCH_IP_REJECTED';

@@ -1,4 +1,657 @@
+$primary: #f86a21;
+
+$red: #f34646;
+$yellow: #ecc420;
+$green: #59e67e;
+$blue: #3498db;
+$purple: #c577e5;
+$clay: #e3936e;
+
+$soundcloud: #ff5500;
+$twitter: #1da1f2;
+$facebook: #4862a3;
+$instagram: #fff;
+$youtube: #cc181e;
+
+
 body {
-  background: #f1f1f1;
+    background: #19192d url("../images/background.jpg") no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
 }
 
+p {
+    color: rgba(white, .7);
+    line-height: 1.65;
+}
+
+a {
+    transition: all .1s;
+    &:hover,
+    &:focus {
+        transition: all .1s;
+    }
+}
+
+/* Buttons */
+
+.btn {
+    transition: all .1s;
+    &:hover,
+    &:focus {
+        transition: all .1s;
+    }
+}
+
+.btn-primary {
+    background-color: $primary;
+    border-color: $primary;
+    &:hover,
+    &:focus,
+    &:active,
+    &.active:focus,
+    &.active:hover,
+    &:active:focus,
+    &:active:hover,
+    &:active.focus,
+    &:active.hover {
+        background-color: lighten($primary, 2%);
+        border-color: lighten($primary, 2%);
+        box-shadow: 0 0 25px 0 rgba($primary, .5);
+        outline: none;
+    }
+}
+
+.btn-default-o {
+    color: rgba(white, .5);
+    border-color: rgba(white, .1);
+    background-color: transparent;
+    &:hover,
+    &:focus,
+    &:active,
+    &.active:focus,
+    &.active:hover,
+    &:active:focus,
+    &:active:hover,
+    &:active.focus,
+    &:active.hover {
+        color: rgba(white, .75);
+        border-color: rgba(white, .25);
+        background-color: transparent;
+        outline: none;
+    }
+}
+
+button {
+    &.transparent {
+        background: none;
+        border: none;
+        padding: 0;
+        &:hover,
+        &:focus {
+            background: none;
+            border: none;
+            outline: none;
+        }
+    }
+}
+
+/* Reputation */
+.rep {
+    vertical-align: super;
+    font-size: smaller;
+    
+    &.green {
+        color: $green;
+    }
+    &.purple {
+        color: $purple;
+    }
+    &.blue {
+        color: $blue;
+    }
+    &.clay {
+        color: $clay;
+    }
+}
+
+/* Navbar */
+.navbar-default {
+    padding: 5px 0;
+    background-color: rgba($primary, .25);
+    border-bottom: none;
+    margin-bottom: 0;
+    
+    .navbar-brand {
+        color: rgba($primary, .75);
+        font-weight: 300;
+        font-size: 24px;
+        line-height: 35px;
+        &:hover,
+        &:focus {
+            color: $primary;
+        }
+    }
+    
+    .icon-upload {
+        opacity: .75;
+        transition: opacity .1s;
+        &:hover,
+        &:focus {
+            opacity: 1;
+            transition: opacity .1s;
+        }
+    }
+    
+    .img-profile {
+        margin-right: 5px;
+    }
+    
+    .profile {
+        color: white !important;
+        margin-bottom: -5px;
+    }
+    
+    .nav > li > a {
+        color: rgba($primary, .75);
+        line-height: 35px;
+        &:hover,
+        &:focus {
+            color: $primary;
+        }
+    }
+    
+    .navbar-nav {
+        > .open {
+            > a,
+            > a:hover,
+            > a:focus {
+                background-color: transparent;
+                color: white;
+            }
+        }
+    }
+}
+
+.profile {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.img-profile {
+    position: relative;
+    top: -5px;
+    float: left;
+    left: -5px;
+    height: 48px;
+}
+
+//Remove navbar collapse
+.navbar-collapse.collapse {
+    display: block !important;
+}
+
+.navbar-nav {
+    float: left !important;
+    > li {
+        float: left !important;
+    }
+    &.navbar-right:last-child {
+        margin-right: -15px !important;
+    }
+}
+
+.navbar-right {
+    float: right !important;
+}
+
+.navbar-header {
+    float: left;
+}
+
+/* Dropdown */
+.dropdown {
+    &.open {
+        background-color: transparent;
+    }
+    
+    .dropdown-menu {
+        background-color: #1d1426;
+        margin: 0;
+        padding: 0;
+        border-radius: 4px !important;
+        
+        .divider {
+            background-color: rgba(white, .1);
+        }
+
+        li {
+            border-bottom: 1px solid rgba(white, .1);
+            &:last-child {
+                border-bottom: none;
+            }
+            
+            a {
+                color: rgba(white, .5);
+                padding: 10px 15px;
+                &:hover,
+                &:focus {
+                    background-color: rgba(white, .05);
+                }
+            }
+        }
+    }
+}
+
+/* Leaderboard */
+.leaderboard {
+    background-color: rgba($primary, .1);
+    color: white;
+    padding: 15px 0;
+    ul {
+        margin-bottom: 0;
+        padding-left: 0;
+        
+        li {
+            list-style: none;
+            display: inline;
+            margin-right: 25px;
+            margin-top: 15px;
+
+            &.trophy {
+                margin-right: 10px;
+            }
+        }
+    }
+}
+
+/* Submission */
+.submission {
+    padding-top: 75px;
+    padding-bottom: 75px;
+    
+    .album-cover {
+        border-radius: 4px;
+        box-shadow: 0 0 50px 0 rgba(black, .5);
+    }
+    
+    img {
+        max-width: 100%;
+    }
+    
+    .btn-comment {
+        margin-bottom: 25px;
+    }
+    
+    /* Submission score */
+    
+    .comment-score {
+        margin-right: 25px;
+        .current-score {
+            p {
+                color: #737178;
+            }
+            margin-top: 5px;
+            
+            &.green {
+                color: $green;
+                text-shadow: 0 0 10px rgba($green, .75);
+            }
+            
+            &.red {
+                color: $red;
+                text-shadow: 0 0 10px rgba($red, .75);
+            }
+        }
+    }
+    
+    /* Profile image */
+    .profile {
+        margin-left: 25px;
+        color: white;
+        margin-bottom: 15px;
+        
+        .img-profile {
+            margin-right: 5px;
+            margin-top: 10px;
+            height: 64px;
+        }
+    }
+    
+    .entered-comment {
+        a {
+            font-weight: 700;
+            color: white;
+            &:hover,
+            &:focus {
+                text-shadow: 0 0 10px rgba(white, .5);
+                text-decoration: none;
+            }
+        }
+    }
+    
+    .comment {
+        margin-left: 40px;
+    }
+    
+    .content {
+        margin-bottom: 25px;
+        padding-bottom: 25px;
+        border-bottom: 1px solid rgba(white, .075);
+        &:last-child {
+            border-bottom: transparent;
+        }
+    }
+    
+    .btn-reply,
+    .btn-read-more {
+        color: rgba(white, .5);
+        font-size: 14px;
+        &:hover,
+        &:focus {
+            color: rgba(white, .75);
+            text-decoration: none;
+        }
+    }
+    
+    .btn-read-more {
+        margin-bottom: 25px;
+    }
+    
+    .enter-comment {
+        .form-control {
+            margin-bottom: 15px;
+        }
+        
+        margin-bottom: 50px;
+    }
+    
+    @media only screen and (max-width: 768px) {
+        .col-xs-1 {
+            padding: 0;
+            padding-left: 15px;
+        }
+        
+        .comment-score {
+            margin-right: 15px;
+        }
+
+        .profile {
+            margin-left: 15px;
+            .img-profile {
+                height: 36px;
+            }
+        }
+        
+        .btn-read-more {
+            margin-top: 7.5px;
+        }
+    }
+}
+
+.form-control {
+    background-color: transparent;
+    box-shadow: none;
+    border-color: rgba(white, .1);
+    color: white;
+    &:focus {
+        box-shadow: none;
+        border-color: $primary;
+    }
+}
+
+/* Social */
+a {
+    .fa-soundcloud {
+        color: $soundcloud;
+        &:hover,
+        &:focus {
+            color: darken($soundcloud, 10%);
+        }
+    }
+    .fa-twitter {
+        color: $twitter;
+        &:hover,
+        &:focus {
+            color: darken($twitter, 10%);
+        }
+    }
+    .fa-instagram {
+        color: $instagram;
+        &:hover,
+        &:focus {
+            color: darken($instagram, 10%);
+        }
+    }
+    .fa-youtube {
+        color: $youtube;
+        &:hover,
+        &:focus {
+            color: darken($youtube, 10%);
+        }
+    }
+    .fa-facebook {
+        color: $facebook;
+        &:hover,
+        &:focus {
+            color: darken($facebook, 10%);
+        }
+    }
+}
+
+/* Profile */
+
+.profile-header {
+    background-color: rgba(black, .5);
+    padding-top: 50px;
+    padding-bottom: 50px;
+    
+    .container {
+        display: -webkit-flex;
+        display: flex;
+    }
+    
+    .col-1,
+    .col-2 {
+        margin-right: 25px;
+    }
+    
+    .col-1 {
+        .img-profile {
+            height: 115px;
+            margin-top: 5px;
+        }
+
+        .social {
+            font-size: 16px;
+            i {
+                margin-top: 15px;
+                margin-right: 5px;
+            }
+        }
+    }
+
+    .col-2 {
+        @media only screen and (min-width: 1200px) {
+            padding-right: 150px;
+        }
+        
+        .username {
+            color: white;
+            font-size: 24px;
+            margin-top: 0;
+        }
+
+        .location {
+            color: rgba(white, .5);
+            margin-top: -7.5px;
+            font-size: 12px;
+            i {
+                margin-right: 5px;
+            }
+        }
+    }
+    
+    .col-3 {
+        @media only screen and (min-width: 786px) {
+            flex: 0 0 350px;
+        }
+        .links {
+            text-align: right;
+
+            @media only screen and (max-width: 786px) {
+                flex: wrap;
+            }
+            
+            a {
+                margin-left: 15px;
+                margin-bottom: 15px;
+                color: rgba(white, .5);
+                font-size: 12px;
+                &:hover,
+                &:focus {
+                    color: rgba(white, .75);
+                }
+            }
+        }
+        
+        .stats {
+            .stat {
+                text-align: center;
+                margin-left: 50px;
+                display: inline;
+                float: right;
+                &:last-child {
+                    margin-left: 0;
+                }
+
+                .num {
+                    font-size: 36px;
+                    color: white;
+                }
+                .desc {
+                    color: rgba(white, .75);
+                }
+
+                @media only screen and (max-width: 786px) {
+                    margin-left: 25px;
+                    .num {
+                        font-size: 24px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.profile-main {
+    color: rgba(white, .75);
+    margin-top: 50px;
+    .list {
+        .nav-tabs {
+            border-bottom: 1px solid rgba(white, .1);
+            
+            li {
+                &.active {
+                    a,
+                    a:focus,
+                    a:hover {
+                        background: none;
+                        border: none;
+                        border-bottom: 2px solid white;
+                        color: white;
+                        transition: border 0s;
+                    }
+                }
+                a {
+                    color: rgba(white, .5);
+                    background: none;
+                    border: none;
+                    &:hover,
+                    &:focus {
+                        color: rgba(white, .75);
+                        background: none;
+                        border: none;
+                    }
+                }
+            }
+        }
+        
+        .tab-content {
+            margin-top: 25px;
+            
+            #tracks {
+                
+                ul {
+                    padding-left: 15px;
+                }
+                
+                li {
+                    list-style: none;
+                    max-width: 155px;
+                    float: left;
+                    padding-right: 25px;
+                    margin-bottom: 25px;
+                    
+                    a {
+                        &:hover,
+                        &:focus {
+                            text-decoration: none;
+                        }
+                    }
+                }
+                
+                .album-cover{
+                    width: 100%;
+                    border-radius: 4px;
+                    box-shadow: 0 0 50px 0 rgba(black, .5);
+                    padding-bottom: 10px;
+                }
+                
+                .title {
+                    font-size: 16px;
+                    color: white;
+                    margin-bottom: 0;
+                    
+                    .time {
+                        color: rgba(white, .5);
+                        font-size: 12px;
+                        display: block;
+                        margin-top: -3px;
+                    }
+                }
+                
+                .artist {
+                    margin-top: -5px;
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+    
+    .activity-logs {
+        .title {
+            color: white;
+            margin-top: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .log {
+            font-size: 12px;
+            margin-bottom: 25px;
+            
+            .stamp {
+                color: rgba(white, .5);
+            }
+            
+            a {
+                color: white;
+                font-weight: 700;
+            }
+        }
+        @media only screen and (max-width: 786px) {
+            border-top: 1px solid rgba(white, .1);
+            padding-top: 25px;
+        }
+    }
+}

@@ -5,11 +5,13 @@ import token from './token';
 import post from './post';
 import postRoll from './postRoll'
 import location from './location'
+import userAgent from './useragent'
 
 export default combineReducers({
     auth,
     token,
     post,
     location,
-    postRoll
+    postRoll,
+    userAgent
 });

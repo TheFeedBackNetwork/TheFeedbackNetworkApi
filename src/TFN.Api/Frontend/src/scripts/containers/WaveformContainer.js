@@ -4,7 +4,7 @@ import Waveform from '../components/Waveform';
 import shortid from 'shortid';
 
 const waveformData = [
-1,
+    1,
     40,
     48,
     38,

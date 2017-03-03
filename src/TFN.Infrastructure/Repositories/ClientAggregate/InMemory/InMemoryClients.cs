@@ -35,6 +35,7 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
                     "credits.write",
                     "credits.delete",
                     "users.read",
+                    "ip.read",
                     "offline_access"
                 }
             },
@@ -69,6 +70,7 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
                     "credits.read",
                     "credits.write",
                     "credits.delete",
+                    "ip.read",
                     "users.read"
                 }
             },

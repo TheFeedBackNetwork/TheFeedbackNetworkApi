@@ -78,7 +78,7 @@ class TFNEditor extends React.Component {
             editorState,
         });
         
-        console.log(convertToRaw(editorState.getCurrentContent()))
+       //console.log(convertToRaw(editorState.getCurrentContent()))
     };
 
     onSearchChange = ({value}) => {
