@@ -4,8 +4,8 @@
 }
 
 .mentionSuggestions {
-  border-top: 1px solid #eee;
-  background: #fff;
+  border-top: 1px solid #464660;
+  background: #19192d;
   border-radius: 2px;
   cursor: pointer;
   padding-top: 8px;
@@ -44,7 +44,7 @@
 }
 
 .mentionSuggestionsEntryFocused {
-  background-color: #e6f3ff;
+  background-color: #464660;
 }
 
 .mentionSuggestionsEntryText,

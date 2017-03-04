@@ -27,9 +27,9 @@ class NavigationContainer extends React.Component {
                         </Link>
                     </NavItem>
                     <NavDropdown noCaret eventKey={2} title={a} id="nav-dropdown">
-                        <MenuItem eventKey={2.1}><Link to='/profile'>Profile </Link></MenuItem>
-                        <MenuItem eventKey={2.2}><Link to='/settings'>Settings </Link></MenuItem>
-                        <MenuItem eventKey={2.3}><Link to='/logout'>Log Out </Link></MenuItem>
+                        <MenuItem eventKey={2.1}><Link to='/profile'> <i className="fa fa-user" /> Profile </Link></MenuItem>
+                        <MenuItem eventKey={2.2}><Link to='/settings'> <i className="fa fa-sliders" /> Settings </Link></MenuItem>
+                        <MenuItem eventKey={2.3}><Link to='/logout'> <i className="fa fa-sign-out" /> Log Out </Link></MenuItem>
                     </NavDropdown>
                 </Nav>
             </Navbar>
