@@ -451,12 +451,12 @@ a {
         display: flex;
     }
     
-    .col-1,
-    .col-2 {
+    .col-md-2,
+    .col-md-3 {
         margin-right: 25px;
     }
     
-    .col-1 {
+    .col-md-2 {
         .img-profile {
             height: 115px;
             margin-top: 5px;
@@ -466,14 +466,15 @@ a {
             font-size: 16px;
             i {
                 margin-top: 15px;
-                margin-right: 5px;
+                margin-right: 8px;
             }
         }
     }
 
-    .col-2 {
+
+    .col-md-3 {
         @media only screen and (min-width: 1200px) {
-            padding-right: 150px;
+            //padding-right: 150px;
         }
         
         .username {

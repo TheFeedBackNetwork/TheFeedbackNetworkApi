@@ -26,7 +26,6 @@ class UserAgentContainer extends React.Component {
     render() {
         return(
             <div>
-                {this.props.ip}
             </div>
         )
     }

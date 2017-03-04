@@ -11,7 +11,7 @@ import MentionEntry from './MentionEntry';
 import axios from 'axios';
 
 import mentionsStyles from './MentionEntry/styles.css'
-import editorStyles from './styles.css'
+import editorStyles from './styles.scss'
 import styles from '../../../assets/styles/styles.scss'
 import 'draft-js-emoji-plugin/lib/plugin.css';
 

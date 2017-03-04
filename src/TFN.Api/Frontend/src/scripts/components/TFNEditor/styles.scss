@@ -6,6 +6,18 @@
   border-radius: 2px;
   margin-bottom: 2em;
   box-shadow: inset 0px 1px 8px -3px #ABABAB;
+  background: transparent;
+}
+
+.editor:focus .editor:hover {
+  box-sizing: border-box;
+  border: 1px solid;
+  border-color: #f86a21;
+  cursor: text;
+  padding: 16px;
+  border-radius: 2px;
+  margin-bottom: 2em;
+  box-shadow: inset 0px 1px 8px -3px #ABABAB;
   background: #fefefe;
 }
 
