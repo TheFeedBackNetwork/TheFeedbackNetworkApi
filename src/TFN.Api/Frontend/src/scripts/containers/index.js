@@ -6,10 +6,6 @@ import Redbox from 'redbox-react';
 import Root from './Root';
 import configureStore from '../store/configureStore';
 
-
-import 'styles/styles.scss';
-//import 'styles/bootstrap.min.css';
-
 const store = configureStore();
 //const history = syncHistoryWithStore(browserHistory, store);
 
@@ -43,7 +39,6 @@ if (module.hot) {
     // If you use Webpack 2 in ES modules mode, you can
     // use <App /> here rather than require() a <NextApp />.
     const NextApp = require('./Root').default;
-    console.log(this);
     render(
       <AppContainer errorReporter={Redbox}>
         <NextApp store={store} />

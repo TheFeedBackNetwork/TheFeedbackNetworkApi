@@ -19,7 +19,7 @@ class Login extends React.Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    userManager.signinSilent()
+    userManager.signinRedirectCallback()
         .then(e => {
           console.log('user token fetched sucessfully')
         })
@@ -36,9 +36,7 @@ class Login extends React.Component {
       button = <button onClick={this.onLogoutButtonClick}>Logout</button>  
     }
     return (
-      <div>
-        {button}             
-      </div>
+        <div/>             
     );
   }
 }
