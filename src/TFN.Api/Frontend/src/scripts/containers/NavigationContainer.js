@@ -7,20 +7,34 @@ import uploadImage from 'images/i-upload-24.png';
 import ProfileNavItem from '../components/ProfileNavItem'
 import LoginSignUpNavItem from '../components/LoginSignUpNavItem'
 import * as principleTypes from '../constants/PrincipleTypes'
+import { fetchMe } from '../actions/user';
+import userManager from '../utils/userManager';
 
 class NavigationContainer extends React.Component {
 
-    getNavItem() {
+    componentWillUpdate() {
         if(this.props.principleType !== principleTypes.UNAUTHORIZED && this.props.principleType !== principleTypes.BASIC)
-        {    
+        {
+            const { dispatch } = this.props
+            dispatch(fetchMe(this.props.token))    
+        }
+    }
+
+    onLogoutButtonClick = (event) => {
+        event.preventDefault();
+        userManager.signoutRedirect();
+    };
+
+    getNavItem() {        
+        if(this.props.meFetched)
+        {
             return <ProfileNavItem avatar={this.props.avatar} username={this.props.username} score={this.props.score} /> 
         }
-
         return <LoginSignUpNavItem />
     }
 
     getUploadItem() {
-        if(this.props.principleType !== principleTypes.UNAUTHORIZED && this.props.principleType !== principleTypes.BASIC)
+        if(this.props.meFetched)
         {
             return <NavItem eventKey={1}>
                         <Link to='/upload'>
@@ -33,14 +47,12 @@ class NavigationContainer extends React.Component {
 
     getNavDropDown() {
         const navItem = this.getNavItem()
-        console.log(this.props.principleType)
-        console.log(principleTypes)
-        if(this.props.principleType !== principleTypes.UNAUTHORIZED)
+        if(this.props.principleType !== principleTypes.UNAUTHORIZED && this.props.principleType !== principleTypes.BASIC)
         {
             return <NavDropdown noCaret eventKey={2} title={navItem} id="nav-dropdown">
                         <MenuItem eventKey={2.1}><Link to='/profile'> <i className="fa fa-user" /> Profile </Link></MenuItem>
                         <MenuItem eventKey={2.2}><Link to='/settings'> <i className="fa fa-sliders" /> Settings </Link></MenuItem>
-                        <MenuItem eventKey={2.3}><Link to='/logout'> <i className="fa fa-sign-out" /> Log Out </Link></MenuItem>
+                        <MenuItem eventKey={2.3}><a href='/signout' onClick={this.onLogoutButtonClick}> <i className="fa fa-sign-out" /> Log Out </a></MenuItem>
                     </NavDropdown>
         }
         return navItem
@@ -68,6 +80,8 @@ class NavigationContainer extends React.Component {
 NavigationContainer.propTypes = {
     dispatch: PropTypes.func.isRequired,
     principleType: PropTypes.string.isRequired,
+    token: PropTypes.string.isRequired,
+    meFetched: PropTypes.bool.isRequired,
     username: PropTypes.string,
     avatar: PropTypes.string,
     score: PropTypes.number
@@ -75,11 +89,15 @@ NavigationContainer.propTypes = {
 
 function mapStateToProps(state) {
     const { principleType } = state.token
-    const { profilePictureUrl, username } = state.user
+    const { token } = state.token
+    const { profilePictureUrl, username } = state.user.me
     const { totalCredits } = state.user.me.credits
+    const { meFetched } = state.user
 
     return {
         principleType: principleType,
+        token: token,
+        meFetched: meFetched,
         username: username,
         avatar: profilePictureUrl,
         score: totalCredits

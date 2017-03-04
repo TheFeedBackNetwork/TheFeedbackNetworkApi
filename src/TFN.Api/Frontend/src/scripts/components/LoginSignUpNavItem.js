@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import config from '../config/config';
@@ -21,7 +21,7 @@ onLoginButtonClick = (event) => {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    userManager.signinRedirectCallback()
+    userManager.signinSilent()
         .then(e => {
           console.log('user token fetched sucessfully')
         })
@@ -39,11 +39,21 @@ onLoginButtonClick = (event) => {
     render() {
         return(
         <div className='login-signup'>
-            <Button className='login' bsStyle='link'>Log In </Button>
+            <Button className='login' bsStyle='link'> <div onClick={this.onLoginButtonClick}>Log In</div> </Button>
             <Button bsStyle='primary' href={this.getSignUpUrl()}>Sign Up</Button>
         </div>    
         )
     }
 }
 
-export default LoginSignUpNavItem;
+LoginSignUpNavItem.PropTypes = {
+    dispatch: PropTypes.func.isRequired
+}
+
+function mapStateToProps(state) {
+    return {
+        dispatch: state.dispatch
+    }
+}
+
+export default connect(mapStateToProps)(LoginSignUpNavItem);

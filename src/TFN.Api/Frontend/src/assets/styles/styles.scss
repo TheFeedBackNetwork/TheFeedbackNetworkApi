@@ -15,7 +15,11 @@ $youtube: #cc181e;
 
 
 body {
-    background: #19192d url("../images/background.jpg") no-repeat center center fixed;
+    background-image: url("../images/background.jpg") !important;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment:fixed;
+    background-color: #19192d;
     background-size: cover;
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
 }
@@ -42,6 +46,11 @@ a {
         transition: all .1s;
     }
 
+}
+
+.login-signup {
+        padding-top: 15px;
+        padding-bottom: 15px;
 }
 
 .btn-link {
