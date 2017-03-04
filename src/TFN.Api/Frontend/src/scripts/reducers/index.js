@@ -6,6 +6,7 @@ import post from './post';
 import postRoll from './postRoll'
 import location from './location'
 import userAgent from './useragent'
+import user from './user'
 
 export default combineReducers({
     auth,
@@ -13,5 +14,6 @@ export default combineReducers({
     post,
     location,
     postRoll,
-    userAgent
+    userAgent,
+    user
 });

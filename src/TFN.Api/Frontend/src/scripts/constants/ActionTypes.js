@@ -57,3 +57,7 @@ export const SEEK_TRACK = 'SEEK_TRACK';
 export const FETCH_IP = 'FETCH_IP';
 export const FETCH_IP_FULFILLED = 'FETCH_IP_FULFILLED';
 export const FETCH_IP_REJECTED = 'FETCH_IP_REJECTED';
+//me
+export const FETCH_ME = 'FETCH_ME';
+export const FETCH_ME_FULFILLED = 'FETCH_ME_FULFILLED';
+export const FETCH_ME_REJECTED = 'FETCH_ME_REJECTED';
