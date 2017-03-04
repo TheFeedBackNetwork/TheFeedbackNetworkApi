@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+import { Row } from 'react-bootstrap'
 
 class HeroAvatar extends React.Component {
 
@@ -55,11 +56,10 @@ class HeroAvatar extends React.Component {
         const facebook = this.getFacebook()
         return (
             <div>
-                <ul>
-                    <li>
+                <Row>
                         <img src={this.props.avatar} className='img-circle img-profile' />
-                    </li>
-                    <li>
+                </Row>
+                <Row>
                         <div className='social'>
                             {soundcloud}
                             {twitter}
@@ -67,8 +67,7 @@ class HeroAvatar extends React.Component {
                             {youtube}
                             {facebook}
                          </div>
-                    </li>
-                </ul>
+                </Row>
             </div>
         )
     }

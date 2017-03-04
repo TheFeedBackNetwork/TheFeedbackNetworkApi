@@ -67,7 +67,7 @@ namespace TFN.Api.UI.Verify
             }
 
             var transientUser = await TransientUserService.GetByEmailVerificationKeyAsync(emailVerificationKey);
-            var bio = new Biography(null,null,null,null);
+            var bio = new Biography(null,null,null,null,null,null,null);
             var user = new User(transientUser.Username, null, transientUser.Email, null, bio);
             await UserService.CreateAsync(user, model.VerifyPassword);
             await TransientUserService.DeleteAsync(transientUser);

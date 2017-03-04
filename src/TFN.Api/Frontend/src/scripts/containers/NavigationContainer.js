@@ -5,10 +5,18 @@ import { Link } from 'react-router-dom';
 import aviImage from 'images/avatar-placeholder.png';
 import uploadImage from 'images/i-upload-24.png';
 import ProfileNavItem from '../components/ProfileNavItem'
+import LoginSignUpNavItem from '../LoginSignUpNavItem'
+import * as principleTypes from '../constants/PrincipleTypes'
 
 class NavigationContainer extends React.Component {
 
-
+    getNavItem() {
+        if(this.props.principleType !== principleTypes.UNAUTHORIZED) {
+            
+            return <ProfileNavItem avatar={} username={} score={}/> 
+        }
+        return <LoginSignUpNavitem />
+    }
 
     render() {
         var p = {avatar: aviImage, username: 'crzymnky', score: 1000}

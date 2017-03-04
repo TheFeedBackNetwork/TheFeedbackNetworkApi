@@ -181,5 +181,12 @@ namespace TFN.Domain.Services
 
             return credits;
         }
+
+        public async Task<Credits> GetCredits(string username)
+        {
+            var credits = await CreditService.GetByUsernameAsync(username);
+
+            return credits;
+        }
     }
 }

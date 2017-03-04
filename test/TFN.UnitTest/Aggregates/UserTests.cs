@@ -15,7 +15,7 @@ namespace TFN.UnitTest.Aggregates
         private static string EmailDefault { get { return "foo@bar.com"; } }
         private static string GivenNameDefault { get { return "foo"; } }
         private static string FamilyNameDefault { get { return "bar"; } }
-        public static Biography BiographyDefault { get { return Biography.From("FooBar", "www.instagram.com/foo", "www.soundcloud.com/bar", "www.foomusic.net"); } }
+        public static Biography BiographyDefault { get { return Biography.From("FooBar", "www.instagram.com/foo", "www.soundcloud.com/bar","www.twitter.com/baz","www.youtube.com/bo","www.facebook.com/bing","yourmomshouse"); } }
         public static Instant CreatedDefault { get { return Instant.FromUtc(2016, 4, 4, 4, 0); } }
         public static bool IsActiveDefault { get { return true;} }
 

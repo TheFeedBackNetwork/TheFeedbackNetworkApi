@@ -23,5 +23,6 @@ namespace TFN.Domain.Interfaces.Services
         Task<bool> ChangePasswordKeyExistsAsync(string changePasswordKey);
         Task UpdateUserPasswordAsync(string changePasswordKey, string password);
         Task<IReadOnlyList<Credits>> SearchUsers(string searchToken,int offset,int limit);
+        Task<Credits> GetCredits(string username);
     }
 }
