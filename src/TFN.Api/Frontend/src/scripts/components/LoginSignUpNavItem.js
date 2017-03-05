@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import config from '../config/config';
 import { connect } from 'react-redux';
+import { NavItem } from 'react-bootstrap';
 import userManager from '../utils/userManager';
 import { createUserManager } from 'redux-oidc';
 import { fetchToken } from '../actions/token';
@@ -10,6 +11,7 @@ import { fetchToken } from '../actions/token';
 class LoginSignUpNavItem extends React.Component {
 
 onLoginButtonClick = (event) => {
+    console.log('clicked')
     event.preventDefault();
     userManager.signinRedirect();
   };
@@ -19,15 +21,15 @@ onLoginButtonClick = (event) => {
     userManager.signoutRedirect();
   };
 
-  componentDidMount() {
+  componentWillMount() {
     const { dispatch } = this.props;
     userManager.signinSilent()
         .then(e => {
-          console.log('user token fetched sucessfully')
+            console.log('user token fetched sucessfully')
         })
        .catch(e => {
-          dispatch(fetchToken())
-          console.log('could not log in user fetching basic token')
+            dispatch(fetchToken())
+            console.log('could not log in user fetching basic token')
        })
   }
 
@@ -39,7 +41,7 @@ onLoginButtonClick = (event) => {
     render() {
         return(
         <div className='login-signup'>
-            <Button className='login' bsStyle='link'> <div onClick={this.onLoginButtonClick}>Log In</div> </Button>
+            <NavItem className='login btn btn-link' onClick={this.onLoginButtonClick}> Log In </NavItem> 
             <Button bsStyle='primary' href={this.getSignUpUrl()}>Sign Up</Button>
         </div>    
         )

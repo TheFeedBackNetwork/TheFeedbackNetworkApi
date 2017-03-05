@@ -16,11 +16,11 @@ export function fetchIP(token) {
 
         axios.get(`${configuration.server.url}/ip`)
             .then((response) => {
-                console.log(response.data)
+                //console.log(response.data)
                 dispatch({type: types.FETCH_IP_FULFILLED, payload: response.data.ip})
             })
             .catch((error) => {
-                console.log(error)
+                //console.log(error)
                 dispatch({type: types.FETCH_IP_REJECTED, payload: error.data})
             })
 

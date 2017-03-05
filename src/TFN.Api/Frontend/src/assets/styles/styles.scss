@@ -34,7 +34,25 @@ a {
     &:hover,
     &:focus {
         transition: all .1s;
+        //color: #fff;
+        //text-shadow: 0 0 15px #fff;
+        //text-decoration: none;
     }
+    color: #fff;
+    text-decoration: none;
+}
+
+.login a {
+    transition: all .1s;
+    &:hover,
+    &:focus {
+        transition: all .1s;
+        color: #fff;
+        text-shadow: 0 0 15px #fff;
+        text-decoration: none;
+    }
+    color: #fff;
+    text-decoration: none;
 }
 
 /* Buttons */

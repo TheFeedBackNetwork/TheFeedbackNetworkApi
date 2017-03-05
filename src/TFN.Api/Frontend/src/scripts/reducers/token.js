@@ -34,6 +34,7 @@ export default function reducer(state ={
             return {
                 ...state,
                 principleType: "STANDARD_USER",
+                fetchedToken: true,
                 token: action.payload.access_token
             }
         }

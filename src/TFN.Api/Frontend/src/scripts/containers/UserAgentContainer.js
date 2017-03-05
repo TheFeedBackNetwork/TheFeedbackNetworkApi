@@ -1,23 +1,17 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetchIP } from '../actions/userAgent';
+import * as principleTypes from '../constants/PrincipleTypes'
 
 class UserAgentContainer extends React.Component {
     
     getIP() {
-        if(this.props.fetchedToken) {
-            const { dispatch, token } = this.props
-            dispatch(fetchIP(token))
-        }
-        
-    }
-    
-    componentWillMount() {
-        this.getIP()
+        const { dispatch, token } = this.props
+        dispatch(fetchIP(token))
     }
 
     componentDidUpdate() {
-        if(!this.props.fetchedIP && this.props.fetchedToken)
+        if(this.props.principleType !== principleTypes.UNAUTHORIZED && !this.props.fetchedIP && !this.props.fetchingIP && this.props.fetchedToken) 
         {
             this.getIP()
         }
@@ -32,24 +26,24 @@ class UserAgentContainer extends React.Component {
 }
 
 UserAgentContainer.PropTypes = {
-    ip: PropTypes.string.isRequired,
     fetchingIP: PropTypes.bool.isRequired,
     fetchedIP: PropTypes.bool.isRequired,
     fetchedToken: PropTypes.bool.isRequired,
     errorIP: PropTypes.bool,
+    principleType: PropTypes.string.isRequired,
     token: PropTypes.string.isRequired
 }
 
 function mapStateToProps(state) {
-    const {IP, fetchingIP, fetchedIP, errorIP } = state.userAgent
-    const { token, fetchedToken } = state.token
+    const { fetchingIP, fetchedIP, errorIP } = state.userAgent
+    const { token, fetchedToken, principleType } = state.token
 
     return {
-        ip: IP,
         token: token,
         fetchedIP: fetchedIP,
         fetchingIP: fetchingIP,
         fetchedToken: fetchedToken,
+        principleType: principleType,
         errorIP: errorIP
     }
 }

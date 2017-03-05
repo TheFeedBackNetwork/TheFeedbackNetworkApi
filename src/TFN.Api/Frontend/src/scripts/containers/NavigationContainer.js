@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Navbar, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
+import { Navbar, Button, Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import aviImage from 'images/avatar-placeholder.png';
 import uploadImage from 'images/i-upload-24.png';
@@ -32,7 +32,9 @@ class NavigationContainer extends React.Component {
         }
         return <LoginSignUpNavItem />
     }
-
+    something() {
+        console.log('lol')
+    }
     getUploadItem() {
         if(this.props.meFetched)
         {
@@ -47,20 +49,23 @@ class NavigationContainer extends React.Component {
 
     getNavDropDown() {
         const navItem = this.getNavItem()
-        if(this.props.principleType !== principleTypes.UNAUTHORIZED && this.props.principleType !== principleTypes.BASIC)
+        if(this.props.meFetched)
         {
+            const navItem = this.getNavItem()
             return <NavDropdown noCaret eventKey={2} title={navItem} id="nav-dropdown">
                         <MenuItem eventKey={2.1}><Link to='/profile'> <i className="fa fa-user" /> Profile </Link></MenuItem>
                         <MenuItem eventKey={2.2}><Link to='/settings'> <i className="fa fa-sliders" /> Settings </Link></MenuItem>
                         <MenuItem eventKey={2.3}><a href='/signout' onClick={this.onLogoutButtonClick}> <i className="fa fa-sign-out" /> Log Out </a></MenuItem>
                     </NavDropdown>
         }
-        return navItem
+        
+        return this.getNavItem()
     }
 
     render() {
         const uploadItem = this.getUploadItem()
         const navDropDown = this.getNavDropDown()
+        //console.log('me fetched ' + this.props.meFetched)
         return(
             <Navbar default collapseOnSelect staticTop>
                 <Navbar.Header>
