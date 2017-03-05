@@ -13,7 +13,7 @@ import TFNEditor from '../components/TFNEditor';
 import WaveformContainer from './WaveformContainer';
 import { changeLocation } from '../actions/location'
 import NavigationContainer from './NavigationContainer'
-
+import AppLoader from '../components/AppLoader';
 import { Route, withRouter, Switch } from 'react-router-dom';
 import Callback from '../components/Callback';
 import silentrenew from '../components/silentrenew'
@@ -21,64 +21,41 @@ import * as principleTypes from '../constants/PrincipleTypes'
 
 class App extends React.Component {
 
-  componentWillUpdate() {
-    ///console.log('up')
-    //document.body.style.background= '#19192d url(/images/background.jpg) no-repeat center center fixed;'
-  }
-
   shouldLoadApp() {
     if(this.props.principleType === principleTypes.STANDARD_USER && this.props.meFetched)
     {
-      //user good to go
+      return true
+      
     }
     if(this.props.principleType === principleTypes.BASIC) {
-      //basic good to go
+      return true;
     }
+    return false;
   }
 
   render() {
     return (
         <div className="page-container">
           <NavigationContainer />
-          {/*<UserAgentContainer />           
-          <Route exact path='/:userId/:postId' component={Post} />
-          <Route exact path='/' component={TFNEditor} />
-          <Route exact path='/' component={WaveformContainer} />
-          <Route exact path='/' component={WaveformContainer} />
-          <Route exact path='/' component={PostRoll} />
-          <Switch>
-            <Route exact path='/profile' component={MyProfileContainer} />
-            <Route exact path='/upload' component={UploadContainer} />
-            <Route exact path='/:userId' component={ProfileContainer} />
-          </Switch>*/}
+          {this.shouldLoadApp() ?
+          (<div>
+            <UserAgentContainer />           
+            <Route exact path='/:userId/:postId' component={Post} />
+            <Route exact path='/' component={TFNEditor} />
+            <Route exact path='/' component={WaveformContainer} />
+            <Route exact path='/' component={WaveformContainer} />
+            
+            <Switch>
+              <Route exact path='/profile' component={MyProfileContainer} />
+              <Route exact path='/upload' component={UploadContainer} />
+              <Route exact path='/:userId' component={ProfileContainer} />
+            </Switch>
+            </div>) :  <AppLoader />}
           <Route exact path='/oidc-callback' component={withRouter(Callback)} /> 
         </div>
     )
   }
 }
-
-/*
-
-  render() {
-    return (
-        <div className="page-container">
-          <NavigationContainer />
-          <UserAgentContainer />           
-          <Route exact path='/:userId/:postId' component={Post} />
-          <Route exact path='/' component={TFNEditor} />
-          <Route exact path='/' component={WaveformContainer} />
-          <Route exact path='/' component={WaveformContainer} />
-          <Route exact path='/' component={PostRoll} />
-          <Switch>
-            <Route exact path='/profile' component={MyProfileContainer} />
-            <Route exact path='/upload' component={UploadContainer} />
-            <Route exact path='/:userId' component={ProfileContainer} />
-          </Switch>
-          <Route exact path='/oidc-callback' component={withRouter(Callback)} /> 
-        </div>
-    )
-  }
-}*/
 
 App.propTypes = {
   
@@ -86,21 +63,22 @@ App.propTypes = {
   isLoadingUser: PropTypes.bool.isRequired,
   fetchingToken: PropTypes.bool.isRequired,
   fetchedToken: PropTypes.bool.isRequired,
-  principleType: PropTypes.string.isRequired
-  
+  principleType: PropTypes.string.isRequired,
+  meFetched: PropTypes.bool.isRequired
 };
 
 function mapStateToProps(state) {
   const { location } = state.location
   const { isLoadingUser } = state.auth
-  const { fetchingToken, fetchedToken } = state.token
-  const { principleType } = state.token
+  const { principleType, fetchingToken, fetchedToken } = state.token
+  const { meFetched } = state.user
   return {
     location: location,
     isLoadingUser: isLoadingUser,
     principleType: principleType,
+    fetchedToken: fetchedToken,
     fetchingToken: fetchingToken,
-    fetchingToken: fetchingToken,
+    meFetched: meFetched
   }
 }
 

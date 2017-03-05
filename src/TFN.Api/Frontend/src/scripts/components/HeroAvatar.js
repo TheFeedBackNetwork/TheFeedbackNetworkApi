@@ -57,16 +57,16 @@ class HeroAvatar extends React.Component {
         return (
             <div>
                 <Row>
-                        <img src={this.props.avatar} className='img-circle img-profile' />
+                    <img src={this.props.avatar} className='img-circle img-profile' />
                 </Row>
                 <Row>
-                        <div className='social'>
-                            {soundcloud}
-                            {twitter}
-                            {instagram}
-                            {youtube}
-                            {facebook}
-                         </div>
+                    <div className='social'>
+                        {soundcloud}
+                        {twitter}
+                        {instagram}
+                        {youtube}
+                        {facebook}
+                     </div>
                 </Row>
             </div>
         )

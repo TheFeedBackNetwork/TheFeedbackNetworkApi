@@ -1,18 +1,19 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 
 class ActivityContainer extends React.Component {
-
-    componentWillMount() {
-        console.log('act')
-    }
 
     render() {
         return(
             <div>
-                Activity Placeholder
+                Activity Placeholder {this.props.username}
             </div>
         )
     }
+}
+
+ActivityContainer.PropTypes ={ 
+    username: PropTypes.string.isRequired,
+    userId: PropTypes.string.isRequired
 }
 
 export default ActivityContainer;

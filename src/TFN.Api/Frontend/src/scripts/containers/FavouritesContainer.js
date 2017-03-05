@@ -1,18 +1,19 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 
 class FavouritesContainer extends React.Component {
-
-    componentWillMount() {
-        console.log('fav')
-    }
 
     render() {
         return(
             <div>
-                Favourites Placeholder
+                Favourites Placeholder {this.props.username}
             </div>
         )
     }
+}
+
+FavouritesContainer.PropTypes ={ 
+    username: PropTypes.string.isRequired,
+    userId: PropTypes.string.isRequired
 }
 
 export default FavouritesContainer;

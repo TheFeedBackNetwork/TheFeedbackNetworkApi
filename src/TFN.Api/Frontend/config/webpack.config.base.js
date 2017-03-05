@@ -37,7 +37,7 @@ module.exports = {
     loaders: [
       // JavaScript / ES6
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx)?$/,
         include: path.resolve(__dirname, '../src/scripts'),
         loader: 'babel',
         plugins: ['transform-runtime']

@@ -12,14 +12,6 @@ import userManager from '../utils/userManager';
 
 class NavigationContainer extends React.Component {
 
-    componentWillUpdate() {
-        if(this.props.principleType !== principleTypes.UNAUTHORIZED && this.props.principleType !== principleTypes.BASIC)
-        {
-            const { dispatch } = this.props
-            dispatch(fetchMe(this.props.token))    
-        }
-    }
-
     onLogoutButtonClick = (event) => {
         event.preventDefault();
         userManager.signoutRedirect();
@@ -65,7 +57,6 @@ class NavigationContainer extends React.Component {
     render() {
         const uploadItem = this.getUploadItem()
         const navDropDown = this.getNavDropDown()
-        //console.log('me fetched ' + this.props.meFetched)
         return(
             <Navbar default collapseOnSelect staticTop>
                 <Navbar.Header>

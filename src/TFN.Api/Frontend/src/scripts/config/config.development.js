@@ -17,5 +17,10 @@ module.exports = {
     },
     server : {
         url: 'http://localhost:5000/api'
+    },
+    DevOps: {
+        SentryKey : 'ed8abe5105234b7282f68d27e02fe08d',
+        SentryApp : '130476'
     }
+    
 }

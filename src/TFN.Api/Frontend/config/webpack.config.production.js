@@ -1,6 +1,7 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const config = require('./webpack.config.base');
@@ -17,6 +18,7 @@ module.exports = merge(config, {
   devtool: 'cheap-module-source-map',
   entry: {
     application: 'production',
+    silentRenew: ['./src/scripts/components/silentrenew/index.js'],
     vendor: ['react', 'react-dom', 'react-redux', 'react-router', 'redux']
   },
   plugins: [
@@ -47,7 +49,12 @@ module.exports = merge(config, {
     new ExtractTextPlugin({
       filename: 'css/app.css',
       allChunks: true
-    })
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/scripts/components/silentrenew/index.html',
+      chunks: ['silentRenew'],
+      filename: 'silent_renew.html',
+    }),
   ],
   module: {
     noParse: /\.min\.js$/,

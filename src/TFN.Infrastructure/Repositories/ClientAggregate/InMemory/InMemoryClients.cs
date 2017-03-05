@@ -52,8 +52,8 @@ namespace TFN.Infrastructure.Repositories.ClientAggregate.InMemory
                 AlwaysSendClientClaims = true,
                 AllowedGrantTypes = GrantTypes.ImplicitAndClientCredentials,
                 RequireClientSecret = false,
-                RedirectUris = { "http://localhost:5001/oidc-callback","http://localhost:5001/oidc-renew"  },
-                AllowedCorsOrigins = {"http://localhost:5001"},
+                RedirectUris = { "http://localhost:5001/oidc-callback","http://localhost:5001/oidc-renew","http://localhost:5000/oidc-callback","http://localhost:5000/oidc-renew"  },
+                AllowedCorsOrigins = {"http://localhost:5000"},
                 AllowedScopes = new List<string>
                 {
                     "openid",

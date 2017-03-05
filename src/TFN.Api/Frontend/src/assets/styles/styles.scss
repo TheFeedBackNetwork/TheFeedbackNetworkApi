@@ -55,6 +55,27 @@ a {
     text-decoration: none;
 }
 
+/* LOADERS */
+.app-loader {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    //position: 0 0 0 0;
+    top: 0;
+    left: 0;
+    z-index: 50000;
+    background-color: #141426;
+//background-
+    
+}
+
+.loader-svg {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform:translate(-50%,-50%)
+    }
+
 /* Buttons */
 
 .btn {
@@ -114,6 +135,7 @@ a {
         background-color: transparent;
         outline: none;
     }
+    margin-bottom: 20px;
 }
 
 button {
@@ -533,6 +555,24 @@ a {
     .col-3 {
         @media only screen and (min-width: 786px) {
             flex: 0 0 350px;
+            &.links {
+                text-align: right;
+
+            @media only screen and (max-width: 786px) {
+                flex: wrap;
+            }
+            
+            a {
+                margin-left: 15px;
+                margin-bottom: 15px;
+                color: rgba(white, .5);
+                font-size: 12px;
+                &:hover,
+                &:focus {
+                    color: rgba(white, .75);
+                }
+            }
+            }
         }
         .links {
             text-align: right;
@@ -580,6 +620,64 @@ a {
             }
         }
     }
+}
+
+.row {
+    &.col-3{
+        text-align: right;
+    }
+}
+
+.stats {
+            .stat {
+                text-align: center;
+                margin-left: 50px;
+                display: inline;
+                float: right;
+                &:last-child {
+                    margin-left: 0;
+                }
+
+                .num {
+                    font-size: 36px;
+                    color: white;
+                }
+                .desc {
+                    color: rgba(white, .75);
+                }
+
+                @media only screen and (max-width: 786px) {
+                    margin-left: 25px;
+                    .num {
+                        font-size: 24px;
+                    }
+                }
+            }
+        }
+
+button .btn-default-o {
+        @media only screen and (min-width: 786px) {
+            flex: 0 0 350px;
+        }
+        .links {
+            text-align: right;
+
+            @media only screen and (max-width: 786px) {
+                flex: wrap;
+            }
+            
+            a {
+                margin-left: 15px;
+                margin-bottom: 15px;
+                color: rgba(white, .5);
+                font-size: 12px;
+                &:hover,
+                &:focus {
+                    color: rgba(white, .75);
+                }
+            }
+        }
+        margin-bottom: 25px;
 }
 
 .profile-main {

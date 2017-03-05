@@ -117,7 +117,6 @@ class WaveformContainer extends React.Component {
     }
 
     clicked(name, e) {
-        //console.log(e.clientX);
         this.setState({seek:parseInt(e.clientX/840 * 100)})
     }
 
@@ -137,7 +136,6 @@ class WaveformContainer extends React.Component {
                     containerHeight = {100}
                     onClick={(e) => this.clicked('area', e)}
                  />
-               {/* <input value={this.state.seek} style={{width: '900px'}} type="range"  min="0" max="100" onChange={this.seek.bind(this, 'slider')}/> */}
             </div>
         )
     }

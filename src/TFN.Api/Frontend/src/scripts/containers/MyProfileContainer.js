@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { PropTypes } from 'react'
 import { Col, Grid, Tabs, Tab, TabContent } from 'react-bootstrap'
+import { connect } from 'react-redux'
 import HeroAvatar from '../components/HeroAvatar'
 import HeroBiography from '../components/HeroBiography'
-import avatar from 'images/avatar-placeholder.png'
+import HeroSummary from '../components/HeroSummary'
 import ActivityContainer from './ActivityContainer'
 import TracksContainer from './TracksContainer'
 import FavouritesContainer from './FavouritesContainer'
@@ -11,28 +12,37 @@ import ActivityLogContainer from './ActivityLogContainer'
 class MyProfileContainer extends React.Component {
 
     render() {
+        
+        const { profilePictureUrl, username, biography, credits, id } = this.props.user
+        
         return (
             <div>
                 <div className='profile-header'>
                     <Grid>
                         <Col md={2}>
                             <HeroAvatar
-                                soundcloud={'https://www.soundcloud.com/test'}
-                                twitter={'https://www.twitter.com/test'}
-                                instagram={'https://www.instagram.com/test'}
-                                youtube={'https://www.youtube.com/test'}
-                                facebook={'https://www.facebook.com/test'}
-                                avatar={avatar}
+                                soundcloud={biography.soundCloudUrl}
+                                twitter={biography.twitterUrl}
+                                instagram={biography.instagramUrl}
+                                youtube={biography.youTubeUrl}
+                                facebook={biography.facebookUrl}
+                                avatar={profilePictureUrl}
                             />
                         </Col>
                         <Col md={3}>
                             <HeroBiography
-                                username={'crzymonkey'}
-                                score={1000}
-                                location={'Cape Town, South Africa'}
-                                biography={'Lorem Ipsum'}
+                                username={username}
+                                score={credits.totalCredits}
+                                location={biography.location}
+                                biography={biography.text}
                             />
                         </Col>
+                        <Col md={7}>
+                            <HeroSummary
+                                
+                            />
+                        </Col>
+                        
                     </Grid>
                 </div>
                     <div className='profile-main'>
@@ -41,13 +51,13 @@ class MyProfileContainer extends React.Component {
                                 <div className='tabs'>
                                     <Tabs unmountOnExit={true} defaultActiveKey={1} animation={true} id='user-actions'>
                                         <Tab eventKey={1} title='Activity'>
-                                            <TabContent componentClass={ActivityContainer}/>
+                                            <TabContent componentClass={ActivityContainer} username={username} userId={id}/>
                                         </Tab>
                                         <Tab eventKey={2} title='Tracks'>
-                                            <TabContent componentClass={TracksContainer}/>
+                                            <TabContent componentClass={TracksContainer}  username={username} userId={id}/>
                                         </Tab>
                                         <Tab eventKey={3} title='Favourites'>
-                                            <TabContent componentClass={FavouritesContainer}/>
+                                            <TabContent componentClass={FavouritesContainer}  username={username} userId={id}/>
                                         </Tab>
                                     </Tabs>
                                 </div>
@@ -57,7 +67,7 @@ class MyProfileContainer extends React.Component {
                                     <p className='title'>
                                         <strong>Activity Logs</strong>
                                     </p>
-                                    <ActivityLogContainer />
+                                    <ActivityLogContainer  username={username} userId={id} />
                                 </div>
                                     
                                 
@@ -69,5 +79,20 @@ class MyProfileContainer extends React.Component {
         )
     }
 }
+
+
+
+MyProfileContainer.PropTypes = {
+    user: PropTypes.object.isRequired,
+}
+
+function mapStateToProps(state) {
+    const { me } = state.user
+
+    return {
+        user: me
+    }
+}
+
                 
-export default MyProfileContainer;
+export default connect(mapStateToProps)(MyProfileContainer);

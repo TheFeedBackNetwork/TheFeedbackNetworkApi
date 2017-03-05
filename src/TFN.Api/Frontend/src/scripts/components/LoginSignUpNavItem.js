@@ -7,6 +7,7 @@ import { NavItem } from 'react-bootstrap';
 import userManager from '../utils/userManager';
 import { createUserManager } from 'redux-oidc';
 import { fetchToken } from '../actions/token';
+import { fetchMe } from '../actions/user';
 
 class LoginSignUpNavItem extends React.Component {
 
@@ -25,6 +26,8 @@ onLoginButtonClick = (event) => {
     const { dispatch } = this.props;
     userManager.signinSilent()
         .then(e => {
+            console.log(e)
+            dispatch(fetchMe(e.access_token))
             console.log('user token fetched sucessfully')
         })
        .catch(e => {

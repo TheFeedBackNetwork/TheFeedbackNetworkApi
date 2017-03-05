@@ -11,7 +11,7 @@ import thunk from 'redux-thunk';
 const logger = createLogger();
 const oidcMiddleware = createOidcMiddleware(userManager);
 
-const middlewares = [promiseMiddleware, thunk, oidcMiddleware, logger]
+const middlewares = [promiseMiddleware, thunk, oidcMiddleware, logger,require('redux-immutable-state-invariant')()]
 
 const enhancer = compose(
   applyMiddleware(...middlewares)

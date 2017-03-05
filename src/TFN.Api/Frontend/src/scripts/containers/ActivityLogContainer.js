@@ -1,10 +1,7 @@
-import React from 'react'
+import React , { PropTypes } from 'react'
 
 class ActivityLogContainer extends React.Component {
 
-    componentWillMount() {
-        console.log('logcontainer')
-    }
 
     render() {
         return(
@@ -36,6 +33,11 @@ class ActivityLogContainer extends React.Component {
             </div>
         )
     }
+}
+
+ActivityLogContainer.PropTypes ={ 
+    username: PropTypes.string.isRequired,
+    userId: PropTypes.string.isRequired
 }
 
 export default ActivityLogContainer;
