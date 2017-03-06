@@ -192,20 +192,26 @@ namespace TFN.Api
             });
 
             //API Fork
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller}/{action}");
-            });
             app.UseDefaultFiles(new DefaultFilesOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "client")),
             });
             app.UseStaticFiles(new StaticFileOptions
             {
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath,"client")),
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "client")),
             });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+
+            });
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action}");
+            });
+
             
 
 
