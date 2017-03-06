@@ -9,6 +9,8 @@ using IdentityServer4.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.AspNetCore.SignalR.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -191,6 +193,11 @@ namespace TFN.Api
                 }
             });
 
+            /*var options = new RewriteOptions();
+            options.AddRewrite("^oidc-callback#(.*)", "/", skipRemainingRules: false);
+
+            app.UseRewriter(options); */
+
             //API Fork
             app.UseDefaultFiles(new DefaultFilesOptions
             {
@@ -200,10 +207,7 @@ namespace TFN.Api
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "client")),
             });
-            app.UseStaticFiles(new StaticFileOptions
-            {
-
-            });
+            
 
             app.UseMvc(routes =>
             {

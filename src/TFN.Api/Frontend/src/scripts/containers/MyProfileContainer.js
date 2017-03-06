@@ -19,7 +19,7 @@ class MyProfileContainer extends React.Component {
             <div>
                 <div className='profile-header'>
                     <Grid>
-                        <Col md={2}>
+                        <Col style={{textAlign: 'center'}} md={2}>
                             <HeroAvatar
                                 soundcloud={biography.soundCloudUrl}
                                 twitter={biography.twitterUrl}

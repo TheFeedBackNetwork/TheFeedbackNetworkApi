@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+import Background from '../components/Background'
 import UserAgentContainer from './UserAgentContainer'
 import Profile from '../components/Profile';
 import MyProfileContainer from './MyProfileContainer';
@@ -36,9 +37,11 @@ class App extends React.Component {
   render() {
     return (
         <div className="page-container">
+          
           <NavigationContainer />
           {this.shouldLoadApp() ?
           (<div>
+            <Background/>
             <UserAgentContainer />           
             <Route exact path='/:userId/:postId' component={Post} />
             <Route exact path='/' component={TFNEditor} />

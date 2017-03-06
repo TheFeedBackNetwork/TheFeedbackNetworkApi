@@ -13,7 +13,7 @@ namespace TFN.Infrastructure.Repositories.UserAggregate.InMemory
         {
             User.Hydrate(new Guid("f42c8b85-c058-47cb-b504-57f750294469"),"bob", "https://i1.sndcdn.com/artworks-000210686002-378biv-t500x500.jpg", "bob@email.com", "Bob",
                 new Biography("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                    "http://instagram.com/foo", "http://soundcloud.com/foo","http://twitter.com/foo","http://youtube.com/foo","http://facebook.com/foo","Lorem IIIIPPSSS"),Instant.FromUtc(2016,6,6,6,6), true),
+                    "http://instagram.com/foo", "http://soundcloud.com/foo","http://twitter.com/foo","","http://facebook.com/foo","Lorem IIIIPPSSS"),Instant.FromUtc(2016,6,6,6,6), true),
             User.Hydrate(new Guid("3f9969b7-c267-4fc5-bedf-b05d211ba1d6"),"alice", "https://i1.sndcdn.com/artworks-000189817033-ocnqxs-t500x500.jpg", "alice@email.com", "Alice",
                 new Biography("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
                     "http://instagram.com/bar", "http://soundcloud.com/bar","http://twitter.com/foo","http://youtube.com/foo","http://facebook.com/foo","Lorem IIIIPPSSS"),Instant.FromUtc(2016,6,6,6,6), true),

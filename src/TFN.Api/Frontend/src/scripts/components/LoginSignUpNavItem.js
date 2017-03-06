@@ -24,9 +24,9 @@ onLoginButtonClick = (event) => {
 
   componentWillMount() {
     const { dispatch } = this.props;
+    //dispatch(fetchToken())
     userManager.signinSilent()
         .then(e => {
-            console.log(e)
             dispatch(fetchMe(e.access_token))
             console.log('user token fetched sucessfully')
         })
