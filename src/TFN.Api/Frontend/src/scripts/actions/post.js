@@ -18,6 +18,7 @@ export function fetchPost(postId, token) {
                 dispatch({type: types.FETCH_POST_FULFILLED, payload: response.data})
             })
             .catch((error) => {
+                Raven.captureException(error)
                 dispatch({type: types.FETCH_POST_REJECTED, payload: error.data})
             })
 

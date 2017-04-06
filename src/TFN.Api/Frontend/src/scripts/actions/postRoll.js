@@ -20,6 +20,7 @@ export function fetchPostRoll(offset, limit, genre, token) {
                 dispatch({type: types.FETCH_POSTROLL_FULFILLED, payload: response.data})
             })
             .catch((error) => {
+                Raven.captureException(error)
                 dispatch({type: types.FETCH_POSTROLL_REJECTED, payload: error.data})
             })
 

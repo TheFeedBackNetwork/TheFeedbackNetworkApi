@@ -6,11 +6,11 @@ import * as principleTypes from '../constants/PrincipleTypes'
 class UserAgentContainer extends React.Component {
     
     getIP() {
-        const { dispatch, token } = this.props
-        dispatch(fetchIP(token))
+        const { dispatch, token, principleType } = this.props
+        dispatch(fetchIP(token, principleType))
     }
 
-    componentDidUpdate() {
+    componentWillMount() {
         if(this.props.principleType !== principleTypes.UNAUTHORIZED && !this.props.fetchedIP && !this.props.fetchingIP && this.props.fetchedToken) 
         {
             this.getIP()

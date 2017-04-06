@@ -61,7 +61,7 @@ class NavigationContainer extends React.Component {
             <Navbar default collapseOnSelect staticTop>
                 <Navbar.Header>
                 <Navbar.Brand>
-                    <Link to='/'> The Feedback Network </Link>
+                    <Link to='/'> Waveform Test UI </Link>
                 </Navbar.Brand>
                 </Navbar.Header>
                 <Nav pullRight>
