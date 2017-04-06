@@ -22,8 +22,7 @@ export function fetchToken() {
                 dispatch({type: types.FETCH_TOKEN_FULFILLED, payload: response.data.access_token})
             })
             .catch((error) => {
-                console.log('error getting token')
-                console.log(error);
+                Raven.captureException(error)
                 dispatch({type: types.FETCH_TOKEN_REJECTED, payload: error})
             })
     }

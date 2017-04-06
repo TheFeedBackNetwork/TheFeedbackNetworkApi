@@ -22,6 +22,9 @@ const configuration = config().config;
 const SENTRY_URL = `https://${configuration.DevOps.SentryKey}@sentry.io/${configuration.DevOps.SentryApp}`
 
 window.Raven && Raven.config(SENTRY_URL).install();
+Raven.setUserContext({
+  username: 'unauthorized'
+})
 
 const Root = ({ store }) => {
   let ComponentEl = (

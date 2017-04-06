@@ -16,8 +16,14 @@ export function fetchMe(token) {
         axios.get(`${configuration.server.url}/users/me`)
             .then((response) => {
                 dispatch({type: types.FETCH_ME_FULFILLED, payload: response.data})
+                Raven.setUserContext({
+                    email: response.data.email,
+                    id: response.data.id,
+                    username: response.data.username
+                })
             })
             .catch((error) => {
+                Raven.captureException(error)
                 dispatch({type: types.FETCH_ME_REJECTED, payload: error.data})
             })
 
