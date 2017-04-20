@@ -16,11 +16,18 @@
                 <label asp-for="Password"></label>
                 <input asp-for="Password" type="password" class="form-control" id="loginPassword" placeholder="Password" autocomplete="off" required>
             </div>
-
-            <button type="submit" class="btn btn-primary">Sign in</button>
-            <div class="col-md6 right-align addtional-info">
-                <span>Don't have an account? <a asp-route="Register" id="sign-in-a" class="semi-bold">Register</a></span>
-                <span>Forgot your password? <a asp-route="ForgotPassword" id="forgot-password-a" class="semi-bold">Forgot Password</a></span>
+            <div class="col-md-3" style="padding-left: 0px">
+                <button type="submit" class="btn btn-primary">Sign in</button>    
+            </div>
+            
+            <div class="col-md-9">
+                <row>
+                    <span>Don't have an account? <a asp-route="Register" id="sign-in-a" class="semi-bold">Register</a></span>
+                </row>
+                    <br/>
+                <row>
+                    <span>Forgot your password? <a asp-route="ForgotPassword" id="forgot-password-a" class="semi-bold">Forgot Password</a></span>
+                </row>              
             </div>
         </form>
     </div>
